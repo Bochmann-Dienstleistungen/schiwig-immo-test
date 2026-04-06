@@ -573,6 +573,112 @@ footer{
   .about-text-col{padding:60px 24px}
   .section-h2{font-size:2.2rem}
 }
+
+/* ── WERTRECHNER ──────────────────────────── */
+.rechner{padding:120px 56px;background:var(--bg3);border-top:1px solid var(--line)}
+.rechner-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.rcl-types{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0}
+.rcl-pill{
+  padding:10px 22px;border-radius:60px;border:1px solid var(--line);
+  background:var(--faint);font-size:.72rem;letter-spacing:.06em;
+  color:var(--muted);cursor:pointer;transition:all .3s;font-weight:500;
+}
+.rcl-pill.active,.rcl-pill:hover{border-color:var(--gold);background:rgba(184,150,110,.1);color:var(--gold)}
+.rcl-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:10px;display:block;margin-top:28px}
+.rcl-slider{
+  -webkit-appearance:none;width:100%;height:2px;
+  background:var(--line);border-radius:2px;outline:none;cursor:pointer;
+}
+.rcl-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--gold);cursor:pointer;border:3px solid var(--bg3);
+  box-shadow:0 0 14px rgba(184,150,110,.5);transition:transform .2s;
+}
+.rcl-slider::-webkit-slider-thumb:hover{transform:scale(1.2)}
+.rcl-readout{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;color:var(--white);margin-top:10px;display:block}
+.rcl-conditions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.rcl-cond{
+  padding:14px 10px;border-radius:12px;border:1px solid var(--line);
+  background:var(--faint);font-size:.7rem;text-align:center;cursor:pointer;
+  transition:all .3s;color:var(--muted);font-weight:500;line-height:1.4;
+}
+.rcl-cond.active{border-color:var(--gold);background:rgba(184,150,110,.1);color:var(--gold)}
+.rechner-result{
+  padding:44px 40px;border-radius:var(--r);text-align:center;
+  position:sticky;top:100px;
+}
+.rr-eyebrow{font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:block}
+.rr-value{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4vw,3.8rem);
+  font-weight:500;color:var(--gold);line-height:1;margin-bottom:8px;
+}
+.rr-range{font-size:.82rem;color:var(--muted);font-weight:300;margin-bottom:28px}
+.rr-divider{width:40px;height:1px;background:var(--gold);margin:24px auto;opacity:.4}
+.rr-note{font-size:.72rem;color:rgba(242,232,216,.28);font-weight:300;line-height:1.8;margin-bottom:28px}
+.rr-cta{display:block;width:100%}
+
+/* ── FAQ ──────────────────────────────────── */
+.faq{padding:120px 56px;background:var(--bg2)}
+.faq-inner{max-width:820px;margin:0 auto}
+.faq-list{margin-top:60px}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:26px 0;background:none;border:none;color:var(--white);
+  font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;
+  text-align:left;cursor:pointer;transition:color .25s;
+}
+.faq-q:hover{color:var(--gold)}
+.faq-icon{
+  width:30px;height:30px;border-radius:50%;border:1px solid var(--line);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;font-weight:300;color:var(--gold);
+  transition:border-color .3s,transform .4s;
+}
+.faq-item.open .faq-icon{border-color:var(--gold);transform:rotate(45deg)}
+.faq-a{height:0;overflow:hidden}
+.faq-a-inner{padding:0 0 28px;font-size:.9rem;color:var(--muted);line-height:2;font-weight:300;max-width:680px}
+.faq-a-inner strong{color:var(--white);font-weight:500}
+
+/* ── COOKIE BANNER ────────────────────────── */
+#cookieBanner{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  z-index:900;width:min(680px,calc(100% - 48px));
+  padding:22px 28px;border-radius:16px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.cookie-text{font-size:.78rem;color:var(--muted);line-height:1.7;flex:1;min-width:180px}
+.cookie-text a{color:var(--gold)}
+.cookie-text strong{color:var(--white);font-weight:600}
+.cookie-btns{display:flex;gap:10px;flex-shrink:0}
+.cookie-accept{
+  padding:10px 22px;border-radius:60px;background:var(--gold);
+  color:var(--bg);border:none;font-size:.68rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .25s;
+}
+.cookie-accept:hover{background:var(--gold2)}
+.cookie-decline{
+  padding:10px 20px;border-radius:60px;background:transparent;
+  color:var(--muted);border:1px solid var(--line);font-size:.68rem;
+  font-weight:500;cursor:pointer;transition:all .25s;
+}
+.cookie-decline:hover{border-color:var(--line);color:var(--white)}
+
+/* ── MAPS ─────────────────────────────────── */
+.kontakt-map{
+  border-radius:var(--r);overflow:hidden;margin-top:28px;
+  border:1px solid var(--line);
+}
+.kontakt-map iframe{display:block;width:100%;height:260px;border:none;
+  filter:grayscale(80%) contrast(0.85) brightness(0.7);}
+
+@media(max-width:768px){
+  .rechner{padding:80px 24px}
+  .rechner-inner{grid-template-columns:1fr;gap:40px}
+  .rechner-result{position:static}
+  .faq{padding:80px 24px}
+  #cookieBanner{bottom:80px;flex-direction:column;align-items:flex-start;gap:14px}
+}
 </style>
 </head>
 <body>
@@ -1111,6 +1217,129 @@ footer{
     </div>
   </section>
 
+  <!-- ═══ IMMOBILIENWERT-RECHNER ═══ -->
+  <section class="rechner" id="rechner">
+    <div class="rechner-inner">
+      <div class="rechner-form">
+        <div class="section-eyebrow rv">Kostenlos &amp; Unverbindlich</div>
+        <h2 class="section-h2 rv">Was ist Ihre<br><em>Immobilie wert?</em></h2>
+        <p class="section-sub rv" style="margin-bottom:12px">In 30 Sekunden zur ersten Einschätzung — dann ein persönliches Gespräch mit Lukas.</p>
+
+        <span class="rcl-label">Art der Immobilie</span>
+        <div class="rcl-types" id="rcType">
+          <button class="rcl-pill active" data-val="wohnung">Wohnung</button>
+          <button class="rcl-pill" data-val="haus">Einfamilienhaus</button>
+          <button class="rcl-pill" data-val="mehrfamilien">Mehrfamilienhaus</button>
+          <button class="rcl-pill" data-val="gewerbe">Gewerbe</button>
+        </div>
+
+        <span class="rcl-label">Wohnfläche</span>
+        <span class="rcl-readout" id="rcAreaVal">120 m²</span>
+        <input type="range" class="rcl-slider" id="rcArea" min="30" max="350" value="120" step="5">
+        <div style="display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);margin-top:6px;font-weight:300"><span>30 m²</span><span>350 m²</span></div>
+
+        <span class="rcl-label">Baujahr</span>
+        <select id="rcYear" style="width:100%;background:var(--faint);border:1px solid var(--line);border-radius:10px;padding:12px 16px;color:var(--white);font-size:.82rem;font-family:'Inter',sans-serif;outline:none;cursor:pointer;margin-bottom:4px">
+          <option value="new">2010 – heute</option>
+          <option value="mid" selected>1990 – 2009</option>
+          <option value="old">1970 – 1989</option>
+          <option value="veryold">Vor 1970</option>
+        </select>
+
+        <span class="rcl-label">Zustand</span>
+        <div class="rcl-conditions" id="rcCond" style="grid-template-columns:repeat(2,1fr)">
+          <button class="rcl-cond" data-val="0.75">🔧<br>Renovierungs­bedarf</button>
+          <button class="rcl-cond active" data-val="1.0">👍<br>Gepflegt</button>
+          <button class="rcl-cond" data-val="1.2">✨<br>Modernisiert</button>
+          <button class="rcl-cond" data-val="1.4">🏆<br>Neuwertig</button>
+        </div>
+      </div>
+
+      <div class="rechner-result glass rv" id="rechnerResult">
+        <span class="rr-eyebrow">Geschätzter Marktwert</span>
+        <div class="rr-value" id="rrValue">132.000 €</div>
+        <div class="rr-range" id="rrRange">Spanne: 116.000 – 148.000 €</div>
+        <div class="rr-divider"></div>
+        <p class="rr-note">
+          Schätzung auf Basis aktueller Vergleichswerte im Raum Zwickau.
+          Für eine <strong>präzise, kostenlose Bewertung</strong> sprechen Sie persönlich mit Lukas.
+        </p>
+        <a href="#kontakt" class="btn-gold rr-cta magnetic">Jetzt kostenlos bewerten lassen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ═══ -->
+  <section class="faq" id="faq">
+    <div class="faq-inner">
+      <div class="section-eyebrow rv">Häufige Fragen</div>
+      <h2 class="section-h2 rv">Antworten, die <em>weiterhelfen.</em></h2>
+      <div class="faq-list rv">
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Was kostet mich die Zusammenarbeit als Verkäufer?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">
+            Als Verkäufer zahlen Sie in der Regel <strong>keine Maklerprovision</strong> — die Courtage wird geteilt oder vollständig vom Käufer getragen. Ich berate Sie vorab transparent über die genauen Konditionen. Kostenlose Bewertung und Erstgespräch sind immer gratis.
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Wie lange dauert es, eine Immobilie zu verkaufen?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">
+            Mit professioneller Vermarktung und meinem Netzwerk liegt die <strong>durchschnittliche Verkaufszeit bei 11–28 Tagen</strong>. In meiner Praxis in Zwickau und Umgebung habe ich Objekte teils in weniger als 2 Wochen erfolgreich vermittelt.
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Wie wird der Wert meiner Immobilie ermittelt?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">
+            Ich nutze das <strong>Vergleichswertverfahren</strong> auf Basis aktueller Transaktionsdaten aus der Region, kombiniert mit einer Besichtigung vor Ort. Lage, Zustand, Ausstattung, Baujahr und aktuelle Marktentwicklung fließen ein. Das Ergebnis ist eine fundierte, marktgerechte Bewertung — kostenlos und unverbindlich.
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Welche Unterlagen brauche ich für den Verkauf?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">
+            Für ein Erstgespräch brauchen Sie noch nichts. Für den Verkaufsprozess sind später relevant: <strong>Grundbuchauszug, Energieausweis, Grundrisse, Baupläne</strong> und ggf. Teilungserklärung (bei ETW). Ich unterstütze Sie dabei, alle nötigen Dokumente zu beschaffen.
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Arbeiten Sie auch in umliegenden Gemeinden?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">
+            Ja. Neben Zwickau bin ich in der gesamten Region aktiv — darunter <strong>Lichtentanne, Werdau, Crimmitschau, Meerane und Glauchau</strong>. Sprechen Sie mich einfach an, wenn Sie unsicher sind, ob Ihr Standort dabei ist.
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Kann ich eine Immobilie kaufen, ohne sie vorher zu besichtigen?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">
+            Davon rate ich grundsätzlich ab — aber ich biete <strong>virtuelle Besichtigungen per Video-Call oder 3D-Rundgang</strong> an, falls eine persönliche Besichtigung nicht sofort möglich ist. Für Kapitalanleger aus anderen Regionen ist das ein bewährtes Modell.
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ CTA ═══ -->
   <section class="cta-section" id="cta">
     <div class="orbs">
@@ -1169,6 +1398,13 @@ footer{
             <div class="kinfo-val">Mo–Fr: 8–18 Uhr<br>Sa: nach Vereinbarung</div>
           </div>
         </div>
+        <div class="kontakt-map rv">
+          <iframe
+            src="https://maps.google.com/maps?q=Bruno-Escher-Str.+13,+08115+Lichtentanne&output=embed"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            title="Büro Lukas Schiwig Immobilien · Lichtentanne">
+          </iframe>
+        </div>
       </div>
       <div class="kontakt-form rv">
         <div class="glass" style="padding:40px;border-radius:var(--r)">
@@ -1214,6 +1450,20 @@ footer{
   </footer>
 
 </div><!-- /page-wrap -->
+
+<!-- COOKIE BANNER -->
+<div id="cookieBanner" class="glass" style="opacity:0;transform:translateY(20px)">
+  <p class="cookie-text">
+    <strong>Cookies &amp; Datenschutz</strong><br>
+    Diese Website verwendet technisch notwendige Cookies. Weitere Dienste (Google Fonts, Google Maps)
+    übertragen Daten an Google. Details in unserer
+    <a href="datenschutz.html">Datenschutzerklärung</a>.
+  </p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="cookieAccept">Akzeptieren</button>
+    <button class="cookie-decline" id="cookieDecline">Ablehnen</button>
+  </div>
+</div>
 
 <!-- WHATSAPP FLOAT -->
 <a href="https://wa.me/4915735792768" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -1294,12 +1544,12 @@ function initPage() {
   ];
 
   const FRAME_SRCS = [
-    'https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    'https://images.pexels.com/photos/1643384/pexels-photo-1643384.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    'https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    'https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920',
     'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1920',
     'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    'https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&w=1920',
   ];
 
   const frameImgs = FRAME_SRCS.map(src => {
@@ -1562,6 +1812,104 @@ function initPage() {
 
   // Refresh after images load
   window.addEventListener('load', () => ScrollTrigger.refresh());
+
+  // ── COOKIE BANNER ─────────────────────
+  const cookieBanner = document.getElementById('cookieBanner');
+  if (cookieBanner && !localStorage.getItem('cookie_consent')) {
+    setTimeout(() => {
+      gsap.to(cookieBanner, { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' });
+    }, 3200);
+  }
+  document.getElementById('cookieAccept')?.addEventListener('click', () => {
+    localStorage.setItem('cookie_consent', 'accepted');
+    gsap.to(cookieBanner, { opacity: 0, y: 16, duration: 0.4, ease: 'power2.in',
+      onComplete: () => { cookieBanner.style.display = 'none'; } });
+  });
+  document.getElementById('cookieDecline')?.addEventListener('click', () => {
+    localStorage.setItem('cookie_consent', 'declined');
+    gsap.to(cookieBanner, { opacity: 0, y: 16, duration: 0.4, ease: 'power2.in',
+      onComplete: () => { cookieBanner.style.display = 'none'; } });
+  });
+
+  // ── FAQ ACCORDION ─────────────────────
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item   = btn.closest('.faq-item');
+      const answer = item.querySelector('.faq-a');
+      const isOpen = item.classList.contains('open');
+
+      // close all open items
+      document.querySelectorAll('.faq-item.open').forEach(openItem => {
+        openItem.classList.remove('open');
+        gsap.to(openItem.querySelector('.faq-a'), { height: 0, duration: 0.38, ease: 'power3.inOut' });
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        gsap.set(answer, { height: 'auto' });
+        const h = answer.offsetHeight;
+        gsap.fromTo(answer, { height: 0 }, { height: h, duration: 0.52, ease: 'expo.out' });
+      }
+    });
+  });
+
+  // ── WERTRECHNER ───────────────────────
+  const BASE_M2 = { wohnung: 1100, haus: 1400, mehrfamilien: 900, gewerbe: 800 };
+  const YEAR_M  = { new: 1.25, mid: 1.0, old: 0.82, veryold: 0.68 };
+
+  let rcTypeVal = 'wohnung', rcYearVal = 'mid', rcCondVal = 1.0, rcAreaNum = 120;
+
+  function calcWert() {
+    const base = BASE_M2[rcTypeVal] || 1100;
+    const yM   = YEAR_M[rcYearVal]  || 1.0;
+    const val  = Math.round(base * rcAreaNum * yM * rcCondVal / 1000) * 1000;
+    const lo   = Math.round(val * 0.88 / 1000) * 1000;
+    const hi   = Math.round(val * 1.12 / 1000) * 1000;
+    const fmt  = n => n.toLocaleString('de-DE') + '\u00a0€';
+    const valEl   = document.getElementById('rrValue');
+    const rangeEl = document.getElementById('rrRange');
+    if (valEl) {
+      const prev = parseInt(valEl.textContent.replace(/\D/g,'')) || 0;
+      const obj  = { v: prev };
+      gsap.to(obj, { v: val, duration: 0.7, ease: 'power2.out',
+        onUpdate() { valEl.textContent = fmt(Math.round(obj.v / 1000) * 1000); }
+      });
+    }
+    if (rangeEl) rangeEl.textContent = 'Spanne: ' + fmt(lo) + ' – ' + fmt(hi);
+  }
+
+  document.querySelectorAll('#rcType .rcl-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#rcType .rcl-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      rcTypeVal = btn.dataset.val;
+      calcWert();
+    });
+  });
+
+  const rcAreaSlider = document.getElementById('rcArea');
+  const rcAreaLabel  = document.getElementById('rcAreaVal');
+  if (rcAreaSlider) {
+    rcAreaSlider.addEventListener('input', () => {
+      rcAreaNum = parseInt(rcAreaSlider.value);
+      if (rcAreaLabel) rcAreaLabel.textContent = rcAreaNum + ' m²';
+      calcWert();
+    });
+  }
+
+  const rcYearSel = document.getElementById('rcYear');
+  if (rcYearSel) {
+    rcYearSel.addEventListener('change', () => { rcYearVal = rcYearSel.value; calcWert(); });
+  }
+
+  document.querySelectorAll('#rcCond .rcl-cond').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#rcCond .rcl-cond').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      rcCondVal = parseFloat(btn.dataset.val);
+      calcWert();
+    });
+  });
 }
 
 /* ── MOBILE NAV ─────────────────────────── */

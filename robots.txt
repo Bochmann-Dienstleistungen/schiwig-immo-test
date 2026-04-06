@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bochmann-dienstleistungen.github.io/schiwig-immo-demo/sitemap.xml
