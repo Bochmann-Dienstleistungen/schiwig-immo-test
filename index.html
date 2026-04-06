@@ -552,6 +552,192 @@ footer{
 .mob-bar .mob-call{background:var(--gold);color:#fff}
 .mob-bar .mob-wa{background:#25d366;color:#fff}
 
+/* ── BENTO GRIDS ──────────────────────────── */
+.bento-section{padding:72px 56px;background:var(--bg)}
+.bento-section+.bento-section{padding-top:0}
+
+.bento-grid{
+  max-width:1200px;margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+/* BG1 row heights */
+.bg1{grid-template-rows:300px 188px}
+/* BG2 row heights */
+.bg2{grid-template-rows:260px 200px}
+
+.bc{
+  border-radius:20px;overflow:hidden;position:relative;
+  background:var(--bg2);border:1px solid var(--line);
+  transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s;
+}
+.bc:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(10,26,60,.1)}
+
+/* ── BG1 card positions ── */
+.bc-portrait{grid-column:1;grid-row:1/span 2}
+.bc-portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.bc-portrait-badge{
+  position:absolute;bottom:24px;left:24px;right:24px;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(16px);
+  border-radius:12px;padding:14px 18px;border:1px solid rgba(255,255,255,.95);
+}
+.bc-pb-name{font-size:.82rem;font-weight:600;color:var(--white);letter-spacing:.02em}
+.bc-pb-sub{font-size:.62rem;color:var(--muted);margin-top:2px;font-weight:300}
+
+.bc-headline{
+  grid-column:2/span 2;grid-row:1;
+  padding:0 48px;background:var(--bg3);
+  display:flex;flex-direction:column;justify-content:center;gap:12px;
+}
+.bc-eyebrow{
+  font-size:.54rem;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;
+  display:flex;align-items:center;gap:12px;
+}
+.bc-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold)}
+.bc-h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.55rem,2.2vw,2.55rem);
+  font-weight:300;line-height:1.18;color:var(--white);
+}
+.bc-h2 em{font-style:italic;color:var(--gold)}
+
+.bc-trust{
+  grid-column:4;grid-row:1;
+  padding:32px 28px;
+  background:var(--gold);color:#fff;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.bc-trust-stars{font-size:1rem;letter-spacing:3px;opacity:.85;margin-bottom:auto}
+.bc-trust-val{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.8rem;font-weight:600;line-height:1;color:#fff;
+}
+.bc-trust-lbl{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-top:4px}
+.bc-trust-sub{font-size:.68rem;opacity:.65;line-height:1.5;margin-top:12px;font-weight:300}
+
+.bc-stat{
+  padding:26px 28px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.bc-stat:nth-child(4){grid-column:2;grid-row:2}
+.bc-stat:nth-child(5){grid-column:3;grid-row:2}
+.bc-stat:nth-child(6){grid-column:4;grid-row:2}
+.bc-sn{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.4rem,3.5vw,3.6rem);font-weight:600;
+  color:var(--gold);line-height:1;display:block;margin-bottom:7px;
+}
+.bc-sn sup{font-size:1.2rem;vertical-align:super}
+.bc-sl{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:400;line-height:1.5}
+
+/* ── BG2 card positions ── */
+.bc-svc-img{
+  grid-column:1/span 2;grid-row:1;
+  cursor:pointer;
+}
+.bc-svc-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bc-svc-img .bc-grad{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(6,14,38,.82),rgba(6,14,38,.2) 55%,transparent);
+}
+.bc-svc-body{
+  position:absolute;bottom:0;left:0;right:0;padding:28px 32px;
+}
+.bc-svc-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:500;
+  color:#fff;line-height:1.1;margin-bottom:6px;
+}
+.bc-svc-text{font-size:.78rem;color:rgba(255,255,255,.65);line-height:1.6;font-weight:300}
+
+.bc-tall{
+  grid-column:3;grid-row:1/span 2;
+  background:var(--white);color:#fff;
+  padding:36px 32px;
+  display:flex;flex-direction:column;
+}
+.bc-tall .bc-icon{
+  width:50px;height:50px;border-radius:12px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+  margin-bottom:auto;
+}
+.bc-tall .bc-svc-title{color:#fff;font-size:1.5rem;margin-top:auto;margin-bottom:8px}
+.bc-tall .bc-svc-text{color:rgba(255,255,255,.6)}
+.bc-tall .bc-link{
+  display:inline-flex;align-items:center;gap:10px;margin-top:28px;
+  font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.8);border-bottom:1px solid rgba(255,255,255,.25);
+  padding-bottom:3px;width:fit-content;transition:color .2s,border-color .2s;
+}
+.bc-tall .bc-link:hover{color:#fff;border-color:rgba(255,255,255,.6)}
+
+.bc-sm{
+  padding:28px 28px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.bc-sm:nth-child(4){grid-column:4;grid-row:1}
+.bc-sm:nth-child(6){grid-column:4;grid-row:2}
+.bc-sm .bc-icon{
+  width:44px;height:44px;border-radius:11px;
+  background:rgba(26,63,143,.08);border:1px solid rgba(26,63,143,.14);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  margin-bottom:auto;
+}
+.bc-sm .bc-svc-title{color:var(--white);font-size:1rem;font-weight:600;margin-bottom:4px;margin-top:auto}
+.bc-sm .bc-svc-text{font-size:.76rem;color:var(--muted);line-height:1.6;font-weight:300}
+
+.bc-cta{
+  grid-column:1/span 2;grid-row:2;
+  padding:32px 40px;
+  background:var(--gold);color:#fff;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  cursor:pointer;
+}
+.bc-cta-text{}
+.bc-cta-eyebrow{font-size:.54rem;letter-spacing:.3em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
+.bc-cta-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;line-height:1.15}
+.bc-cta-arrow{
+  width:52px;height:52px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;flex-shrink:0;
+  transition:background .25s,border-color .25s;
+}
+.bc-cta:hover .bc-cta-arrow{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.7)}
+
+/* responsive */
+@media(max-width:1024px){
+  .bento-section{padding:56px 32px}
+  .bg1{grid-template-rows:auto auto}
+  .bg2{grid-template-rows:auto auto}
+  .bento-grid{grid-template-columns:repeat(2,1fr)}
+  .bc-portrait{grid-column:1/span 2;grid-row:auto;min-height:320px}
+  .bc-headline{grid-column:1/span 2;padding:32px 32px;min-height:180px}
+  .bc-trust{grid-column:1}
+  .bc-stat:nth-child(4){grid-column:2;grid-row:auto}
+  .bc-stat:nth-child(5){grid-column:1;grid-row:auto}
+  .bc-stat:nth-child(6){grid-column:2;grid-row:auto}
+  .bc-svc-img{grid-column:1/span 2}
+  .bc-tall{grid-column:1/span 2;grid-row:auto;min-height:200px}
+  .bc-sm:nth-child(4),.bc-sm:nth-child(6){grid-column:auto}
+  .bc-cta{grid-column:1/span 2}
+}
+@media(max-width:768px){
+  .bento-section{padding:40px 20px}
+  .bento-section+.bento-section{padding-top:14px}
+  .bento-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .bc-portrait{min-height:260px}
+  .bc-headline{padding:24px 22px}
+  .bc-h2{font-size:1.35rem}
+  .bc-trust{min-height:160px}
+  .bc-stat{padding:20px 18px}
+  .bc-svc-img{min-height:200px}
+  .bc-tall{min-height:220px}
+  .bc-cta{padding:24px 24px;flex-direction:column;align-items:flex-start;gap:16px}
+}
+
 /* ── RESPONSIVE ───────────────────────────── */
 @media(max-width:1024px){
   .leis-grid{grid-template-columns:repeat(2,1fr)}
@@ -908,62 +1094,101 @@ footer{
     <div class="carousel-dots" id="carDots"></div>
   </section>
 
-  <!-- ═══ STATS ═══ -->
-  <section class="stats-strip">
-    <div class="orbs" style="opacity:.4">
-      <div class="orb orb-gold" style="width:400px;height:400px;top:-50%;left:20%;animation:drift1 18s ease-in-out infinite"></div>
-    </div>
-    <div class="stats-grid">
-      <div class="stat-cell rv">
-        <span class="stat-n"><span class="counter" data-target="37">0</span></span>
-        <span class="stat-l">Google Bewertungen</span>
+  <!-- ═══ BENTO 1 — WER IST LUKAS ═══ -->
+  <section class="bento-section" id="leistungen">
+    <div class="bento-grid bg1">
+
+      <!-- Portrait -->
+      <div class="bc bc-portrait">
+        <img src="https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Lukas Schiwig – Immobilienmakler Zwickau">
+        <div class="bc-portrait-badge">
+          <div class="bc-pb-name">Lukas Schiwig</div>
+          <div class="bc-pb-sub">Immobilienmakler · §34c GewO · Zwickau</div>
+        </div>
       </div>
-      <div class="stat-cell rv">
-        <span class="stat-n">4,6<span class="stat-suffix">★</span></span>
-        <span class="stat-l">Durchschnittliche Bewertung</span>
+
+      <!-- Headline -->
+      <div class="bc bc-headline">
+        <span class="bc-eyebrow">Ihr Makler in Zwickau</span>
+        <h2 class="bc-h2">Manche kennen<br>Zwickau. Ich kenne<br>die <em>richtigen Menschen.</em></h2>
       </div>
-      <div class="stat-cell rv">
-        <span class="stat-n"><span class="counter" data-target="100">0</span><span class="stat-suffix">%</span></span>
-        <span class="stat-l">Digitale Vermarktung</span>
+
+      <!-- Trust badge -->
+      <div class="bc bc-trust">
+        <div class="bc-trust-stars">★★★★★</div>
+        <div>
+          <div class="bc-trust-val">4,6</div>
+          <div class="bc-trust-lbl">Google Bewertung</div>
+          <div class="bc-trust-sub">37 verifizierte<br>Rezensionen</div>
+        </div>
       </div>
-      <div class="stat-cell rv">
-        <span class="stat-n"><span class="counter" data-target="48">0</span><span class="stat-suffix">h</span></span>
-        <span class="stat-l">Ø Reaktionszeit</span>
+
+      <!-- Stat: Bewertungen -->
+      <div class="bc bc-stat">
+        <span class="bc-sn"><span class="bc-counter" data-target="37">0</span></span>
+        <span class="bc-sl">Google<br>Bewertungen</span>
       </div>
+
+      <!-- Stat: Abschluss -->
+      <div class="bc bc-stat">
+        <span class="bc-sn"><span class="bc-counter" data-target="11">0</span><sup> Tage</sup></span>
+        <span class="bc-sl">Ø bis zur<br>Schlüsselübergabe</span>
+      </div>
+
+      <!-- Stat: Digital -->
+      <div class="bc bc-stat">
+        <span class="bc-sn"><span class="bc-counter" data-target="100">0</span><sup>%</sup></span>
+        <span class="bc-sl">Digitale<br>Vermarktung</span>
+      </div>
+
     </div>
   </section>
 
-  <!-- ═══ LEISTUNGEN ═══ -->
-  <section class="leistungen" id="leistungen">
-    <div style="max-width:1200px;margin:0 auto">
-      <div class="section-eyebrow rv">Was ich für Sie tue</div>
-      <h2 class="section-h2 rv">Alles aus <em>einer Hand</em></h2>
-      <p class="section-sub rv">
-        Von der ersten Beratung bis zur finalen Unterschrift — ich begleite Sie
-        durch jeden Schritt mit persönlichem Einsatz und digitalem Know-how.
-      </p>
-      <div class="leis-grid">
-        <div class="leis-card rv magnetic">
-          <div class="leis-icon">🏠</div>
-          <div class="leis-title">Immobilienverkauf</div>
-          <p class="leis-text">Professionelle Vermarktung mit hochwertigen Fotos, 3D-Grundrissen und gezielter Online-Präsenz. Maximaler Preis, minimale Wartezeit.</p>
-        </div>
-        <div class="leis-card rv magnetic" style="transition-delay:.08s">
-          <div class="leis-icon">🔑</div>
-          <div class="leis-title">Vermietung</div>
-          <p class="leis-text">Solvente Mieter finden, Mietvertrag aufsetzen, Übergabe dokumentieren. Ich übernehme den kompletten Prozess für Sie.</p>
-        </div>
-        <div class="leis-card rv magnetic" style="transition-delay:.16s">
-          <div class="leis-icon">📊</div>
-          <div class="leis-title">Bewertung</div>
-          <p class="leis-text">Kostenlose, marktgerechte Wertermittlung Ihrer Immobilie — fundiert, transparent und ohne Verpflichtung.</p>
-        </div>
-        <div class="leis-card rv magnetic" style="transition-delay:.24s">
-          <div class="leis-icon">💬</div>
-          <div class="leis-title">Beratung</div>
-          <p class="leis-text">Ob Kauf, Verkauf oder Investment — ich analysiere Ihre Situation und entwickle die optimale Strategie für Ihre Ziele.</p>
+  <!-- ═══ BENTO 2 — LEISTUNGEN ═══ -->
+  <section class="bento-section">
+    <div class="bento-grid bg2">
+
+      <!-- Verkauf (image card, wide) -->
+      <div class="bc bc-svc-img">
+        <img src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Immobilienverkauf Zwickau">
+        <div class="bc-grad"></div>
+        <div class="bc-svc-body">
+          <div class="bc-svc-title">Immobilienverkauf</div>
+          <div class="bc-svc-text">Professionelle Fotos · Maximale Online-Reichweite · Schnelle Abwicklung</div>
         </div>
       </div>
+
+      <!-- Bewertung (tall, navy) -->
+      <div class="bc bc-tall" style="background:var(--gold)">
+        <div class="bc-icon">📊</div>
+        <div class="bc-svc-title">Kostenlose<br>Bewertung</div>
+        <div class="bc-svc-text">Marktgerechte Wertermittlung — ohne Verpflichtung, fundiert und transparent.</div>
+        <a href="#rechner" class="bc-link">Jetzt berechnen →</a>
+      </div>
+
+      <!-- Vermietung -->
+      <div class="bc bc-sm">
+        <div class="bc-icon">🔑</div>
+        <div class="bc-svc-title">Vermietung</div>
+        <div class="bc-svc-text">Solvente Mieter finden, Mietvertrag aufsetzen, Übergabe dokumentieren.</div>
+      </div>
+
+      <!-- CTA (wide, kontakt) -->
+      <a href="#kontakt" class="bc bc-cta">
+        <div class="bc-cta-text">
+          <div class="bc-cta-eyebrow">Kostenlos · Unverbindlich</div>
+          <div class="bc-cta-title">Sprechen wir über<br>Ihre Immobilie.</div>
+        </div>
+        <div class="bc-cta-arrow">→</div>
+      </a>
+
+      <!-- Beratung -->
+      <div class="bc bc-sm">
+        <div class="bc-icon">💬</div>
+        <div class="bc-svc-title">Beratung</div>
+        <div class="bc-svc-text">Kauf, Verkauf, Investment — ich entwickle Ihre optimale Strategie.</div>
+      </div>
+
     </div>
   </section>
 
@@ -1155,46 +1380,6 @@ footer{
           </a>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ WARUM ═══ -->
-  <section class="warum" id="warum">
-    <div style="max-width:1200px;margin:0 auto">
-      <div class="section-eyebrow rv">Warum SCHIWIG?</div>
-      <h2 class="section-h2 rv" style="margin-bottom:64px">6 Gründe, die <em>überzeugen.</em></h2>
-      <div class="warum-grid">
-        <div class="warum-card rv">
-          <div class="wcard-num">01</div>
-          <div class="wcard-title">Kostenlose Wertermittlung</div>
-          <p class="wcard-text">Ich bewerte Ihre Immobilie kostenlos und ohne Verpflichtung — marktgerecht und fundiert.</p>
-        </div>
-        <div class="warum-card rv" style="transition-delay:.08s">
-          <div class="wcard-num">02</div>
-          <div class="wcard-title">Professionelle Fotos & 3D</div>
-          <p class="wcard-text">Hochwertige Fotos und 3D-Grundrisse, die Ihre Immobilie optimal präsentieren und mehr Interessenten anziehen.</p>
-        </div>
-        <div class="warum-card rv" style="transition-delay:.16s">
-          <div class="wcard-num">03</div>
-          <div class="wcard-title">Maximale Online-Reichweite</div>
-          <p class="wcard-text">Ihre Immobilie auf allen relevanten Portalen — Immoscout24, ImmoWelt, Kleinanzeigen und mehr.</p>
-        </div>
-        <div class="warum-card rv" style="transition-delay:.08s">
-          <div class="wcard-num">04</div>
-          <div class="wcard-title">Persönliche Betreuung</div>
-          <p class="wcard-text">Kein Call-Center, kein Assistent. Sie haben immer direkten Kontakt zu mir — Lukas Schiwig persönlich.</p>
-        </div>
-        <div class="warum-card rv" style="transition-delay:.16s">
-          <div class="wcard-num">05</div>
-          <div class="wcard-title">Schnelle Abwicklung</div>
-          <p class="wcard-text">Durch digitale Prozesse und lokales Netzwerk beschleunige ich Verkauf und Vermietung erheblich.</p>
-        </div>
-        <div class="warum-card rv" style="transition-delay:.24s">
-          <div class="wcard-num">06</div>
-          <div class="wcard-title">Transparenz von Anfang an</div>
-          <p class="wcard-text">Klare Konditionen, ehrliche Einschätzungen, regelmäßige Updates — keine bösen Überraschungen.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -1836,6 +2021,36 @@ function initPage() {
 
   // Refresh after images load
   window.addEventListener('load', () => ScrollTrigger.refresh());
+
+  // ── BENTO REVEALS ────────────────────
+  gsap.utils.toArray('.bento-grid').forEach(grid => {
+    const cards = Array.from(grid.children);
+    gsap.set(cards, { opacity: 0, scale: 0.88, y: 22 });
+    ScrollTrigger.create({
+      trigger: grid,
+      start: 'top 82%',
+      once: true,
+      onEnter: () => {
+        gsap.to(cards, {
+          opacity: 1, scale: 1, y: 0,
+          duration: 0.72, ease: 'expo.out',
+          stagger: 0.07,
+          clearProps: 'scale,y'
+        });
+      }
+    });
+  });
+
+  // ── BENTO COUNTERS ────────────────────
+  document.querySelectorAll('.bc-counter').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const obj = { v: 0 };
+    gsap.to(obj, {
+      v: target, duration: 1.8, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%' },
+      onUpdate() { el.textContent = Math.round(obj.v); }
+    });
+  });
 
   // ── COOKIE BANNER ─────────────────────
   const cookieBanner = document.getElementById('cookieBanner');
