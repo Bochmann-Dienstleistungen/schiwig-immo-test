@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0d0d0d">
+<title>SCHIWIG Immobilien – Ihr Makler in Zwickau & Umgebung</title>
+<meta name="description" content="Professionelle Immobilienvermittlung in Zwickau. Kostenlose Bewertung, schnelle Abwicklung, persönliche Betreuung. Lukas Schiwig – Ihr Ansprechpartner vor Ort.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0d0d;
+  --bg2:#111111;
+  --surface:#1a1a1a;
+  --surface2:#222222;
+  --gold:#c9a227;
+  --gold2:#e8c55a;
+  --gold-dim:rgba(201,162,39,.15);
+  --white:#ffffff;
+  --off:#f5f0e8;
+  --muted:rgba(255,255,255,.45);
+  --faint:rgba(255,255,255,.07);
+  --line:rgba(255,255,255,.08);
+  --r:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;line-height:1.6}
+.page-wrap{overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 56px;height:72px;
+  background:rgba(13,13,13,.9);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--line);
+  transition:background .3s;
+}
+.nav-logo{display:flex;flex-direction:column;gap:1px;line-height:1}
+.nav-logo-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;letter-spacing:.08em;color:var(--white)}
+.nav-logo-name span{color:var(--gold)}
+.nav-logo-sub{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:.78rem;font-weight:500;letter-spacing:.06em;color:var(--muted);transition:color .2s;text-transform:uppercase}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 24px;border:1px solid var(--gold);
+  color:var(--gold);font-size:.75rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  border-radius:2px;transition:all .25s;
+}
+.nav-cta:hover{background:var(--gold);color:var(--bg)}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.nav-ham span{display:block;width:24px;height:1px;background:var(--white);transition:all .3s}
+.nav-mobile{display:none;position:fixed;inset:0;z-index:490;background:var(--bg);padding:100px 40px 40px;flex-direction:column;gap:24px}
+.nav-mobile.open{display:flex}
+.nav-mobile a{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--white);border-bottom:1px solid var(--line);padding-bottom:16px}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.3s}.delay-4{transition-delay:.4s}.delay-5{transition-delay:.5s}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;
+  padding:120px 56px 80px;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=1600');
+  background-size:cover;background-position:center 30%;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(105deg,rgba(13,13,13,.92) 0%,rgba(13,13,13,.75) 50%,rgba(13,13,13,.45) 100%);
+}
+.hero-content{position:relative;z-index:2;max-width:680px}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:28px;
+}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--gold)}
+.hero-h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,6vw,5.2rem);
+  line-height:1.08;font-weight:600;
+  color:var(--white);margin-bottom:28px;
+  letter-spacing:-.01em;
+}
+.hero-h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-size:1rem;line-height:1.8;color:rgba(255,255,255,.65);
+  margin-bottom:48px;max-width:500px;font-weight:300;
+}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:64px}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:16px 32px;background:var(--gold);color:var(--bg);
+  font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border-radius:2px;transition:all .25s;border:1px solid var(--gold);
+}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,162,39,.3)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:16px 32px;border:1px solid rgba(255,255,255,.25);
+  color:var(--white);font-size:.8rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  border-radius:2px;transition:all .25s;
+}
+.btn-secondary:hover{border-color:var(--white);background:rgba(255,255,255,.05)}
+.hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+.hero-stat-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.4rem;font-weight:600;color:var(--gold);
+  line-height:1;display:block;
+}
+.hero-stat-label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px;display:block}
+.hero-stat-divider{width:1px;background:rgba(255,255,255,.12);align-self:stretch}
+.hero-scroll-hint{
+  position:absolute;bottom:36px;left:56px;z-index:2;
+  display:flex;align-items:center;gap:12px;
+  font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+}
+.hero-scroll-line{width:40px;height:1px;background:var(--muted)}
+
+/* ─── STATS STRIP ─── */
+.stats-strip{
+  background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:40px 56px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+}
+.stat-item{
+  text-align:center;padding:0 20px;
+  border-right:1px solid var(--line);
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.8rem;font-weight:600;color:var(--gold);
+  line-height:1;display:block;margin-bottom:8px;
+}
+.stat-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:500}
+
+/* ─── SECTION BASE ─── */
+section{padding:104px 56px}
+.section-eyebrow{
+  font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold)}
+.section-h{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,3.5vw,3rem);
+  font-weight:600;line-height:1.15;margin-bottom:16px;color:var(--white);
+}
+.section-h em{font-style:italic;color:var(--gold)}
+.section-sub{color:var(--muted);font-size:.9rem;line-height:1.9;max-width:520px;margin-bottom:56px;font-weight:300}
+
+/* ─── LEISTUNGEN ─── */
+.leistungen-section{background:var(--bg2)}
+.leistungen-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);max-width:1200px;margin:0 auto}
+.leistung-card{
+  background:var(--bg2);padding:40px 32px;
+  transition:background .3s;cursor:default;
+  position:relative;overflow:hidden;
+}
+.leistung-card::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  transform:scaleX(0);transform-origin:left;transition:transform .4s;
+}
+.leistung-card:hover{background:var(--surface)}
+.leistung-card:hover::before{transform:scaleX(1)}
+.leistung-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.5rem;color:rgba(201,162,39,.12);
+  font-weight:700;line-height:1;margin-bottom:24px;display:block;
+}
+.leistung-icon{font-size:1.6rem;margin-bottom:16px;display:block}
+.leistung-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.35rem;font-weight:600;color:var(--white);
+  margin-bottom:12px;
+}
+.leistung-desc{color:var(--muted);font-size:.83rem;line-height:1.85;font-weight:300}
+.leistung-link{
+  display:inline-flex;align-items:center;gap:8px;margin-top:20px;
+  font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;transition:gap .2s;
+}
+.leistung-card:hover .leistung-link{gap:12px}
+
+/* ─── OBJEKTE ─── */
+.objekte-section{background:var(--bg)}
+.objekte-inner{max-width:1200px;margin:0 auto}
+.objekte-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:20px}
+.objekte-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.objekt-card{
+  background:var(--surface);border-radius:var(--r);overflow:hidden;
+  transition:transform .3s,box-shadow .3s;
+  border:1px solid var(--line);
+}
+.objekt-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.objekt-img{
+  position:relative;height:240px;overflow:hidden;
+}
+.objekt-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.objekt-card:hover .objekt-img img{transform:scale(1.05)}
+.objekt-badge{
+  position:absolute;top:16px;left:16px;
+  background:var(--gold);color:var(--bg);
+  font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 12px;border-radius:2px;
+}
+.objekt-badge-type{
+  position:absolute;top:16px;right:16px;
+  background:rgba(13,13,13,.8);color:var(--white);
+  font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 12px;border-radius:2px;backdrop-filter:blur(8px);
+}
+.objekt-body{padding:24px 24px 28px}
+.objekt-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem;font-weight:600;color:var(--gold);
+  margin-bottom:4px;
+}
+.objekt-title{font-size:.9rem;font-weight:500;color:var(--white);margin-bottom:16px}
+.objekt-meta{display:flex;gap:20px;flex-wrap:wrap}
+.objekt-meta-item{
+  display:flex;align-items:center;gap:6px;
+  font-size:.72rem;color:var(--muted);font-weight:400;
+}
+.objekt-meta-item svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:1.5;flex-shrink:0}
+.objekt-footer{
+  padding:16px 24px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.objekt-location{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.objekt-cta{font-size:.7rem;color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:opacity .2s}
+.objekt-cta:hover{opacity:.7}
+
+/* ─── ÜBER LUKAS ─── */
+.about-section{background:var(--bg2);padding:0}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;min-height:600px}
+.about-img-side{
+  position:relative;overflow:hidden;
+  background:var(--surface);min-height:500px;
+}
+.about-img-side img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.about-img-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to right,transparent 60%,var(--bg2) 100%);
+}
+.about-text-side{
+  padding:88px 64px;display:flex;flex-direction:column;justify-content:center;
+}
+.about-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-style:italic;color:var(--white);
+  line-height:1.6;border-left:2px solid var(--gold);
+  padding-left:24px;margin-bottom:32px;
+}
+.about-text{color:var(--muted);font-size:.88rem;line-height:1.95;font-weight:300;margin-bottom:32px}
+.about-tags{display:flex;gap:10px;flex-wrap:wrap}
+.about-tag{
+  padding:8px 16px;border:1px solid var(--line);
+  font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);border-radius:2px;font-weight:500;
+}
+.about-tag.gold{border-color:rgba(201,162,39,.4);color:var(--gold)}
+
+/* ─── WARUM ─── */
+.warum-section{background:var(--bg)}
+.warum-inner{max-width:1200px;margin:0 auto}
+.warum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);margin-top:64px}
+.warum-item{
+  background:var(--bg);padding:40px 36px;
+  transition:background .3s;
+}
+.warum-item:hover{background:var(--surface)}
+.warum-icon{
+  width:48px;height:48px;border:1px solid rgba(201,162,39,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;margin-bottom:20px;border-radius:2px;
+}
+.warum-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--white);margin-bottom:10px}
+.warum-text{color:var(--muted);font-size:.82rem;line-height:1.85;font-weight:300}
+
+/* ─── REFERENZEN ─── */
+.ref-section{background:var(--bg2)}
+.ref-inner{max-width:1200px;margin:0 auto}
+.ref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin-top:64px}
+.ref-card{background:var(--bg2);padding:40px 36px}
+.ref-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.5rem;color:rgba(201,162,39,.3);
+  line-height:.8;margin-bottom:16px;display:block;
+}
+.ref-text{color:rgba(255,255,255,.7);font-size:.88rem;line-height:1.9;margin-bottom:24px;font-weight:300}
+.ref-stars{display:flex;gap:3px;margin-bottom:16px}
+.ref-star{color:var(--gold);font-size:.85rem}
+.ref-author{font-size:.82rem;font-weight:600;color:var(--white)}
+.ref-detail{font-size:.7rem;color:var(--muted);margin-top:3px}
+
+/* ─── CTA BANNER ─── */
+.cta-banner-section{
+  background:linear-gradient(135deg,#1a1408,#0d0d0d);
+  border-top:1px solid rgba(201,162,39,.2);
+  border-bottom:1px solid rgba(201,162,39,.2);
+  padding:80px 56px;text-align:center;
+}
+.cta-banner-eyebrow{
+  font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:20px;font-weight:500;
+}
+.cta-banner-h{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,4vw,3.4rem);font-weight:600;
+  color:var(--white);margin-bottom:16px;
+}
+.cta-banner-h em{font-style:italic;color:var(--gold)}
+.cta-banner-sub{color:var(--muted);font-size:.9rem;margin-bottom:40px;font-weight:300}
+.cta-banner-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ─── KONTAKT ─── */
+.kontakt-section{background:var(--bg);padding:104px 56px}
+.kontakt-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.kontakt-details{display:flex;flex-direction:column;gap:24px;margin-top:40px}
+.kontakt-item{display:flex;align-items:flex-start;gap:16px}
+.kontakt-item-icon{
+  width:40px;height:40px;border:1px solid rgba(201,162,39,.3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:2px;
+}
+.kontakt-item-icon svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.kontakt-item-label{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-weight:500}
+.kontakt-item-val{color:var(--white);font-size:.9rem;font-weight:400}
+.kontakt-item-val a{color:var(--gold);transition:opacity .2s}
+.kontakt-item-val a:hover{opacity:.7}
+form{display:flex;flex-direction:column;gap:16px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.form-group input,.form-group textarea,.form-group select{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:2px;padding:14px 16px;
+  font-family:'Inter',sans-serif;font-size:.88rem;color:var(--white);
+  outline:none;transition:border-color .2s;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:rgba(201,162,39,.5)}
+.form-group textarea{resize:vertical;min-height:120px;line-height:1.7}
+.form-group select option{background:var(--surface)}
+.form-check{display:flex;align-items:flex-start;gap:12px}
+.form-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;margin-top:3px;cursor:pointer}
+.form-check label{font-size:.78rem;color:var(--muted);line-height:1.6;font-weight:300}
+.form-check a{color:var(--gold)}
+.btn-submit{
+  padding:16px 32px;background:var(--gold);color:var(--bg);
+  border:none;border-radius:2px;
+  font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;transition:all .25s;align-self:flex-start;
+}
+.btn-submit:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 12px 28px rgba(201,162,39,.3)}
+#form-success{display:none;padding:20px;background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.3);border-radius:2px;color:var(--gold);font-size:.85rem;text-align:center;font-weight:500}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--bg2);border-top:1px solid var(--line);
+  padding:48px 56px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;
+}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;letter-spacing:.08em;color:var(--white)}
+.footer-logo span{color:var(--gold)}
+.footer-copy{font-size:.7rem;color:var(--muted);font-weight:300}
+.footer-legal{display:flex;gap:24px}
+.footer-legal a{font-size:.7rem;color:var(--muted);transition:color .2s;letter-spacing:.08em;text-transform:uppercase}
+.footer-legal a:hover{color:var(--gold)}
+
+/* ─── LEGAL ─── */
+.legal-section{background:var(--bg);padding:64px 56px;border-top:1px solid var(--line)}
+.legal-inner{max-width:760px;margin:0 auto}
+.legal-h{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--white);margin-bottom:14px;margin-top:40px}
+.legal-h:first-child{margin-top:0}
+.legal-p{color:var(--muted);font-size:.8rem;line-height:1.9;margin-bottom:12px;font-weight:300}
+.legal-p a{color:var(--gold)}
+
+/* ─── MOBILE STICKY ─── */
+.sticky-bar{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:600;
+  background:var(--surface2);border-top:1px solid var(--line);
+  padding:12px 20px;gap:10px;align-items:center;
+  box-shadow:0 -8px 32px rgba(0,0,0,.4);
+}
+.sticky-bar-left{flex:1;min-width:0}
+.sticky-bar-title{font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:.06em}
+.sticky-bar-sub{font-size:.6rem;color:var(--muted);margin-top:1px}
+.sticky-bar a{display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:2px;font-size:.72rem;font-weight:600;white-space:nowrap;flex-shrink:0;letter-spacing:.06em;text-transform:uppercase}
+.sticky-bar .s-call{border:1px solid rgba(201,162,39,.4);color:var(--gold)}
+.sticky-bar .s-wa{background:#25D366;color:#fff}
+@media(max-width:768px){.sticky-bar{display:flex}}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:960px){
+  nav{padding:0 24px;height:64px}
+  .nav-links,.nav-cta{display:none}
+  .nav-ham{display:flex}
+  section{padding:72px 24px}
+  .hero{padding:100px 24px 60px}
+  .hero-stats{gap:28px}
+  .hero-scroll-hint{left:24px}
+  .stats-strip{grid-template-columns:repeat(2,1fr);padding:32px 24px;gap:0}
+  .stat-item{padding:20px 16px;border-bottom:1px solid var(--line)}
+  .stat-item:nth-child(2){border-right:none}
+  .stat-item:nth-child(3){border-bottom:none}
+  .stat-item:nth-child(4){border-right:none;border-bottom:none}
+  .leistungen-grid{grid-template-columns:1fr 1fr}
+  .objekte-grid{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr}
+  .about-img-side{min-height:320px}
+  .about-img-overlay{background:linear-gradient(to bottom,transparent 60%,var(--bg2) 100%)}
+  .about-text-side{padding:48px 24px}
+  .warum-grid{grid-template-columns:1fr}
+  .ref-grid{grid-template-columns:1fr}
+  .cta-banner-section{padding:64px 24px}
+  .kontakt-section{padding:72px 24px}
+  .kontakt-inner{grid-template-columns:1fr;gap:48px}
+  .form-row{grid-template-columns:1fr}
+  footer{padding:36px 24px;flex-direction:column;text-align:center}
+  .legal-section{padding:48px 24px}
+}
+@media(max-width:600px){
+  .hero-btns{flex-direction:column}
+  .hero-stats{flex-direction:column;gap:20px}
+  .hero-stat-divider{display:none}
+  .leistungen-grid{grid-template-columns:1fr}
+  .stats-strip{grid-template-columns:1fr}
+  .stat-item{border-right:none!important}
+  .cta-banner-btns{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-logo-name">SCHIWIG <span>Immobilien</span></span>
+    <span class="nav-logo-sub">Zwickau & Umgebung</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#leistungen">Leistungen</a></li>
+    <li><a href="#objekte">Objekte</a></li>
+    <li><a href="#lukas">Über uns</a></li>
+    <li><a href="#referenzen">Referenzen</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <a href="#bewertung" class="nav-cta">Kostenlose Bewertung</a>
+  <div class="nav-ham" onclick="document.getElementById('nm').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="nav-mobile" id="nm">
+  <a href="#leistungen" onclick="document.getElementById('nm').classList.remove('open')">Leistungen</a>
+  <a href="#objekte" onclick="document.getElementById('nm').classList.remove('open')">Objekte</a>
+  <a href="#lukas" onclick="document.getElementById('nm').classList.remove('open')">Über uns</a>
+  <a href="#referenzen" onclick="document.getElementById('nm').classList.remove('open')">Referenzen</a>
+  <a href="#kontakt" onclick="document.getElementById('nm').classList.remove('open')">Kontakt</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow reveal">Ihr Immobilienmakler in Zwickau</div>
+    <h1 class="hero-h1 reveal delay-1">
+      Ihre Immobilie.<br>
+      <em>Ihr bester Preis.</em>
+    </h1>
+    <p class="hero-sub reveal delay-2">Persönlich. Digital. Lokal. — Lukas Schiwig vermittelt Immobilien in Zwickau und Umgebung mit Leidenschaft, Marktkenntnis und dem Anspruch, für jeden Kunden das bestmögliche Ergebnis zu erzielen.</p>
+    <div class="hero-btns reveal delay-3">
+      <a href="#bewertung" class="btn-primary">Kostenlose Bewertung →</a>
+      <a href="#objekte" class="btn-secondary">Aktuelle Objekte</a>
+    </div>
+    <div class="hero-stats reveal delay-4">
+      <div>
+        <span class="hero-stat-num" data-target="127">0</span>
+        <span class="hero-stat-label">Vermittelte Objekte</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div>
+        <span class="hero-stat-num" data-target="98">0</span>
+        <span class="hero-stat-label">% Kundenzufriedenheit</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div>
+        <span class="hero-stat-num" data-target="5">0</span>
+        <span class="hero-stat-label">Jahre Erfahrung</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span class="hero-scroll-line"></span>
+    <span>Entdecken</span>
+  </div>
+</div>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat-item reveal">
+    <span class="stat-num" data-target="127">127+</span>
+    <span class="stat-label">Erfolgreich vermittelt</span>
+  </div>
+  <div class="stat-item reveal delay-1">
+    <span class="stat-num" data-target="98">98 %</span>
+    <span class="stat-label">Zufriedene Kunden</span>
+  </div>
+  <div class="stat-item reveal delay-2">
+    <span class="stat-num">Ø 47</span>
+    <span class="stat-label">Tage bis Verkauf</span>
+  </div>
+  <div class="stat-item reveal delay-3">
+    <span class="stat-num">0 €</span>
+    <span class="stat-label">Kosten für Bewertung</span>
+  </div>
+</div>
+
+<!-- LEISTUNGEN -->
+<section class="leistungen-section" id="leistungen">
+  <div class="section-eyebrow reveal">Leistungen</div>
+  <h2 class="section-h reveal delay-1">Was ich für Sie tue —<br><em>von A bis Z</em></h2>
+  <p class="section-sub reveal delay-2">Ob Kauf, Verkauf oder Vermietung — ich begleite Sie persönlich durch jeden Schritt und sorge für ein reibungsloses, stressfreies Ergebnis.</p>
+  <div class="leistungen-grid">
+    <div class="leistung-card reveal">
+      <span class="leistung-num">01</span>
+      <span class="leistung-icon">🏡</span>
+      <div class="leistung-name">Immobilien verkaufen</div>
+      <p class="leistung-desc">Professionelle Wertermittlung, erstklassige Vermarktung und Verhandlungsführung — damit Sie den bestmöglichen Preis erzielen. Ohne Aufwand für Sie.</p>
+      <span class="leistung-link">Mehr erfahren →</span>
+    </div>
+    <div class="leistung-card reveal delay-1">
+      <span class="leistung-num">02</span>
+      <span class="leistung-icon">🔑</span>
+      <div class="leistung-name">Immobilien kaufen</div>
+      <p class="leistung-desc">Ich kenne den Zwickauer Markt in- und auswendig. Ich finde für Sie genau das, was zu Ihren Wünschen, Ihrer Situation und Ihrem Budget passt.</p>
+      <span class="leistung-link">Mehr erfahren →</span>
+    </div>
+    <div class="leistung-card reveal delay-2">
+      <span class="leistung-num">03</span>
+      <span class="leistung-icon">📋</span>
+      <div class="leistung-name">Vermietung</div>
+      <p class="leistung-desc">Von der Inseraterstellung über die Mieterauswahl bis zur Schlüsselübergabe — ich vermiete Ihre Immobilie schnell, sicher und an zuverlässige Mieter.</p>
+      <span class="leistung-link">Mehr erfahren →</span>
+    </div>
+    <div class="leistung-card reveal delay-3" id="bewertung">
+      <span class="leistung-num">04</span>
+      <span class="leistung-icon">📊</span>
+      <div class="leistung-name">Kostenlose Bewertung</div>
+      <p class="leistung-desc">Was ist Ihre Immobilie wirklich wert? Ich erstelle Ihnen eine fundierte Marktanalyse — kostenlos, unverbindlich und auf Basis aktueller Vergleichsdaten.</p>
+      <span class="leistung-link">Jetzt anfragen →</span>
+    </div>
+  </div>
+</section>
+
+<!-- OBJEKTE -->
+<section class="objekte-section" id="objekte">
+  <div class="objekte-inner">
+    <div class="objekte-header">
+      <div>
+        <div class="section-eyebrow reveal">Aktuelle Objekte</div>
+        <h2 class="section-h reveal delay-1">Ausgewählte<br><em>Immobilien</em></h2>
+      </div>
+      <a href="#kontakt" class="btn-secondary reveal delay-2">Alle Objekte anfragen →</a>
+    </div>
+    <div class="objekte-grid">
+
+      <div class="objekt-card reveal">
+        <div class="objekt-img">
+          <img src="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Einfamilienhaus Zwickau" loading="lazy">
+          <span class="objekt-badge">Neu</span>
+          <span class="objekt-badge-type">Verkauf</span>
+        </div>
+        <div class="objekt-body">
+          <div class="objekt-price">289.000 €</div>
+          <div class="objekt-title">Freistehendes Einfamilienhaus mit Garten</div>
+          <div class="objekt-meta">
+            <span class="objekt-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              142 m²
+            </span>
+            <span class="objekt-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M2 4v16h20V4H2zm18 14H4V6h16v12z"/><path d="M6 10h4v4H6z"/></svg>
+              5 Zimmer
+            </span>
+            <span class="objekt-meta-item">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              560 m² Grundstück
+            </span>
+          </div>
+        </div>
+        <div class="objekt-footer">
+          <span class="objekt-location">
+            <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Zwickau-Eckersbach
+          </span>
+          <a href="#kontakt" class="objekt-cta">Anfragen →</a>
+        </div>
+      </div>
+
+      <div class="objekt-card reveal delay-1">
+        <div class="objekt-img">
+          <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Eigentumswohnung Zwickau" loading="lazy">
+          <span class="objekt-badge-type">Verkauf</span>
+        </div>
+        <div class="objekt-body">
+          <div class="objekt-price">149.500 €</div>
+          <div class="objekt-title">Modernisierte Eigentumswohnung im Zentrum</div>
+          <div class="objekt-meta">
+            <span class="objekt-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              78 m²
+            </span>
+            <span class="objekt-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M2 4v16h20V4H2zm18 14H4V6h16v12z"/><path d="M6 10h4v4H6z"/></svg>
+              3 Zimmer
+            </span>
+            <span class="objekt-meta-item">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              2. OG · Aufzug
+            </span>
+          </div>
+        </div>
+        <div class="objekt-footer">
+          <span class="objekt-location">
+            <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Zwickau-Innenstadt
+          </span>
+          <a href="#kontakt" class="objekt-cta">Anfragen →</a>
+        </div>
+      </div>
+
+      <div class="objekt-card reveal delay-2">
+        <div class="objekt-img">
+          <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mehrfamilienhaus Zwickau" loading="lazy">
+          <span class="objekt-badge">Kapitalanlage</span>
+          <span class="objekt-badge-type">Verkauf</span>
+        </div>
+        <div class="objekt-body">
+          <div class="objekt-price">385.000 €</div>
+          <div class="objekt-title">Vollvermietetes Mehrfamilienhaus</div>
+          <div class="objekt-meta">
+            <span class="objekt-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              320 m²
+            </span>
+            <span class="objekt-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M2 4v16h20V4H2zm18 14H4V6h16v12z"/><path d="M6 10h4v4H6z"/></svg>
+              6 Einheiten
+            </span>
+            <span class="objekt-meta-item">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              6,8 % Rendite
+            </span>
+          </div>
+        </div>
+        <div class="objekt-footer">
+          <span class="objekt-location">
+            <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Zwickau-Neuplanitz
+          </span>
+          <a href="#kontakt" class="objekt-cta">Anfragen →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ÜBER LUKAS -->
+<section class="about-section" id="lukas">
+  <div class="about-grid">
+    <div class="about-img-side">
+      <img src="https://images.pexels.com/photos/3760514/pexels-photo-3760514.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Lukas Schiwig – SCHIWIG Immobilien" loading="lazy">
+      <div class="about-img-overlay"></div>
+    </div>
+    <div class="about-text-side">
+      <div class="section-eyebrow reveal">Über mich</div>
+      <h2 class="section-h reveal delay-1">Lukas Schiwig —<br><em>Ihr Makler vor Ort</em></h2>
+      <blockquote class="about-quote reveal delay-2">
+        "Immobilien sind keine Zahlen — sie sind Lebensräume. Mein Job ist es, den richtigen Menschen zur richtigen Immobilie zu bringen."
+      </blockquote>
+      <p class="about-text reveal delay-3">Ich bin in Zwickau aufgewachsen, kenne die Region wie meine Westentasche und lebe für meinen Job. Als junger, digital aufgestellter Makler verbinde ich moderne Vermarktungsstrategien mit echter Ortskenntnis und persönlichem Engagement.</p>
+      <p class="about-text reveal delay-3">Ob erstes Eigenheim, Kapitalanlage oder der Verkauf nach Jahrzehnten — ich nehme mir die Zeit, die jeder Kunde verdient. Erreichbar. Verlässlich. Ehrlich.</p>
+      <div class="about-tags reveal delay-4">
+        <span class="about-tag gold">Zwickau & Umgebung</span>
+        <span class="about-tag">Digital & Modern</span>
+        <span class="about-tag">Persönlich erreichbar</span>
+        <span class="about-tag">Marktkenntnis</span>
+        <span class="about-tag">Seit 2020 aktiv</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WARUM SCHIWIG -->
+<section class="warum-section">
+  <div class="warum-inner">
+    <div class="section-eyebrow reveal">Warum SCHIWIG</div>
+    <h2 class="section-h reveal delay-1">6 Gründe, die<br><em>den Unterschied machen</em></h2>
+    <div class="warum-grid">
+      <div class="warum-item reveal">
+        <div class="warum-icon">📍</div>
+        <div class="warum-title">Lokale Expertise</div>
+        <p class="warum-text">Ich kenne Zwickau und die umliegenden Gemeinden — jeden Stadtteil, jeden Preistrend, jeden Hotspot. Das ist kein Wissen aus dem Internet, sondern gelebte Erfahrung.</p>
+      </div>
+      <div class="warum-item reveal delay-1">
+        <div class="warum-icon">⚡</div>
+        <div class="warum-title">Schnelle Abwicklung</div>
+        <p class="warum-text">Durchschnittlich 47 Tage vom Auftrag bis zum Notartermin. Effizient, strukturiert und ohne unnötige Wartezeiten — denn Ihre Zeit ist wertvoll.</p>
+      </div>
+      <div class="warum-item reveal delay-2">
+        <div class="warum-icon">📱</div>
+        <div class="warum-title">Digital & Modern</div>
+        <p class="warum-text">Professionelle Exposés, 3D-Rundgänge, gezielte Social-Media-Vermarktung — Ihre Immobilie wird dort präsentiert, wo Käufer heute wirklich suchen.</p>
+      </div>
+      <div class="warum-item reveal">
+        <div class="warum-icon">🤝</div>
+        <div class="warum-title">Persönliche Betreuung</div>
+        <p class="warum-text">Sie haben einen Ansprechpartner — nicht ein Call-Center. Ich bin persönlich erreichbar, antworte schnell und begleite Sie durch jeden Schritt.</p>
+      </div>
+      <div class="warum-item reveal delay-1">
+        <div class="warum-icon">📊</div>
+        <div class="warum-title">Kostenlose Bewertung</div>
+        <p class="warum-text">Keine versteckten Kosten, kein Druck. Ich erstelle Ihnen eine ehrliche Marktanalyse — damit Sie wissen, was Ihre Immobilie wirklich wert ist.</p>
+      </div>
+      <div class="warum-item reveal delay-2">
+        <div class="warum-icon">🏆</div>
+        <div class="warum-title">Nachgewiesene Ergebnisse</div>
+        <p class="warum-text">Über 127 erfolgreich vermittelte Objekte, 98 % Kundenzufriedenheit. Meine Arbeit spricht für sich — und meine Kunden sprechen für mich.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERENZEN -->
+<section class="ref-section" id="referenzen">
+  <div class="ref-inner">
+    <div class="section-eyebrow reveal" style="justify-content:center;text-align:center">Kundenstimmen</div>
+    <h2 class="section-h reveal delay-1" style="text-align:center">Was meine Kunden<br><em>über mich sagen</em></h2>
+    <div class="ref-grid">
+      <div class="ref-card reveal">
+        <span class="ref-quote">"</span>
+        <div class="ref-stars">★★★★★</div>
+        <p class="ref-text">Lukas hat unser Haus in nur 5 Wochen verkauft — zum vollen Preis. Von der ersten Besichtigung bis zum Notartermin war alles reibungslos. Absolut professionell und immer erreichbar.</p>
+        <div class="ref-author">Familie Hoffmann</div>
+        <div class="ref-detail">Hausverkauf · Zwickau-Marienthal</div>
+      </div>
+      <div class="ref-card reveal delay-1">
+        <span class="ref-quote">"</span>
+        <div class="ref-stars">★★★★★</div>
+        <p class="ref-text">Als Erstkäufer hatte ich unzählige Fragen und Unsicherheiten. Lukas hat sich jede Menge Zeit genommen, alles erklärt und genau die Wohnung gefunden, die wir uns vorgestellt hatten. Sehr empfehlenswert!</p>
+        <div class="ref-author">Thomas K.</div>
+        <div class="ref-detail">Wohnungskauf · Zwickau-Innenstadt</div>
+      </div>
+      <div class="ref-card reveal delay-2">
+        <span class="ref-quote">"</span>
+        <div class="ref-stars">★★★★★</div>
+        <p class="ref-text">Die Bewertung meiner Immobilie war kostenlos, ehrlich und fundiert. Lukas hat keine falschen Versprechen gemacht — und am Ende mehr rausgeholt als ich erwartet hatte. Top Makler!</p>
+        <div class="ref-author">Sabine M.</div>
+        <div class="ref-detail">Wohnungsverkauf · Zwickau-Planitz</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner-section">
+  <div class="cta-banner-eyebrow reveal">Kostenlos & unverbindlich</div>
+  <h2 class="cta-banner-h reveal delay-1">Was ist Ihre Immobilie<br><em>wirklich wert?</em></h2>
+  <p class="cta-banner-sub reveal delay-2">Erfahren Sie den aktuellen Marktwert Ihrer Immobilie — in einem persönlichen Gespräch, kostenfrei und ohne Verpflichtungen.</p>
+  <div class="cta-banner-btns reveal delay-3">
+    <a href="#kontakt" class="btn-primary">Jetzt bewerten lassen →</a>
+    <a href="tel:+49XXXXXXXXXX" class="btn-secondary">📞 Direkt anrufen</a>
+  </div>
+</div>
+
+<!-- KONTAKT -->
+<section class="kontakt-section" id="kontakt">
+  <div class="kontakt-inner">
+    <div>
+      <div class="section-eyebrow reveal">Kontakt</div>
+      <h2 class="section-h reveal delay-1">Sprechen wir<br><em>miteinander</em></h2>
+      <p class="section-sub reveal delay-2" style="margin-bottom:0">Egal ob Verkauf, Kauf, Vermietung oder einfach eine Frage — melden Sie sich. Ich antworte persönlich und schnell.</p>
+      <div class="kontakt-details">
+        <div class="kontakt-item reveal">
+          <div class="kontakt-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.85a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="kontakt-item-label">Telefon</div>
+            <div class="kontakt-item-val"><a href="tel:+49XXXXXXXXXX">+49 XXX XXX XXXX</a></div>
+          </div>
+        </div>
+        <div class="kontakt-item reveal delay-1">
+          <div class="kontakt-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="kontakt-item-label">E-Mail</div>
+            <div class="kontakt-item-val"><a href="mailto:info@schiwig-immobilien.de">info@schiwig-immobilien.de</a></div>
+          </div>
+        </div>
+        <div class="kontakt-item reveal delay-2">
+          <div class="kontakt-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="kontakt-item-label">Standort</div>
+            <div class="kontakt-item-val">Comeniusweg 23<br>08056 Zwickau</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form action="https://formspree.io/f/mlgpooqw" method="POST" id="kontakt-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Ihr Name *</label>
+          <input type="text" id="name" name="name" placeholder="Max Mustermann" required>
+        </div>
+        <div class="form-group">
+          <label for="telefon">Telefon</label>
+          <input type="tel" id="telefon" name="telefon" placeholder="0371 / ...">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">E-Mail *</label>
+        <input type="email" id="email" name="email" placeholder="ihre@email.de" required>
+      </div>
+      <div class="form-group">
+        <label for="anliegen">Ihr Anliegen</label>
+        <select id="anliegen" name="anliegen">
+          <option value="">— Bitte wählen —</option>
+          <option>Immobilie verkaufen</option>
+          <option>Immobilie kaufen</option>
+          <option>Immobilie vermieten</option>
+          <option>Kostenlose Bewertung</option>
+          <option>Sonstiges</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="nachricht">Nachricht *</label>
+        <textarea id="nachricht" name="nachricht" placeholder="Was kann ich für Sie tun? Beschreiben Sie kurz Ihre Situation..." required></textarea>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" id="dsgvo" name="dsgvo" required>
+        <label for="dsgvo">Ich stimme der Verarbeitung meiner Daten gemäß der <a href="#datenschutz">Datenschutzerklärung</a> zu. *</label>
+      </div>
+      <button type="submit" class="btn-submit">Nachricht senden →</button>
+      <div id="form-success">Vielen Dank! Ich melde mich persönlich bei Ihnen. — Lukas</div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">SCHIWIG <span>Immobilien</span></div>
+    <div class="footer-copy" style="margin-top:6px">© 2025 Lukas Schiwig · Comeniusweg 23, 08056 Zwickau</div>
+  </div>
+  <div class="footer-legal">
+    <a href="#impressum">Impressum</a>
+    <a href="#datenschutz">Datenschutz</a>
+  </div>
+</footer>
+
+<!-- LEGAL -->
+<section class="legal-section" id="impressum">
+  <div class="legal-inner">
+    <h2 class="legal-h">Impressum</h2>
+    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Angaben gemäß § 5 TMG</strong><br>
+    Lukas Schiwig<br>Comeniusweg 23<br>08056 Zwickau<br>Deutschland</p>
+    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Kontakt</strong><br>
+    Telefon: <a href="tel:+49XXXXXXXXXX">+49 XXX XXX XXXX</a><br>
+    E-Mail: <a href="mailto:info@schiwig-immobilien.de">info@schiwig-immobilien.de</a></p>
+    <p class="legal-p">Umsatzsteuer: Gemäß § 19 UStG wird keine Umsatzsteuer ausgewiesen.</p>
+
+    <h2 class="legal-h" id="datenschutz">Datenschutzerklärung</h2>
+    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Verantwortlicher</strong><br>
+    Lukas Schiwig, Comeniusweg 23, 08056 Zwickau · info@schiwig-immobilien.de</p>
+    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Erhobene Daten</strong><br>
+    Über das Kontaktformular werden Name, E-Mail und Nachricht zur Bearbeitung Ihrer Anfrage erhoben. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.</p>
+    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Externe Dienste</strong><br>
+    Formspree Inc. (USA) · Google Fonts (Google LLC, USA) · Pexels (Canva Pty Ltd, Australien)</p>
+    <p class="legal-p">Beschwerderecht: Sächsischer Datenschutzbeauftragter, Devrientstraße 5, 01067 Dresden.</p>
+  </div>
+</section>
+
+</div><!-- /page-wrap -->
+
+<!-- MOBILE STICKY -->
+<div class="sticky-bar">
+  <div class="sticky-bar-left">
+    <div class="sticky-bar-title">SCHIWIG Immobilien</div>
+    <div class="sticky-bar-sub">Zwickau & Umgebung</div>
+  </div>
+  <a href="tel:+49XXXXXXXXXX" class="s-call">📞 Anrufen</a>
+  <a href="#kontakt" class="s-wa">Anfragen</a>
+</div>
+
+<script>
+// Reveal on scroll
+const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+// Animated counters
+function animateCounter(el){
+  const target = parseInt(el.dataset.target);
+  if(!target) return;
+  let start = 0;
+  const duration = 1800;
+  const step = timestamp => {
+    if(!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(ease * target) + (el.dataset.suffix || '');
+    if(progress < 1) requestAnimationFrame(step);
+    else el.textContent = target + (el.dataset.suffix || '');
+  };
+  requestAnimationFrame(step);
+}
+const counterObs = new IntersectionObserver(e=>e.forEach(x=>{
+  if(x.isIntersecting){
+    animateCounter(x.target);
+    counterObs.unobserve(x.target);
+  }
+}),{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>counterObs.observe(el));
+
+// Form
+const form = document.getElementById('kontakt-form');
+const success = document.getElementById('form-success');
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+  const btn = form.querySelector('.btn-submit');
+  btn.textContent = 'Wird gesendet…';btn.disabled=true;
+  try{
+    const res = await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+    if(res.ok){form.style.display='none';success.style.display='block';}
+    else{btn.textContent='Fehler — erneut versuchen';btn.disabled=false;}
+  }catch{btn.textContent='Fehler — erneut versuchen';btn.disabled=false;}
+});
+</script>
+</body>
+</html>
