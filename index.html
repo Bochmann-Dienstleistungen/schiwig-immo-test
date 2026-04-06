@@ -3,967 +3,1347 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0d0d0d">
-<title>SCHIWIG Immobilien – Ihr Makler in Zwickau & Umgebung</title>
-<meta name="description" content="Professionelle Immobilienvermittlung in Zwickau. Kostenlose Bewertung, schnelle Abwicklung, persönliche Betreuung. Lukas Schiwig – Ihr Ansprechpartner vor Ort.">
+<title>SCHIWIG Immobilien – Lukas Schiwig · Zwickau</title>
+<meta name="description" content="Ihr persönlicher Immobilienmakler in Zwickau. Kostenlose Bewertung, schnelle Abwicklung, digitale Vermarktung. Lukas Schiwig – 4,6★ · 37 Bewertungen.">
+<meta property="og:title" content="SCHIWIG Immobilien – Lukas Schiwig">
+<meta property="og:description" content="Immobilienmakler in Zwickau. Modern. Schnell. Persönlich.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
+/* ── ROOT ─────────────────────────────────── */
 :root{
-  --bg:#0d0d0d;
-  --bg2:#111111;
-  --surface:#1a1a1a;
-  --surface2:#222222;
-  --gold:#c9a227;
-  --gold2:#e8c55a;
-  --gold-dim:rgba(201,162,39,.15);
-  --white:#ffffff;
-  --off:#f5f0e8;
-  --muted:rgba(255,255,255,.45);
-  --faint:rgba(255,255,255,.07);
-  --line:rgba(255,255,255,.08);
-  --r:10px;
+  --bg:#050810;--bg2:#080c18;--bg3:#0d1120;
+  --glass:rgba(255,255,255,.04);
+  --glass-b:rgba(255,255,255,.09);--glass-top:rgba(255,255,255,.18);
+  --gold:#c9a227;--gold2:#e8c55a;--gold3:#f5d876;
+  --gold-glow:rgba(201,162,39,.22);
+  --white:#ffffff;--muted:rgba(255,255,255,.45);--faint:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.07);--r:18px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;line-height:1.6}
-.page-wrap{overflow-x:hidden}
+html{scroll-behavior:auto}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;line-height:1.6;cursor:none;overflow-x:hidden}
+.page-wrap{overflow-x:hidden;position:relative}
 a{color:inherit;text-decoration:none}
-img{display:block;max-width:100%}
+img{display:block;max-width:100%;height:auto}
+section{position:relative}
 
-/* ─── NAV ─── */
+/* ── LOADER ───────────────────────────────── */
+#loader{
+  position:fixed;inset:0;z-index:9999;background:#050810;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
+}
+.loader-logo{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,6vw,4rem);
+  font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--white);
+  overflow:hidden;
+}
+.loader-logo span{color:var(--gold)}
+.loader-sub{
+  font-size:.58rem;letter-spacing:.55em;text-transform:uppercase;
+  color:rgba(201,162,39,.6);font-weight:500;margin-top:-12px;
+}
+.loader-track{
+  width:220px;height:1px;background:rgba(201,162,39,.15);position:relative;overflow:hidden;margin-top:8px;
+}
+#loader-fill{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.loader-pct{
+  font-size:.6rem;letter-spacing:.2em;color:rgba(255,255,255,.3);margin-top:4px;
+}
+
+/* ── SCROLL PROGRESS ─────────────────────── */
+#progress{
+  position:fixed;top:0;left:0;right:0;height:2px;z-index:2000;
+  background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));
+  transform-origin:left;transform:scaleX(0);
+}
+
+/* ── CUSTOM CURSOR ───────────────────────── */
+.cur-ring{
+  position:fixed;top:0;left:0;width:38px;height:38px;border-radius:50%;
+  border:1.5px solid rgba(201,162,39,.5);pointer-events:none;z-index:9998;
+  will-change:transform;
+}
+.cur-dot{
+  position:fixed;top:0;left:0;width:5px;height:5px;border-radius:50%;
+  background:var(--gold);pointer-events:none;z-index:9999;will-change:transform;
+}
+@media(max-width:768px){.cur-ring,.cur-dot{display:none}body{cursor:auto}}
+
+/* ── LIQUID GLASS ─────────────────────────── */
+.glass{
+  background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,rgba(255,255,255,.02) 100%);
+  backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);
+  border:1px solid var(--glass-b);border-top:1px solid var(--glass-top);
+  box-shadow:0 24px 48px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.14);
+}
+.glass-dark{
+  background:linear-gradient(135deg,rgba(5,8,16,.72) 0%,rgba(5,8,16,.5) 100%);
+  backdrop-filter:blur(32px) saturate(130%);-webkit-backdrop-filter:blur(32px) saturate(130%);
+  border:1px solid var(--glass-b);border-top:1px solid rgba(255,255,255,.1);
+  box-shadow:0 32px 64px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+/* ── ORBS ──────────────────────────────────── */
+.orbs{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(90px)}
+.orb-gold{width:700px;height:700px;background:radial-gradient(circle,rgba(201,162,39,.14),transparent 65%)}
+.orb-blue{width:500px;height:500px;background:radial-gradient(circle,rgba(30,60,200,.14),transparent 65%)}
+.orb-rose{width:380px;height:380px;background:radial-gradient(circle,rgba(180,60,120,.08),transparent 65%)}
+@keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.08)}66%{transform:translate(-30px,50px) scale(.95)}}
+@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-50px,60px) scale(1.06)}66%{transform:translate(40px,-30px) scale(.97)}}
+@keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,40px) scale(1.1)}}
+.o1{top:-15%;right:-10%;animation:drift1 14s ease-in-out infinite}
+.o2{bottom:-10%;left:-8%;animation:drift2 10s ease-in-out infinite}
+.o3{top:35%;left:35%;animation:drift3 12s ease-in-out infinite}
+
+/* ── NAV ──────────────────────────────────── */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;
+  width:calc(100% - 48px);max-width:1200px;
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 56px;height:72px;
-  background:rgba(13,13,13,.9);backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--line);
-  transition:background .3s;
+  padding:0 28px;height:62px;border-radius:var(--r);will-change:transform;
 }
 .nav-logo{display:flex;flex-direction:column;gap:1px;line-height:1}
-.nav-logo-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;letter-spacing:.08em;color:var(--white)}
+.nav-logo-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;letter-spacing:.1em;color:var(--white)}
 .nav-logo-name span{color:var(--gold)}
-.nav-logo-sub{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);font-weight:500}
-.nav-links{display:flex;gap:32px;list-style:none}
-.nav-links a{font-size:.78rem;font-weight:500;letter-spacing:.06em;color:var(--muted);transition:color .2s;text-transform:uppercase}
+.nav-logo-sub{font-size:.48rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:.68rem;font-weight:500;letter-spacing:.09em;color:var(--muted);transition:color .2s;text-transform:uppercase}
 .nav-links a:hover{color:var(--gold)}
 .nav-cta{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:11px 24px;border:1px solid var(--gold);
-  color:var(--gold);font-size:.75rem;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;
-  border-radius:2px;transition:all .25s;
+  padding:10px 22px;border:1px solid rgba(201,162,39,.5);border-radius:60px;
+  color:var(--gold);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  transition:all .25s;white-space:nowrap;
 }
 .nav-cta:hover{background:var(--gold);color:var(--bg)}
-.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
-.nav-ham span{display:block;width:24px;height:1px;background:var(--white);transition:all .3s}
-.nav-mobile{display:none;position:fixed;inset:0;z-index:490;background:var(--bg);padding:100px 40px 40px;flex-direction:column;gap:24px}
-.nav-mobile.open{display:flex}
-.nav-mobile a{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--white);border-bottom:1px solid var(--line);padding-bottom:16px}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none}
+.nav-ham span{display:block;width:22px;height:1.5px;background:var(--white);transition:.3s}
+.nav-mob{
+  display:none;position:fixed;inset:0;z-index:490;
+  background:rgba(5,8,16,.97);backdrop-filter:blur(32px);
+  padding:110px 40px 40px;flex-direction:column;gap:0;
+}
+.nav-mob.open{display:flex}
+.nav-mob a{
+  font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:400;
+  color:var(--white);border-bottom:1px solid var(--line);padding:20px 0;
+  transition:color .2s;display:block;
+}
+.nav-mob a:hover{color:var(--gold)}
 
-/* ─── REVEAL ─── */
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
-.reveal-left.visible{opacity:1;transform:translateX(0)}
-.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
-.reveal-right.visible{opacity:1;transform:translateX(0)}
-.delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.3s}.delay-4{transition-delay:.4s}.delay-5{transition-delay:.5s}
-
-/* ─── HERO ─── */
+/* ── HERO ─────────────────────────────────── */
 .hero{
   position:relative;min-height:100vh;display:flex;align-items:center;
-  padding:120px 56px 80px;overflow:hidden;
+  padding:140px 56px 80px;
+  background:linear-gradient(160deg,#050810 0%,#080c18 55%,#050810 100%);
+  overflow:hidden;
 }
-.hero-bg{
-  position:absolute;inset:0;
-  background-image:url('https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=1600');
-  background-size:cover;background-position:center 30%;
-}
-.hero-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(105deg,rgba(13,13,13,.92) 0%,rgba(13,13,13,.75) 50%,rgba(13,13,13,.45) 100%);
-}
-.hero-content{position:relative;z-index:2;max-width:680px}
+.hero-content{position:relative;z-index:2;max-width:700px}
 .hero-eyebrow{
-  display:inline-flex;align-items:center;gap:12px;
-  font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--gold);font-weight:500;margin-bottom:28px;
+  display:inline-flex;align-items:center;gap:14px;margin-bottom:32px;
+  font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);font-weight:500;
+  opacity:0;
 }
-.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--gold)}
+.hero-eyebrow::before{content:'';width:30px;height:1px;background:var(--gold)}
 .hero-h1{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(3rem,6vw,5.2rem);
-  line-height:1.08;font-weight:600;
-  color:var(--white);margin-bottom:28px;
-  letter-spacing:-.01em;
+  font-size:clamp(3.4rem,7vw,6.4rem);line-height:1.03;font-weight:300;
+  letter-spacing:-.02em;margin-bottom:28px;color:var(--white);
 }
+.hero-h1 strong{font-weight:600}
 .hero-h1 em{font-style:italic;color:var(--gold)}
+/* SplitText wrappers */
+.hero-h1 .char-wrap{overflow:hidden;display:inline-block;vertical-align:bottom}
+.hero-h1 .char{display:inline-block;will-change:transform}
 .hero-sub{
-  font-size:1rem;line-height:1.8;color:rgba(255,255,255,.65);
-  margin-bottom:48px;max-width:500px;font-weight:300;
+  font-size:1rem;line-height:1.9;color:var(--muted);
+  margin-bottom:52px;max-width:480px;font-weight:300;opacity:0;
 }
-.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:64px}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:10px;
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:72px;opacity:0}
+.btn-gold{
+  position:relative;display:inline-flex;align-items:center;gap:10px;
   padding:16px 32px;background:var(--gold);color:var(--bg);
-  font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  border-radius:2px;transition:all .25s;border:1px solid var(--gold);
+  font-size:.73rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  border-radius:60px;transition:box-shadow .3s,background .3s;border:1px solid var(--gold);overflow:hidden;
 }
-.btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,162,39,.3)}
-.btn-secondary{
+.btn-gold::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+  transform:translateX(-100%);transition:transform .55s;
+}
+.btn-gold:hover::before{transform:translateX(100%)}
+.btn-gold:hover{background:var(--gold2);box-shadow:0 0 48px rgba(201,162,39,.4)}
+.btn-outline{
   display:inline-flex;align-items:center;gap:10px;
-  padding:16px 32px;border:1px solid rgba(255,255,255,.25);
-  color:var(--white);font-size:.8rem;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;
-  border-radius:2px;transition:all .25s;
+  padding:16px 32px;border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.8);font-size:.73rem;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;border-radius:60px;transition:all .3s;
 }
-.btn-secondary:hover{border-color:var(--white);background:rgba(255,255,255,.05)}
-.hero-stats{display:flex;gap:48px;flex-wrap:wrap}
-.hero-stat-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.4rem;font-weight:600;color:var(--gold);
-  line-height:1;display:block;
-}
-.hero-stat-label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px;display:block}
-.hero-stat-divider{width:1px;background:rgba(255,255,255,.12);align-self:stretch}
-.hero-scroll-hint{
+.btn-outline:hover{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.05)}
+.hero-stats{display:flex;gap:0;opacity:0}
+.hero-stat{padding:0 36px 0 0;border-right:1px solid var(--line)}
+.hero-stat:first-child{padding-left:0}
+.hero-stat:last-child{border-right:none}
+.hstat-n{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:600;color:var(--gold);line-height:1;display:block}
+.hstat-l{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:6px;display:block;font-weight:400}
+.hero-visual{position:absolute;right:0;top:0;bottom:0;width:44%;z-index:1;overflow:hidden}
+.hero-img{width:100%;height:100%;object-fit:cover;object-position:center top;opacity:.35;filter:grayscale(15%);will-change:transform}
+.hero-visual-grad{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(5,8,16,.65) 40%,transparent 72%)}
+.hero-scroll{
   position:absolute;bottom:36px;left:56px;z-index:2;
-  display:flex;align-items:center;gap:12px;
-  font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:14px;
+  font-size:.57rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);opacity:0;
 }
-.hero-scroll-line{width:40px;height:1px;background:var(--muted)}
+.scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,var(--gold),transparent);animation:spulse 2.2s ease-in-out infinite}
+@keyframes spulse{0%,100%{opacity:.35}50%{opacity:1}}
 
-/* ─── STATS STRIP ─── */
-.stats-strip{
-  background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  padding:40px 56px;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+/* ── MARQUEE ──────────────────────────────── */
+.marquee-section{
+  padding:0;background:var(--bg2);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);overflow:hidden;
 }
-.stat-item{
-  text-align:center;padding:0 20px;
-  border-right:1px solid var(--line);
+.marquee-inner{display:flex;align-items:center;height:54px;white-space:nowrap;overflow:hidden}
+.marquee-track{
+  display:inline-flex;gap:48px;align-items:center;
+  font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;will-change:transform;
 }
-.stat-item:last-child{border-right:none}
-.stat-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.8rem;font-weight:600;color:var(--gold);
-  line-height:1;display:block;margin-bottom:8px;
-}
-.stat-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.marquee-track .dot{color:var(--gold);font-size:.5rem}
 
-/* ─── SECTION BASE ─── */
-section{padding:104px 56px}
+/* ── STATS STRIP ──────────────────────────── */
+.stats-strip{position:relative;padding:0 56px;background:var(--bg);border-bottom:1px solid var(--line);overflow:hidden}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);max-width:1200px;margin:0 auto}
+.stat-cell{
+  padding:52px 24px;text-align:center;border-right:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.stat-cell:last-child{border-right:none}
+.stat-cell::after{
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%) scaleX(0);
+  width:60%;height:1px;background:var(--gold);transition:transform .4s;
+}
+.stat-cell:hover::after{transform:translateX(-50%) scaleX(1)}
+.stat-n{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4vw,3.6rem);
+  font-weight:600;color:var(--gold);line-height:1;display:block;
+}
+.stat-suffix{font-size:1.6rem;vertical-align:super;margin-left:2px}
+.stat-l{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:10px;display:block;font-weight:400}
+
+/* ── LEISTUNGEN ───────────────────────────── */
+.leistungen{padding:120px 56px;background:var(--bg2)}
 .section-eyebrow{
-  font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--gold);font-weight:500;margin-bottom:16px;
-  display:flex;align-items:center;gap:12px;
+  display:inline-flex;align-items:center;gap:14px;
+  font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:20px;
 }
-.section-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold)}
-.section-h{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2rem,3.5vw,3rem);
-  font-weight:600;line-height:1.15;margin-bottom:16px;color:var(--white);
+.section-eyebrow::before{content:'';width:30px;height:1px;background:var(--gold)}
+.section-h2{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4.5vw,4rem);
+  font-weight:300;line-height:1.1;letter-spacing:-.01em;margin-bottom:16px;
 }
-.section-h em{font-style:italic;color:var(--gold)}
-.section-sub{color:var(--muted);font-size:.9rem;line-height:1.9;max-width:520px;margin-bottom:56px;font-weight:300}
-
-/* ─── LEISTUNGEN ─── */
-.leistungen-section{background:var(--bg2)}
-.leistungen-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);max-width:1200px;margin:0 auto}
-.leistung-card{
-  background:var(--bg2);padding:40px 32px;
-  transition:background .3s;cursor:default;
-  position:relative;overflow:hidden;
+.section-h2 em{font-style:italic;color:var(--gold)}
+.section-sub{font-size:.95rem;color:var(--muted);max-width:480px;line-height:1.9;margin-bottom:64px;font-weight:300}
+.leis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1200px;margin:0 auto}
+.leis-card{
+  padding:44px 32px;border-radius:var(--r);position:relative;overflow:hidden;
+  border:1px solid var(--line);background:var(--faint);
+  transition:border-color .3s,transform .3s;
 }
-.leistung-card::before{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--gold),var(--gold2));
-  transform:scaleX(0);transform-origin:left;transition:transform .4s;
-}
-.leistung-card:hover{background:var(--surface)}
-.leistung-card:hover::before{transform:scaleX(1)}
-.leistung-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:3.5rem;color:rgba(201,162,39,.12);
-  font-weight:700;line-height:1;margin-bottom:24px;display:block;
-}
-.leistung-icon{font-size:1.6rem;margin-bottom:16px;display:block}
-.leistung-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.35rem;font-weight:600;color:var(--white);
-  margin-bottom:12px;
-}
-.leistung-desc{color:var(--muted);font-size:.83rem;line-height:1.85;font-weight:300}
-.leistung-link{
-  display:inline-flex;align-items:center;gap:8px;margin-top:20px;
-  font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
-  color:var(--gold);font-weight:600;transition:gap .2s;
-}
-.leistung-card:hover .leistung-link{gap:12px}
-
-/* ─── OBJEKTE ─── */
-.objekte-section{background:var(--bg)}
-.objekte-inner{max-width:1200px;margin:0 auto}
-.objekte-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:20px}
-.objekte-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.objekt-card{
-  background:var(--surface);border-radius:var(--r);overflow:hidden;
-  transition:transform .3s,box-shadow .3s;
-  border:1px solid var(--line);
-}
-.objekt-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
-.objekt-img{
-  position:relative;height:240px;overflow:hidden;
-}
-.objekt-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.objekt-card:hover .objekt-img img{transform:scale(1.05)}
-.objekt-badge{
-  position:absolute;top:16px;left:16px;
-  background:var(--gold);color:var(--bg);
-  font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  padding:5px 12px;border-radius:2px;
-}
-.objekt-badge-type{
-  position:absolute;top:16px;right:16px;
-  background:rgba(13,13,13,.8);color:var(--white);
-  font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
-  padding:5px 12px;border-radius:2px;backdrop-filter:blur(8px);
-}
-.objekt-body{padding:24px 24px 28px}
-.objekt-price{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.6rem;font-weight:600;color:var(--gold);
-  margin-bottom:4px;
-}
-.objekt-title{font-size:.9rem;font-weight:500;color:var(--white);margin-bottom:16px}
-.objekt-meta{display:flex;gap:20px;flex-wrap:wrap}
-.objekt-meta-item{
-  display:flex;align-items:center;gap:6px;
-  font-size:.72rem;color:var(--muted);font-weight:400;
-}
-.objekt-meta-item svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:1.5;flex-shrink:0}
-.objekt-footer{
-  padding:16px 24px;border-top:1px solid var(--line);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.objekt-location{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:6px}
-.objekt-cta{font-size:.7rem;color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:opacity .2s}
-.objekt-cta:hover{opacity:.7}
-
-/* ─── ÜBER LUKAS ─── */
-.about-section{background:var(--bg2);padding:0}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;min-height:600px}
-.about-img-side{
-  position:relative;overflow:hidden;
-  background:var(--surface);min-height:500px;
-}
-.about-img-side img{width:100%;height:100%;object-fit:cover;object-position:center top}
-.about-img-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to right,transparent 60%,var(--bg2) 100%);
-}
-.about-text-side{
-  padding:88px 64px;display:flex;flex-direction:column;justify-content:center;
-}
-.about-quote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.5rem;font-style:italic;color:var(--white);
-  line-height:1.6;border-left:2px solid var(--gold);
-  padding-left:24px;margin-bottom:32px;
-}
-.about-text{color:var(--muted);font-size:.88rem;line-height:1.95;font-weight:300;margin-bottom:32px}
-.about-tags{display:flex;gap:10px;flex-wrap:wrap}
-.about-tag{
-  padding:8px 16px;border:1px solid var(--line);
-  font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted);border-radius:2px;font-weight:500;
-}
-.about-tag.gold{border-color:rgba(201,162,39,.4);color:var(--gold)}
-
-/* ─── WARUM ─── */
-.warum-section{background:var(--bg)}
-.warum-inner{max-width:1200px;margin:0 auto}
-.warum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);margin-top:64px}
-.warum-item{
-  background:var(--bg);padding:40px 36px;
-  transition:background .3s;
-}
-.warum-item:hover{background:var(--surface)}
-.warum-icon{
-  width:48px;height:48px;border:1px solid rgba(201,162,39,.3);
+.leis-card:hover{border-color:rgba(201,162,39,.3);transform:translateY(-6px)}
+.leis-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(201,162,39,.15),rgba(201,162,39,.05));
+  border:1px solid rgba(201,162,39,.2);
   display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;margin-bottom:20px;border-radius:2px;
+  font-size:1.4rem;margin-bottom:28px;
 }
-.warum-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--white);margin-bottom:10px}
-.warum-text{color:var(--muted);font-size:.82rem;line-height:1.85;font-weight:300}
+.leis-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;margin-bottom:12px}
+.leis-text{font-size:.85rem;color:var(--muted);line-height:1.85;font-weight:300}
+.leis-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  transform:scaleX(0);transition:transform .4s;
+}
+.leis-card:hover::after{transform:scaleX(1)}
 
-/* ─── REFERENZEN ─── */
-.ref-section{background:var(--bg2)}
-.ref-inner{max-width:1200px;margin:0 auto}
-.ref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin-top:64px}
-.ref-card{background:var(--bg2);padding:40px 36px}
-.ref-quote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.5rem;color:rgba(201,162,39,.3);
-  line-height:.8;margin-bottom:16px;display:block;
+/* ── OBJEKTE (horizontal scroll) ───────────── */
+.objekte-wrap{overflow:hidden;background:var(--bg)}
+.objekte-header{padding:120px 56px 60px;max-width:1200px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between}
+.objekte-header .section-sub{margin-bottom:0}
+.objekte-link{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;border-bottom:1px solid rgba(201,162,39,.3);padding-bottom:2px;white-space:nowrap}
+#listings-track{display:flex;gap:24px;padding:0 56px 100px;width:max-content}
+.listing-card{
+  flex-shrink:0;width:360px;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--line);background:var(--faint);
+  transition:border-color .3s;position:relative;
 }
-.ref-text{color:rgba(255,255,255,.7);font-size:.88rem;line-height:1.9;margin-bottom:24px;font-weight:300}
-.ref-stars{display:flex;gap:3px;margin-bottom:16px}
-.ref-star{color:var(--gold);font-size:.85rem}
-.ref-author{font-size:.82rem;font-weight:600;color:var(--white)}
-.ref-detail{font-size:.7rem;color:var(--muted);margin-top:3px}
+.listing-card:hover{border-color:rgba(201,162,39,.3)}
+.listing-img-wrap{position:relative;height:240px;overflow:hidden}
+.listing-img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.listing-card:hover .listing-img{transform:scale(1.06)}
+.listing-tag{
+  position:absolute;top:16px;left:16px;
+  background:rgba(5,8,16,.8);backdrop-filter:blur(12px);
+  border:1px solid var(--line);border-radius:60px;
+  font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--white);padding:6px 14px;font-weight:500;
+}
+.listing-tag.gold{background:rgba(201,162,39,.2);border-color:rgba(201,162,39,.4);color:var(--gold)}
+.listing-body{padding:28px 28px 24px}
+.listing-price{
+  font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;
+  color:var(--gold);line-height:1;margin-bottom:8px;
+}
+.listing-price small{font-size:.85rem;font-weight:300;color:var(--muted)}
+.listing-title{font-size:.95rem;font-weight:500;margin-bottom:6px}
+.listing-loc{font-size:.78rem;color:var(--muted);font-weight:300;margin-bottom:20px}
+.listing-meta{display:flex;gap:18px;border-top:1px solid var(--line);padding-top:18px}
+.lm{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px}
+.lm strong{color:var(--white);font-weight:500}
+.listing-placeholder{
+  flex-shrink:0;width:360px;border-radius:var(--r);overflow:hidden;
+  border:1px dashed rgba(201,162,39,.2);background:linear-gradient(135deg,rgba(201,162,39,.03),transparent);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:380px;gap:16px;padding:40px;
+}
+.listing-placeholder .ph-icon{font-size:2.4rem;opacity:.4}
+.listing-placeholder p{font-size:.82rem;color:var(--muted);text-align:center;line-height:1.7;font-weight:300}
+.listing-placeholder a{
+  margin-top:8px;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gold);border-bottom:1px solid rgba(201,162,39,.3);padding-bottom:2px;
+}
 
-/* ─── CTA BANNER ─── */
-.cta-banner-section{
-  background:linear-gradient(135deg,#1a1408,#0d0d0d);
-  border-top:1px solid rgba(201,162,39,.2);
-  border-bottom:1px solid rgba(201,162,39,.2);
-  padding:80px 56px;text-align:center;
+/* ── ÜBER LUKAS (pinned) ──────────────────── */
+.about{background:var(--bg2);overflow:hidden}
+.about-inner{display:flex;align-items:stretch;max-width:100%;min-height:100vh}
+.about-img-col{
+  position:sticky;top:0;width:45%;height:100vh;flex-shrink:0;overflow:hidden;
 }
-.cta-banner-eyebrow{
-  font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:20px;font-weight:500;
+.about-img-wrap{width:100%;height:100%;position:relative}
+.about-img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.about-img-cover{position:absolute;inset:0;background:var(--bg2);transform-origin:bottom}
+.about-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(8,12,24,.6))}
+.about-img-badge{
+  position:absolute;bottom:40px;left:40px;
+  padding:20px 28px;border-radius:16px;
 }
-.cta-banner-h{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2rem,4vw,3.4rem);font-weight:600;
-  color:var(--white);margin-bottom:16px;
+.about-badge-stars{color:var(--gold);font-size:1rem;letter-spacing:2px;margin-bottom:4px}
+.about-badge-text{font-size:.75rem;color:var(--white);font-weight:500}
+.about-badge-sub{font-size:.65rem;color:var(--muted);font-weight:300;margin-top:2px}
+.about-text-col{flex:1;padding:120px 80px 120px 72px;display:flex;flex-direction:column;justify-content:center;gap:80px}
+.about-panel{}
+.about-panel-num{
+  font-family:'Cormorant Garamond',serif;font-size:4.5rem;font-weight:300;
+  color:rgba(201,162,39,.12);line-height:1;margin-bottom:-16px;display:block;
 }
-.cta-banner-h em{font-style:italic;color:var(--gold)}
-.cta-banner-sub{color:var(--muted);font-size:.9rem;margin-bottom:40px;font-weight:300}
-.cta-banner-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.about-panel-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:500;margin-bottom:16px;line-height:1.15}
+.about-panel-title em{font-style:italic;color:var(--gold)}
+.about-panel-text{font-size:.92rem;color:var(--muted);line-height:2;font-weight:300;max-width:480px}
+.about-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.about-tag{
+  padding:8px 18px;border-radius:60px;border:1px solid var(--line);
+  font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;
+}
 
-/* ─── KONTAKT ─── */
-.kontakt-section{background:var(--bg);padding:104px 56px}
-.kontakt-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
-.kontakt-details{display:flex;flex-direction:column;gap:24px;margin-top:40px}
-.kontakt-item{display:flex;align-items:flex-start;gap:16px}
-.kontakt-item-icon{
-  width:40px;height:40px;border:1px solid rgba(201,162,39,.3);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:2px;
+/* ── WARUM ────────────────────────────────── */
+.warum{padding:120px 56px;background:var(--bg)}
+.warum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto}
+.warum-card{
+  padding:40px 36px;border-radius:var(--r);border:1px solid var(--line);
+  background:var(--faint);position:relative;overflow:hidden;
 }
-.kontakt-item-icon svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.kontakt-item-label{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-weight:500}
-.kontakt-item-val{color:var(--white);font-size:.9rem;font-weight:400}
-.kontakt-item-val a{color:var(--gold);transition:opacity .2s}
-.kontakt-item-val a:hover{opacity:.7}
-form{display:flex;flex-direction:column;gap:16px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-group{display:flex;flex-direction:column;gap:6px}
-.form-group label{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:500}
-.form-group input,.form-group textarea,.form-group select{
-  background:var(--surface);border:1px solid var(--line);
-  border-radius:2px;padding:14px 16px;
-  font-family:'Inter',sans-serif;font-size:.88rem;color:var(--white);
-  outline:none;transition:border-color .2s;
+.warum-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,162,39,.4),transparent);
+  transform:scaleX(0);transition:transform .5s;
 }
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:rgba(201,162,39,.5)}
-.form-group textarea{resize:vertical;min-height:120px;line-height:1.7}
-.form-group select option{background:var(--surface)}
-.form-check{display:flex;align-items:flex-start;gap:12px}
-.form-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;margin-top:3px;cursor:pointer}
-.form-check label{font-size:.78rem;color:var(--muted);line-height:1.6;font-weight:300}
-.form-check a{color:var(--gold)}
-.btn-submit{
-  padding:16px 32px;background:var(--gold);color:var(--bg);
-  border:none;border-radius:2px;
-  font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;
-  cursor:pointer;transition:all .25s;align-self:flex-start;
-}
-.btn-submit:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 12px 28px rgba(201,162,39,.3)}
-#form-success{display:none;padding:20px;background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.3);border-radius:2px;color:var(--gold);font-size:.85rem;text-align:center;font-weight:500}
+.warum-card:hover::before{transform:scaleX(1)}
+.wcard-num{font-family:'Cormorant Garamond',serif;font-size:3.6rem;font-weight:300;color:rgba(201,162,39,.1);line-height:1;margin-bottom:-8px}
+.wcard-title{font-size:1.05rem;font-weight:600;margin-bottom:12px;letter-spacing:.01em}
+.wcard-text{font-size:.83rem;color:var(--muted);line-height:1.85;font-weight:300}
 
-/* ─── FOOTER ─── */
+/* ── TESTIMONIALS ─────────────────────────── */
+.testi{padding:100px 0;background:var(--bg2);border-top:1px solid var(--line);overflow:hidden}
+.testi-header{padding:0 56px;margin-bottom:52px;max-width:1200px;margin-left:auto;margin-right:auto}
+.testi-track-wrap{overflow:hidden;white-space:nowrap}
+.testi-track{display:inline-flex;gap:24px;will-change:transform}
+.testi-card{
+  flex-shrink:0;width:380px;padding:36px 36px 32px;border-radius:var(--r);
+  border:1px solid var(--line);background:var(--faint);
+  white-space:normal;display:inline-block;vertical-align:top;
+}
+.testi-stars{color:var(--gold);font-size:.85rem;letter-spacing:3px;margin-bottom:16px}
+.testi-text{font-size:.88rem;color:var(--muted);line-height:1.9;font-weight:300;font-style:italic;margin-bottom:20px}
+.testi-author{font-size:.72rem;font-weight:600;letter-spacing:.08em;color:var(--white)}
+.testi-date{font-size:.65rem;color:var(--muted);margin-top:2px;font-weight:300}
+
+/* ── CTA SECTION ──────────────────────────── */
+.cta-section{
+  position:relative;padding:160px 56px;overflow:hidden;
+  background:linear-gradient(135deg,#080c18 0%,#0a0f1e 50%,#080c18 100%);
+  text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.cta-gold-line{
+  width:1px;height:80px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);
+  margin:0 auto 48px;
+}
+.cta-h2{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5.5vw,5rem);
+  font-weight:300;line-height:1.1;margin-bottom:28px;
+}
+.cta-h2 em{font-style:italic;color:var(--gold)}
+.cta-sub{font-size:1rem;color:var(--muted);max-width:520px;margin:0 auto 52px;line-height:1.9;font-weight:300}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ── KONTAKT ──────────────────────────────── */
+.kontakt{padding:120px 56px;background:var(--bg2)}
+.kontakt-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;max-width:1200px;margin:0 auto;align-items:start}
+.kontakt-info{}
+.kontakt-info .section-h2{margin-bottom:24px}
+.kontakt-info .section-sub{margin-bottom:40px}
+.kinfo-item{display:flex;align-items:flex-start;gap:18px;margin-bottom:28px}
+.kinfo-icon{
+  width:46px;height:46px;border-radius:12px;flex-shrink:0;
+  border:1px solid rgba(201,162,39,.2);background:rgba(201,162,39,.06);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.kinfo-label{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:3px}
+.kinfo-val{font-size:.95rem;font-weight:400}
+.kinfo-val a:hover{color:var(--gold)}
+.kontakt-form{}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px}
+.form-group input,
+.form-group textarea{
+  width:100%;padding:14px 18px;border-radius:12px;
+  border:1px solid var(--line);background:rgba(255,255,255,.04);
+  color:var(--white);font-family:'Inter',sans-serif;font-size:.9rem;
+  transition:border-color .25s,background .25s;outline:none;
+}
+.form-group input:focus,
+.form-group textarea:focus{border-color:rgba(201,162,39,.4);background:rgba(255,255,255,.06)}
+.form-group textarea{min-height:120px;resize:vertical}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-submit{
+  width:100%;padding:16px;border-radius:60px;
+  background:var(--gold);color:var(--bg);border:none;
+  font-family:'Inter',sans-serif;font-size:.73rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
+  transition:background .3s,box-shadow .3s;margin-top:8px;
+}
+.form-submit:hover{background:var(--gold2);box-shadow:0 0 48px rgba(201,162,39,.35)}
+.form-note{font-size:.68rem;color:var(--muted);text-align:center;margin-top:12px;font-weight:300}
+
+/* ── FOOTER ───────────────────────────────── */
 footer{
-  background:var(--bg2);border-top:1px solid var(--line);
-  padding:48px 56px;
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;
+  padding:48px 56px;background:var(--bg);border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;
 }
-.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;letter-spacing:.08em;color:var(--white)}
-.footer-logo span{color:var(--gold)}
-.footer-copy{font-size:.7rem;color:var(--muted);font-weight:300}
-.footer-legal{display:flex;gap:24px}
-.footer-legal a{font-size:.7rem;color:var(--muted);transition:color .2s;letter-spacing:.08em;text-transform:uppercase}
-.footer-legal a:hover{color:var(--gold)}
+.foot-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;letter-spacing:.1em}
+.foot-logo span{color:var(--gold)}
+.foot-copy{font-size:.7rem;color:var(--muted);font-weight:300;text-align:center}
+.foot-links{display:flex;gap:24px}
+.foot-links a{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);transition:color .2s;font-weight:400}
+.foot-links a:hover{color:var(--gold)}
 
-/* ─── LEGAL ─── */
-.legal-section{background:var(--bg);padding:64px 56px;border-top:1px solid var(--line)}
-.legal-inner{max-width:760px;margin:0 auto}
-.legal-h{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--white);margin-bottom:14px;margin-top:40px}
-.legal-h:first-child{margin-top:0}
-.legal-p{color:var(--muted);font-size:.8rem;line-height:1.9;margin-bottom:12px;font-weight:300}
-.legal-p a{color:var(--gold)}
-
-/* ─── MOBILE STICKY ─── */
-.sticky-bar{
-  display:none;position:fixed;bottom:0;left:0;right:0;z-index:600;
-  background:var(--surface2);border-top:1px solid var(--line);
-  padding:12px 20px;gap:10px;align-items:center;
-  box-shadow:0 -8px 32px rgba(0,0,0,.4);
+/* ── WHATSAPP FLOAT ───────────────────────── */
+.wa-float{
+  position:fixed;bottom:28px;right:28px;z-index:800;
+  width:56px;height:56px;border-radius:50%;
+  background:#25d366;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(37,211,102,.35);transition:transform .3s,box-shadow .3s;
+  animation:wapulse 3s ease-in-out infinite;
 }
-.sticky-bar-left{flex:1;min-width:0}
-.sticky-bar-title{font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:.06em}
-.sticky-bar-sub{font-size:.6rem;color:var(--muted);margin-top:1px}
-.sticky-bar a{display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:2px;font-size:.72rem;font-weight:600;white-space:nowrap;flex-shrink:0;letter-spacing:.06em;text-transform:uppercase}
-.sticky-bar .s-call{border:1px solid rgba(201,162,39,.4);color:var(--gold)}
-.sticky-bar .s-wa{background:#25D366;color:#fff}
-@media(max-width:768px){.sticky-bar{display:flex}}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 12px 40px rgba(37,211,102,.5);animation:none}
+@keyframes wapulse{0%,100%{box-shadow:0 8px 32px rgba(37,211,102,.35)}50%{box-shadow:0 8px 40px rgba(37,211,102,.55)}}
+.wa-float svg{width:28px;height:28px;fill:#fff}
 
-/* ─── RESPONSIVE ─── */
-@media(max-width:960px){
-  nav{padding:0 24px;height:64px}
+/* ── MOBILE STICKY BAR ────────────────────── */
+.mob-bar{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:800;
+  padding:12px 20px 24px;
+  background:linear-gradient(to top,rgba(5,8,16,.97),rgba(5,8,16,.9));
+  backdrop-filter:blur(20px);border-top:1px solid var(--line);
+  gap:10px;
+}
+.mob-bar a{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px;border-radius:14px;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+}
+.mob-bar .mob-call{background:var(--gold);color:var(--bg)}
+.mob-bar .mob-wa{background:#25d366;color:#fff}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media(max-width:1024px){
+  .leis-grid{grid-template-columns:repeat(2,1fr)}
+  .warum-grid{grid-template-columns:repeat(2,1fr)}
+  .about-inner{flex-direction:column}
+  .about-img-col{position:relative;width:100%;height:60vw;flex-shrink:unset}
+  .about-text-col{padding:72px 40px}
+  .kontakt-inner{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-cell:nth-child(2){border-right:none}
+  .stat-cell:nth-child(1),.stat-cell:nth-child(2){border-bottom:1px solid var(--line)}
+}
+@media(max-width:768px){
+  nav{padding:0 20px;width:calc(100% - 24px);top:10px}
   .nav-links,.nav-cta{display:none}
   .nav-ham{display:flex}
-  section{padding:72px 24px}
-  .hero{padding:100px 24px 60px}
-  .hero-stats{gap:28px}
-  .hero-scroll-hint{left:24px}
-  .stats-strip{grid-template-columns:repeat(2,1fr);padding:32px 24px;gap:0}
-  .stat-item{padding:20px 16px;border-bottom:1px solid var(--line)}
-  .stat-item:nth-child(2){border-right:none}
-  .stat-item:nth-child(3){border-bottom:none}
-  .stat-item:nth-child(4){border-right:none;border-bottom:none}
-  .leistungen-grid{grid-template-columns:1fr 1fr}
-  .objekte-grid{grid-template-columns:1fr}
-  .about-grid{grid-template-columns:1fr}
-  .about-img-side{min-height:320px}
-  .about-img-overlay{background:linear-gradient(to bottom,transparent 60%,var(--bg2) 100%)}
-  .about-text-side{padding:48px 24px}
+  .hero{padding:100px 24px 80px}
+  .hero-visual{width:50%;opacity:.2}
+  .hero-stats{flex-wrap:wrap;gap:24px}
+  .hero-stat{border-right:none;padding:0}
+  .leistungen{padding:80px 24px}
+  .leis-grid{grid-template-columns:1fr}
+  .objekte-header{padding:80px 24px 40px;flex-direction:column;align-items:flex-start;gap:16px}
+  #listings-track{padding:0 24px 80px}
+  .listing-card{width:300px}
+  .warum{padding:80px 24px}
   .warum-grid{grid-template-columns:1fr}
-  .ref-grid{grid-template-columns:1fr}
-  .cta-banner-section{padding:64px 24px}
-  .kontakt-section{padding:72px 24px}
-  .kontakt-inner{grid-template-columns:1fr;gap:48px}
-  .form-row{grid-template-columns:1fr}
-  footer{padding:36px 24px;flex-direction:column;text-align:center}
-  .legal-section{padding:48px 24px}
-}
-@media(max-width:600px){
-  .hero-btns{flex-direction:column}
-  .hero-stats{flex-direction:column;gap:20px}
-  .hero-stat-divider{display:none}
-  .leistungen-grid{grid-template-columns:1fr}
-  .stats-strip{grid-template-columns:1fr}
-  .stat-item{border-right:none!important}
-  .cta-banner-btns{flex-direction:column;align-items:center}
+  .testi-header{padding:0 24px;margin-bottom:40px}
+  .cta-section{padding:100px 24px}
+  .kontakt{padding:80px 24px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  footer{padding:36px 24px;flex-direction:column;gap:24px;text-align:center}
+  .foot-links{justify-content:center}
+  .wa-float{display:none}
+  .mob-bar{display:flex}
+  .about-text-col{padding:60px 24px}
+  .section-h2{font-size:2.2rem}
 }
 </style>
 </head>
 <body>
-<div class="page-wrap">
+
+<!-- PAGE LOADER -->
+<div id="loader">
+  <div class="loader-logo">SCH<span>I</span>WIG</div>
+  <div class="loader-sub">Immobilien · Zwickau</div>
+  <div class="loader-track"><div id="loader-fill"></div></div>
+  <div class="loader-pct" id="loader-pct">0%</div>
+</div>
+
+<!-- SCROLL PROGRESS -->
+<div id="progress"></div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cur-ring" id="curRing"></div>
+<div class="cur-dot" id="curDot"></div>
 
 <!-- NAV -->
-<nav>
+<nav class="glass" id="mainNav">
   <div class="nav-logo">
-    <span class="nav-logo-name">SCHIWIG <span>Immobilien</span></span>
-    <span class="nav-logo-sub">Zwickau & Umgebung</span>
+    <div class="nav-logo-name">SCH<span>I</span>WIG</div>
+    <div class="nav-logo-sub">Immobilien · Zwickau</div>
   </div>
   <ul class="nav-links">
     <li><a href="#leistungen">Leistungen</a></li>
     <li><a href="#objekte">Objekte</a></li>
-    <li><a href="#lukas">Über uns</a></li>
-    <li><a href="#referenzen">Referenzen</a></li>
+    <li><a href="#about">Über Lukas</a></li>
     <li><a href="#kontakt">Kontakt</a></li>
   </ul>
-  <a href="#bewertung" class="nav-cta">Kostenlose Bewertung</a>
-  <div class="nav-ham" onclick="document.getElementById('nm').classList.toggle('open')">
+  <a href="tel:+4915735792768" class="nav-cta magnetic">Jetzt anrufen</a>
+  <button class="nav-ham" id="hamburger" aria-label="Menü">
     <span></span><span></span><span></span>
-  </div>
+  </button>
 </nav>
-<div class="nav-mobile" id="nm">
-  <a href="#leistungen" onclick="document.getElementById('nm').classList.remove('open')">Leistungen</a>
-  <a href="#objekte" onclick="document.getElementById('nm').classList.remove('open')">Objekte</a>
-  <a href="#lukas" onclick="document.getElementById('nm').classList.remove('open')">Über uns</a>
-  <a href="#referenzen" onclick="document.getElementById('nm').classList.remove('open')">Referenzen</a>
-  <a href="#kontakt" onclick="document.getElementById('nm').classList.remove('open')">Kontakt</a>
+
+<!-- MOBILE NAV -->
+<div class="nav-mob" id="navMob">
+  <a href="#leistungen" onclick="closeMob()">Leistungen</a>
+  <a href="#objekte" onclick="closeMob()">Objekte</a>
+  <a href="#about" onclick="closeMob()">Über Lukas</a>
+  <a href="#kontakt" onclick="closeMob()">Kontakt</a>
+  <a href="tel:+4915735792768" onclick="closeMob()" style="color:var(--gold)">📞 0157 3579 2768</a>
 </div>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow reveal">Ihr Immobilienmakler in Zwickau</div>
-    <h1 class="hero-h1 reveal delay-1">
-      Ihre Immobilie.<br>
-      <em>Ihr bester Preis.</em>
-    </h1>
-    <p class="hero-sub reveal delay-2">Persönlich. Digital. Lokal. — Lukas Schiwig vermittelt Immobilien in Zwickau und Umgebung mit Leidenschaft, Marktkenntnis und dem Anspruch, für jeden Kunden das bestmögliche Ergebnis zu erzielen.</p>
-    <div class="hero-btns reveal delay-3">
-      <a href="#bewertung" class="btn-primary">Kostenlose Bewertung →</a>
-      <a href="#objekte" class="btn-secondary">Aktuelle Objekte</a>
-    </div>
-    <div class="hero-stats reveal delay-4">
-      <div>
-        <span class="hero-stat-num" data-target="127">0</span>
-        <span class="hero-stat-label">Vermittelte Objekte</span>
-      </div>
-      <div class="hero-stat-divider"></div>
-      <div>
-        <span class="hero-stat-num" data-target="98">0</span>
-        <span class="hero-stat-label">% Kundenzufriedenheit</span>
-      </div>
-      <div class="hero-stat-divider"></div>
-      <div>
-        <span class="hero-stat-num" data-target="5">0</span>
-        <span class="hero-stat-label">Jahre Erfahrung</span>
-      </div>
-    </div>
-  </div>
-  <div class="hero-scroll-hint">
-    <span class="hero-scroll-line"></span>
-    <span>Entdecken</span>
-  </div>
-</div>
+<div class="page-wrap">
 
-<!-- STATS STRIP -->
-<div class="stats-strip">
-  <div class="stat-item reveal">
-    <span class="stat-num" data-target="127">127+</span>
-    <span class="stat-label">Erfolgreich vermittelt</span>
-  </div>
-  <div class="stat-item reveal delay-1">
-    <span class="stat-num" data-target="98">98 %</span>
-    <span class="stat-label">Zufriedene Kunden</span>
-  </div>
-  <div class="stat-item reveal delay-2">
-    <span class="stat-num">Ø 47</span>
-    <span class="stat-label">Tage bis Verkauf</span>
-  </div>
-  <div class="stat-item reveal delay-3">
-    <span class="stat-num">0 €</span>
-    <span class="stat-label">Kosten für Bewertung</span>
-  </div>
-</div>
+  <!-- ═══ HERO ═══ -->
+  <section class="hero" id="hero">
+    <div class="orbs">
+      <div class="orb orb-gold o1"></div>
+      <div class="orb orb-blue o2"></div>
+      <div class="orb orb-rose o3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-eyebrow" id="heroEyebrow">
+        Ihr Immobilienmakler · Zwickau
+      </div>
+      <h1 class="hero-h1" id="heroH1">
+        Immobilien<br><strong>mit</strong> <em>Herz</em><br><strong>und Verstand.</strong>
+      </h1>
+      <p class="hero-sub" id="heroSub">
+        Persönliche Beratung. Schnelle Abwicklung. Digitale Vermarktung,
+        die Ihre Immobilie ins beste Licht rückt — von der Bewertung bis
+        zur Schlüsselübergabe.
+      </p>
+      <div class="hero-btns" id="heroBtns">
+        <a href="#kontakt" class="btn-gold magnetic">Kostenlose Bewertung</a>
+        <a href="#objekte" class="btn-outline magnetic">Aktuelle Objekte</a>
+      </div>
+      <div class="hero-stats" id="heroStats">
+        <div class="hero-stat">
+          <span class="hstat-n">4,6<span style="font-size:1.2rem">★</span></span>
+          <span class="hstat-l">Google Bewertung</span>
+        </div>
+        <div class="hero-stat" style="padding-left:36px">
+          <span class="hstat-n">37</span>
+          <span class="hstat-l">Bewertungen</span>
+        </div>
+        <div class="hero-stat" style="padding-left:36px">
+          <span class="hstat-n">100<span style="font-size:1.2rem">%</span></span>
+          <span class="hstat-l">Digitale Vermarktung</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img class="hero-img" id="heroImg"
+        src="https://images.pexels.com/photos/1643384/pexels-photo-1643384.jpeg?auto=compress&cs=tinysrgb&w=1200"
+        alt="Immobilien Zwickau">
+      <div class="hero-visual-grad"></div>
+    </div>
+    <div class="hero-scroll" id="heroScroll">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
 
-<!-- LEISTUNGEN -->
-<section class="leistungen-section" id="leistungen">
-  <div class="section-eyebrow reveal">Leistungen</div>
-  <h2 class="section-h reveal delay-1">Was ich für Sie tue —<br><em>von A bis Z</em></h2>
-  <p class="section-sub reveal delay-2">Ob Kauf, Verkauf oder Vermietung — ich begleite Sie persönlich durch jeden Schritt und sorge für ein reibungsloses, stressfreies Ergebnis.</p>
-  <div class="leistungen-grid">
-    <div class="leistung-card reveal">
-      <span class="leistung-num">01</span>
-      <span class="leistung-icon">🏡</span>
-      <div class="leistung-name">Immobilien verkaufen</div>
-      <p class="leistung-desc">Professionelle Wertermittlung, erstklassige Vermarktung und Verhandlungsführung — damit Sie den bestmöglichen Preis erzielen. Ohne Aufwand für Sie.</p>
-      <span class="leistung-link">Mehr erfahren →</span>
-    </div>
-    <div class="leistung-card reveal delay-1">
-      <span class="leistung-num">02</span>
-      <span class="leistung-icon">🔑</span>
-      <div class="leistung-name">Immobilien kaufen</div>
-      <p class="leistung-desc">Ich kenne den Zwickauer Markt in- und auswendig. Ich finde für Sie genau das, was zu Ihren Wünschen, Ihrer Situation und Ihrem Budget passt.</p>
-      <span class="leistung-link">Mehr erfahren →</span>
-    </div>
-    <div class="leistung-card reveal delay-2">
-      <span class="leistung-num">03</span>
-      <span class="leistung-icon">📋</span>
-      <div class="leistung-name">Vermietung</div>
-      <p class="leistung-desc">Von der Inseraterstellung über die Mieterauswahl bis zur Schlüsselübergabe — ich vermiete Ihre Immobilie schnell, sicher und an zuverlässige Mieter.</p>
-      <span class="leistung-link">Mehr erfahren →</span>
-    </div>
-    <div class="leistung-card reveal delay-3" id="bewertung">
-      <span class="leistung-num">04</span>
-      <span class="leistung-icon">📊</span>
-      <div class="leistung-name">Kostenlose Bewertung</div>
-      <p class="leistung-desc">Was ist Ihre Immobilie wirklich wert? Ich erstelle Ihnen eine fundierte Marktanalyse — kostenlos, unverbindlich und auf Basis aktueller Vergleichsdaten.</p>
-      <span class="leistung-link">Jetzt anfragen →</span>
+  <!-- ═══ MARQUEE ═══ -->
+  <div class="marquee-section">
+    <div class="marquee-inner">
+      <div class="marquee-track" id="marqueeTrack">
+        <span>Kaufen</span><span class="dot">◆</span>
+        <span>Verkaufen</span><span class="dot">◆</span>
+        <span>Vermieten</span><span class="dot">◆</span>
+        <span>Bewertung</span><span class="dot">◆</span>
+        <span>Zwickau</span><span class="dot">◆</span>
+        <span>Lichtentanne</span><span class="dot">◆</span>
+        <span>Sachsen</span><span class="dot">◆</span>
+        <span>Beratung</span><span class="dot">◆</span>
+        <span>Schnell &amp; Persönlich</span><span class="dot">◆</span>
+      </div>
     </div>
   </div>
-</section>
 
-<!-- OBJEKTE -->
-<section class="objekte-section" id="objekte">
-  <div class="objekte-inner">
+  <!-- ═══ STATS ═══ -->
+  <section class="stats-strip">
+    <div class="orbs" style="opacity:.4">
+      <div class="orb orb-gold" style="width:400px;height:400px;top:-50%;left:20%;animation:drift1 18s ease-in-out infinite"></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-cell rv">
+        <span class="stat-n"><span class="counter" data-target="37">0</span></span>
+        <span class="stat-l">Google Bewertungen</span>
+      </div>
+      <div class="stat-cell rv">
+        <span class="stat-n">4,6<span class="stat-suffix">★</span></span>
+        <span class="stat-l">Durchschnittliche Bewertung</span>
+      </div>
+      <div class="stat-cell rv">
+        <span class="stat-n"><span class="counter" data-target="100">0</span><span class="stat-suffix">%</span></span>
+        <span class="stat-l">Digitale Vermarktung</span>
+      </div>
+      <div class="stat-cell rv">
+        <span class="stat-n"><span class="counter" data-target="48">0</span><span class="stat-suffix">h</span></span>
+        <span class="stat-l">Ø Reaktionszeit</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LEISTUNGEN ═══ -->
+  <section class="leistungen" id="leistungen">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="section-eyebrow rv">Was ich für Sie tue</div>
+      <h2 class="section-h2 rv">Alles aus <em>einer Hand</em></h2>
+      <p class="section-sub rv">
+        Von der ersten Beratung bis zur finalen Unterschrift — ich begleite Sie
+        durch jeden Schritt mit persönlichem Einsatz und digitalem Know-how.
+      </p>
+      <div class="leis-grid">
+        <div class="leis-card rv magnetic">
+          <div class="leis-icon">🏠</div>
+          <div class="leis-title">Immobilienverkauf</div>
+          <p class="leis-text">Professionelle Vermarktung mit hochwertigen Fotos, 3D-Grundrissen und gezielter Online-Präsenz. Maximaler Preis, minimale Wartezeit.</p>
+        </div>
+        <div class="leis-card rv magnetic" style="transition-delay:.08s">
+          <div class="leis-icon">🔑</div>
+          <div class="leis-title">Vermietung</div>
+          <p class="leis-text">Solvente Mieter finden, Mietvertrag aufsetzen, Übergabe dokumentieren. Ich übernehme den kompletten Prozess für Sie.</p>
+        </div>
+        <div class="leis-card rv magnetic" style="transition-delay:.16s">
+          <div class="leis-icon">📊</div>
+          <div class="leis-title">Bewertung</div>
+          <p class="leis-text">Kostenlose, marktgerechte Wertermittlung Ihrer Immobilie — fundiert, transparent und ohne Verpflichtung.</p>
+        </div>
+        <div class="leis-card rv magnetic" style="transition-delay:.24s">
+          <div class="leis-icon">💬</div>
+          <div class="leis-title">Beratung</div>
+          <p class="leis-text">Ob Kauf, Verkauf oder Investment — ich analysiere Ihre Situation und entwickle die optimale Strategie für Ihre Ziele.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ OBJEKTE (horizontal scroll) ═══ -->
+  <section class="objekte-wrap" id="objekte">
     <div class="objekte-header">
       <div>
-        <div class="section-eyebrow reveal">Aktuelle Objekte</div>
-        <h2 class="section-h reveal delay-1">Ausgewählte<br><em>Immobilien</em></h2>
+        <div class="section-eyebrow rv">Aktuelle Angebote</div>
+        <h2 class="section-h2 rv">Aktuelle <em>Objekte</em></h2>
+        <p class="section-sub rv">Ausgewählte Immobilien in Zwickau und Umgebung — kaufen oder mieten.</p>
       </div>
-      <a href="#kontakt" class="btn-secondary reveal delay-2">Alle Objekte anfragen →</a>
+      <a href="#kontakt" class="objekte-link rv">Alle Objekte anfragen →</a>
     </div>
-    <div class="objekte-grid">
+    <div id="listings-section">
+      <div id="listings-track">
 
-      <div class="objekt-card reveal">
-        <div class="objekt-img">
-          <img src="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Einfamilienhaus Zwickau" loading="lazy">
-          <span class="objekt-badge">Neu</span>
-          <span class="objekt-badge-type">Verkauf</span>
-        </div>
-        <div class="objekt-body">
-          <div class="objekt-price">289.000 €</div>
-          <div class="objekt-title">Freistehendes Einfamilienhaus mit Garten</div>
-          <div class="objekt-meta">
-            <span class="objekt-meta-item">
-              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              142 m²
-            </span>
-            <span class="objekt-meta-item">
-              <svg viewBox="0 0 24 24"><path d="M2 4v16h20V4H2zm18 14H4V6h16v12z"/><path d="M6 10h4v4H6z"/></svg>
-              5 Zimmer
-            </span>
-            <span class="objekt-meta-item">
-              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-              560 m² Grundstück
-            </span>
+        <!-- Listing 1 -->
+        <div class="listing-card magnetic">
+          <div class="listing-img-wrap">
+            <img class="listing-img" src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600" alt="2-Zimmer Wohnung Zwickau" loading="lazy">
+            <div class="listing-tag">Miete</div>
+          </div>
+          <div class="listing-body">
+            <div class="listing-price">230 € <small>/ Monat</small></div>
+            <div class="listing-title">2-Zimmer-Wohnung</div>
+            <div class="listing-loc">📍 Zwickau, Innenstadt</div>
+            <div class="listing-meta">
+              <div class="lm"><strong>46</strong> m²</div>
+              <div class="lm"><strong>2</strong> Zimmer</div>
+              <div class="lm"><strong>EG</strong></div>
+            </div>
           </div>
         </div>
-        <div class="objekt-footer">
-          <span class="objekt-location">
-            <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Zwickau-Eckersbach
-          </span>
-          <a href="#kontakt" class="objekt-cta">Anfragen →</a>
-        </div>
-      </div>
 
-      <div class="objekt-card reveal delay-1">
-        <div class="objekt-img">
-          <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Eigentumswohnung Zwickau" loading="lazy">
-          <span class="objekt-badge-type">Verkauf</span>
-        </div>
-        <div class="objekt-body">
-          <div class="objekt-price">149.500 €</div>
-          <div class="objekt-title">Modernisierte Eigentumswohnung im Zentrum</div>
-          <div class="objekt-meta">
-            <span class="objekt-meta-item">
-              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              78 m²
-            </span>
-            <span class="objekt-meta-item">
-              <svg viewBox="0 0 24 24"><path d="M2 4v16h20V4H2zm18 14H4V6h16v12z"/><path d="M6 10h4v4H6z"/></svg>
-              3 Zimmer
-            </span>
-            <span class="objekt-meta-item">
-              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-              2. OG · Aufzug
-            </span>
+        <!-- Listing 2 -->
+        <div class="listing-card magnetic">
+          <div class="listing-img-wrap">
+            <img class="listing-img" src="https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=600" alt="3-Zimmer Wohnung Zwickau" loading="lazy">
+            <div class="listing-tag">Miete</div>
+          </div>
+          <div class="listing-body">
+            <div class="listing-price">375 € <small>/ Monat</small></div>
+            <div class="listing-title">3-Zimmer-Wohnung</div>
+            <div class="listing-loc">📍 Zwickau-Marienthal</div>
+            <div class="listing-meta">
+              <div class="lm"><strong>72</strong> m²</div>
+              <div class="lm"><strong>3</strong> Zimmer</div>
+              <div class="lm"><strong>2.OG</strong></div>
+            </div>
           </div>
         </div>
-        <div class="objekt-footer">
-          <span class="objekt-location">
-            <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Zwickau-Innenstadt
-          </span>
-          <a href="#kontakt" class="objekt-cta">Anfragen →</a>
-        </div>
-      </div>
 
-      <div class="objekt-card reveal delay-2">
-        <div class="objekt-img">
-          <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mehrfamilienhaus Zwickau" loading="lazy">
-          <span class="objekt-badge">Kapitalanlage</span>
-          <span class="objekt-badge-type">Verkauf</span>
-        </div>
-        <div class="objekt-body">
-          <div class="objekt-price">385.000 €</div>
-          <div class="objekt-title">Vollvermietetes Mehrfamilienhaus</div>
-          <div class="objekt-meta">
-            <span class="objekt-meta-item">
-              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              320 m²
-            </span>
-            <span class="objekt-meta-item">
-              <svg viewBox="0 0 24 24"><path d="M2 4v16h20V4H2zm18 14H4V6h16v12z"/><path d="M6 10h4v4H6z"/></svg>
-              6 Einheiten
-            </span>
-            <span class="objekt-meta-item">
-              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-              6,8 % Rendite
-            </span>
+        <!-- Listing 3 -->
+        <div class="listing-card magnetic">
+          <div class="listing-img-wrap">
+            <img class="listing-img" src="https://images.pexels.com/photos/164338/pexels-photo-164338.jpeg?auto=compress&cs=tinysrgb&w=600" alt="4-Zimmer Wohnung Zwickau" loading="lazy">
+            <div class="listing-tag">Miete</div>
+          </div>
+          <div class="listing-body">
+            <div class="listing-price">460 € <small>/ Monat</small></div>
+            <div class="listing-title">4-Zimmer-Wohnung</div>
+            <div class="listing-loc">📍 Zwickau-Planitz</div>
+            <div class="listing-meta">
+              <div class="lm"><strong>94</strong> m²</div>
+              <div class="lm"><strong>4</strong> Zimmer</div>
+              <div class="lm"><strong>1.OG</strong></div>
+            </div>
           </div>
         </div>
-        <div class="objekt-footer">
-          <span class="objekt-location">
-            <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Zwickau-Neuplanitz
-          </span>
-          <a href="#kontakt" class="objekt-cta">Anfragen →</a>
+
+        <!-- Listing 4 -->
+        <div class="listing-card magnetic">
+          <div class="listing-img-wrap">
+            <img class="listing-img" src="https://images.pexels.com/photos/2121121/pexels-photo-2121121.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Penthouse Zwickau" loading="lazy">
+            <div class="listing-tag gold">Premium</div>
+          </div>
+          <div class="listing-body">
+            <div class="listing-price">600 € <small>/ Monat</small></div>
+            <div class="listing-title">Penthouse-Wohnung</div>
+            <div class="listing-loc">📍 Zwickau-Eckersbach</div>
+            <div class="listing-meta">
+              <div class="lm"><strong>118</strong> m²</div>
+              <div class="lm"><strong>5</strong> Zimmer</div>
+              <div class="lm"><strong>DG</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Listing 5 -->
+        <div class="listing-card magnetic">
+          <div class="listing-img-wrap">
+            <img class="listing-img" src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Einfamilienhaus Zwickau" loading="lazy">
+            <div class="listing-tag gold">Kauf</div>
+          </div>
+          <div class="listing-body">
+            <div class="listing-price">50.000 €</div>
+            <div class="listing-title">Einfamilienhaus</div>
+            <div class="listing-loc">📍 Lichtentanne</div>
+            <div class="listing-meta">
+              <div class="lm"><strong>140</strong> m²</div>
+              <div class="lm"><strong>Grundst.</strong></div>
+              <div class="lm"><strong>680 m²</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Placeholder -->
+        <div class="listing-placeholder">
+          <div class="ph-icon">🏗️</div>
+          <p>Ihr Objekt könnte hier stehen. Sprechen Sie mich an — ich vermarkte es diskret und schnell.</p>
+          <a href="#kontakt">Jetzt anfragen →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ÜBER LUKAS ═══ -->
+  <section class="about" id="about">
+    <div class="about-inner">
+      <!-- Sticky image column -->
+      <div class="about-img-col">
+        <div class="about-img-wrap">
+          <img class="about-img" id="aboutImg"
+            src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=800"
+            alt="Lukas Schiwig – Immobilienmakler Zwickau">
+          <div class="about-img-cover" id="aboutCover"></div>
+          <div class="about-img-overlay"></div>
+          <div class="about-img-badge glass">
+            <div class="about-badge-stars">★★★★★</div>
+            <div class="about-badge-text">Lukas Schiwig</div>
+            <div class="about-badge-sub">Immobilienmakler · Zwickau</div>
+          </div>
         </div>
       </div>
+      <!-- Scrolling text panels -->
+      <div class="about-text-col">
 
-    </div>
-  </div>
-</section>
-
-<!-- ÜBER LUKAS -->
-<section class="about-section" id="lukas">
-  <div class="about-grid">
-    <div class="about-img-side">
-      <img src="https://images.pexels.com/photos/3760514/pexels-photo-3760514.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Lukas Schiwig – SCHIWIG Immobilien" loading="lazy">
-      <div class="about-img-overlay"></div>
-    </div>
-    <div class="about-text-side">
-      <div class="section-eyebrow reveal">Über mich</div>
-      <h2 class="section-h reveal delay-1">Lukas Schiwig —<br><em>Ihr Makler vor Ort</em></h2>
-      <blockquote class="about-quote reveal delay-2">
-        "Immobilien sind keine Zahlen — sie sind Lebensräume. Mein Job ist es, den richtigen Menschen zur richtigen Immobilie zu bringen."
-      </blockquote>
-      <p class="about-text reveal delay-3">Ich bin in Zwickau aufgewachsen, kenne die Region wie meine Westentasche und lebe für meinen Job. Als junger, digital aufgestellter Makler verbinde ich moderne Vermarktungsstrategien mit echter Ortskenntnis und persönlichem Engagement.</p>
-      <p class="about-text reveal delay-3">Ob erstes Eigenheim, Kapitalanlage oder der Verkauf nach Jahrzehnten — ich nehme mir die Zeit, die jeder Kunde verdient. Erreichbar. Verlässlich. Ehrlich.</p>
-      <div class="about-tags reveal delay-4">
-        <span class="about-tag gold">Zwickau & Umgebung</span>
-        <span class="about-tag">Digital & Modern</span>
-        <span class="about-tag">Persönlich erreichbar</span>
-        <span class="about-tag">Marktkenntnis</span>
-        <span class="about-tag">Seit 2020 aktiv</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WARUM SCHIWIG -->
-<section class="warum-section">
-  <div class="warum-inner">
-    <div class="section-eyebrow reveal">Warum SCHIWIG</div>
-    <h2 class="section-h reveal delay-1">6 Gründe, die<br><em>den Unterschied machen</em></h2>
-    <div class="warum-grid">
-      <div class="warum-item reveal">
-        <div class="warum-icon">📍</div>
-        <div class="warum-title">Lokale Expertise</div>
-        <p class="warum-text">Ich kenne Zwickau und die umliegenden Gemeinden — jeden Stadtteil, jeden Preistrend, jeden Hotspot. Das ist kein Wissen aus dem Internet, sondern gelebte Erfahrung.</p>
-      </div>
-      <div class="warum-item reveal delay-1">
-        <div class="warum-icon">⚡</div>
-        <div class="warum-title">Schnelle Abwicklung</div>
-        <p class="warum-text">Durchschnittlich 47 Tage vom Auftrag bis zum Notartermin. Effizient, strukturiert und ohne unnötige Wartezeiten — denn Ihre Zeit ist wertvoll.</p>
-      </div>
-      <div class="warum-item reveal delay-2">
-        <div class="warum-icon">📱</div>
-        <div class="warum-title">Digital & Modern</div>
-        <p class="warum-text">Professionelle Exposés, 3D-Rundgänge, gezielte Social-Media-Vermarktung — Ihre Immobilie wird dort präsentiert, wo Käufer heute wirklich suchen.</p>
-      </div>
-      <div class="warum-item reveal">
-        <div class="warum-icon">🤝</div>
-        <div class="warum-title">Persönliche Betreuung</div>
-        <p class="warum-text">Sie haben einen Ansprechpartner — nicht ein Call-Center. Ich bin persönlich erreichbar, antworte schnell und begleite Sie durch jeden Schritt.</p>
-      </div>
-      <div class="warum-item reveal delay-1">
-        <div class="warum-icon">📊</div>
-        <div class="warum-title">Kostenlose Bewertung</div>
-        <p class="warum-text">Keine versteckten Kosten, kein Druck. Ich erstelle Ihnen eine ehrliche Marktanalyse — damit Sie wissen, was Ihre Immobilie wirklich wert ist.</p>
-      </div>
-      <div class="warum-item reveal delay-2">
-        <div class="warum-icon">🏆</div>
-        <div class="warum-title">Nachgewiesene Ergebnisse</div>
-        <p class="warum-text">Über 127 erfolgreich vermittelte Objekte, 98 % Kundenzufriedenheit. Meine Arbeit spricht für sich — und meine Kunden sprechen für mich.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- REFERENZEN -->
-<section class="ref-section" id="referenzen">
-  <div class="ref-inner">
-    <div class="section-eyebrow reveal" style="justify-content:center;text-align:center">Kundenstimmen</div>
-    <h2 class="section-h reveal delay-1" style="text-align:center">Was meine Kunden<br><em>über mich sagen</em></h2>
-    <div class="ref-grid">
-      <div class="ref-card reveal">
-        <span class="ref-quote">"</span>
-        <div class="ref-stars">★★★★★</div>
-        <p class="ref-text">Lukas hat unser Haus in nur 5 Wochen verkauft — zum vollen Preis. Von der ersten Besichtigung bis zum Notartermin war alles reibungslos. Absolut professionell und immer erreichbar.</p>
-        <div class="ref-author">Familie Hoffmann</div>
-        <div class="ref-detail">Hausverkauf · Zwickau-Marienthal</div>
-      </div>
-      <div class="ref-card reveal delay-1">
-        <span class="ref-quote">"</span>
-        <div class="ref-stars">★★★★★</div>
-        <p class="ref-text">Als Erstkäufer hatte ich unzählige Fragen und Unsicherheiten. Lukas hat sich jede Menge Zeit genommen, alles erklärt und genau die Wohnung gefunden, die wir uns vorgestellt hatten. Sehr empfehlenswert!</p>
-        <div class="ref-author">Thomas K.</div>
-        <div class="ref-detail">Wohnungskauf · Zwickau-Innenstadt</div>
-      </div>
-      <div class="ref-card reveal delay-2">
-        <span class="ref-quote">"</span>
-        <div class="ref-stars">★★★★★</div>
-        <p class="ref-text">Die Bewertung meiner Immobilie war kostenlos, ehrlich und fundiert. Lukas hat keine falschen Versprechen gemacht — und am Ende mehr rausgeholt als ich erwartet hatte. Top Makler!</p>
-        <div class="ref-author">Sabine M.</div>
-        <div class="ref-detail">Wohnungsverkauf · Zwickau-Planitz</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA BANNER -->
-<div class="cta-banner-section">
-  <div class="cta-banner-eyebrow reveal">Kostenlos & unverbindlich</div>
-  <h2 class="cta-banner-h reveal delay-1">Was ist Ihre Immobilie<br><em>wirklich wert?</em></h2>
-  <p class="cta-banner-sub reveal delay-2">Erfahren Sie den aktuellen Marktwert Ihrer Immobilie — in einem persönlichen Gespräch, kostenfrei und ohne Verpflichtungen.</p>
-  <div class="cta-banner-btns reveal delay-3">
-    <a href="#kontakt" class="btn-primary">Jetzt bewerten lassen →</a>
-    <a href="tel:+49XXXXXXXXXX" class="btn-secondary">📞 Direkt anrufen</a>
-  </div>
-</div>
-
-<!-- KONTAKT -->
-<section class="kontakt-section" id="kontakt">
-  <div class="kontakt-inner">
-    <div>
-      <div class="section-eyebrow reveal">Kontakt</div>
-      <h2 class="section-h reveal delay-1">Sprechen wir<br><em>miteinander</em></h2>
-      <p class="section-sub reveal delay-2" style="margin-bottom:0">Egal ob Verkauf, Kauf, Vermietung oder einfach eine Frage — melden Sie sich. Ich antworte persönlich und schnell.</p>
-      <div class="kontakt-details">
-        <div class="kontakt-item reveal">
-          <div class="kontakt-item-icon">
-            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.85a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div class="about-panel rv">
+          <span class="about-panel-num">01</span>
+          <h3 class="about-panel-title">Lokal verwurzelt, <em>digital aufgestellt.</em></h3>
+          <p class="about-panel-text">
+            Ich kenne Zwickau und die Region wie meine Westentasche — von Marienthal
+            bis Lichtentanne, von der Innenstadt bis Planitz. Dieses lokale Wissen
+            kombiniere ich mit modernsten digitalen Vermarktungstools, die Ihre
+            Immobilie dort zeigen, wo Käufer und Mieter wirklich suchen.
+          </p>
+          <div class="about-tags">
+            <span class="about-tag">Zwickau</span>
+            <span class="about-tag">Lichtentanne</span>
+            <span class="about-tag">Sachsen</span>
           </div>
+        </div>
+
+        <div class="about-panel rv">
+          <span class="about-panel-num">02</span>
+          <h3 class="about-panel-title">Schnell, <em>persönlich,</em> zuverlässig.</h3>
+          <p class="about-panel-text">
+            Keine langen Wartezeiten, kein Durchstellen an Assistenten. Bei mir
+            bekommen Sie einen direkten Draht — ich antworte innerhalb von 24
+            Stunden, meist schon in wenigen Stunden. Viele meiner Kunden kommen
+            über persönliche Empfehlungen. Das ist mein Anspruch.
+          </p>
+          <div class="about-tags">
+            <span class="about-tag">Direktkontakt</span>
+            <span class="about-tag">4,6★ Bewertung</span>
+            <span class="about-tag">37 Rezensionen</span>
+          </div>
+        </div>
+
+        <div class="about-panel rv">
+          <span class="about-panel-num">03</span>
+          <h3 class="about-panel-title">Ihr Erfolg ist <em>mein Ziel.</em></h3>
+          <p class="about-panel-text">
+            Ob Sie kaufen, verkaufen oder vermieten möchten — ich entwickle für Sie
+            die optimale Strategie. Keine Standardlösungen, keine leeren Versprechen.
+            Nur ehrliche, professionelle Begleitung von Anfang bis Ende.
+          </p>
+          <div class="about-tags">
+            <span class="about-tag">Kostenlose Bewertung</span>
+            <span class="about-tag">Transparenz</span>
+            <span class="about-tag">Ergebnisorientiert</span>
+          </div>
+        </div>
+
+        <div class="rv" style="padding-top:16px">
+          <a href="tel:+4915735792768" class="btn-gold magnetic" style="display:inline-flex">
+            📞 Jetzt anrufen
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WARUM ═══ -->
+  <section class="warum" id="warum">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="section-eyebrow rv">Warum SCHIWIG?</div>
+      <h2 class="section-h2 rv" style="margin-bottom:64px">6 Gründe, die <em>überzeugen.</em></h2>
+      <div class="warum-grid">
+        <div class="warum-card rv">
+          <div class="wcard-num">01</div>
+          <div class="wcard-title">Kostenlose Wertermittlung</div>
+          <p class="wcard-text">Ich bewerte Ihre Immobilie kostenlos und ohne Verpflichtung — marktgerecht und fundiert.</p>
+        </div>
+        <div class="warum-card rv" style="transition-delay:.08s">
+          <div class="wcard-num">02</div>
+          <div class="wcard-title">Professionelle Fotos & 3D</div>
+          <p class="wcard-text">Hochwertige Fotos und 3D-Grundrisse, die Ihre Immobilie optimal präsentieren und mehr Interessenten anziehen.</p>
+        </div>
+        <div class="warum-card rv" style="transition-delay:.16s">
+          <div class="wcard-num">03</div>
+          <div class="wcard-title">Maximale Online-Reichweite</div>
+          <p class="wcard-text">Ihre Immobilie auf allen relevanten Portalen — Immoscout24, ImmoWelt, Kleinanzeigen und mehr.</p>
+        </div>
+        <div class="warum-card rv" style="transition-delay:.08s">
+          <div class="wcard-num">04</div>
+          <div class="wcard-title">Persönliche Betreuung</div>
+          <p class="wcard-text">Kein Call-Center, kein Assistent. Sie haben immer direkten Kontakt zu mir — Lukas Schiwig persönlich.</p>
+        </div>
+        <div class="warum-card rv" style="transition-delay:.16s">
+          <div class="wcard-num">05</div>
+          <div class="wcard-title">Schnelle Abwicklung</div>
+          <p class="wcard-text">Durch digitale Prozesse und lokales Netzwerk beschleunige ich Verkauf und Vermietung erheblich.</p>
+        </div>
+        <div class="warum-card rv" style="transition-delay:.24s">
+          <div class="wcard-num">06</div>
+          <div class="wcard-title">Transparenz von Anfang an</div>
+          <p class="wcard-text">Klare Konditionen, ehrliche Einschätzungen, regelmäßige Updates — keine bösen Überraschungen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section class="testi">
+    <div class="testi-header rv">
+      <div class="section-eyebrow">Was Kunden sagen</div>
+      <h2 class="section-h2">Echte <em>Stimmen.</em></h2>
+    </div>
+    <div class="testi-track-wrap">
+      <div class="testi-track" id="testiTrack">
+        <div class="testi-card glass">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Lukas hat unsere Wohnung in weniger als 2 Wochen vermietet. Professionell, schnell und immer erreichbar. Absolut empfehlenswert!"</p>
+          <div class="testi-author">Sandra K.</div>
+          <div class="testi-date">vor 3 Monaten · Google</div>
+        </div>
+        <div class="testi-card glass">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Sehr kompetenter und sympathischer Makler. Hat uns beim Hauskauf optimal beraten und uns nie unter Druck gesetzt. Top!"</p>
+          <div class="testi-author">Thomas &amp; Maria B.</div>
+          <div class="testi-date">vor 5 Monaten · Google</div>
+        </div>
+        <div class="testi-card glass">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Kostenlose Bewertung war sehr detailliert und realistisch. Durch Lukas haben wir 15% über unserem Wunschpreis verkauft. Danke!"</p>
+          <div class="testi-author">Peter M.</div>
+          <div class="testi-date">vor 1 Monat · Google</div>
+        </div>
+        <div class="testi-card glass">
+          <div class="testi-stars">★★★★☆</div>
+          <p class="testi-text">"Sehr angenehme Zusammenarbeit. Lukas kennt die Region sehr gut und hat schnell den richtigen Mieter für meine Wohnung gefunden."</p>
+          <div class="testi-author">Renate S.</div>
+          <div class="testi-date">vor 7 Monaten · Google</div>
+        </div>
+        <div class="testi-card glass">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Junger, dynamischer Makler mit viel Know-how. Moderne Vermarktung, tolle Fotos, schnelle Reaktion. Sehr gerne wieder!"</p>
+          <div class="testi-author">Klaus &amp; Inge W.</div>
+          <div class="testi-date">vor 2 Monaten · Google</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="cta-section" id="cta">
+    <div class="orbs">
+      <div class="orb orb-gold" style="width:600px;height:600px;top:-30%;left:-10%;animation:drift1 16s ease-in-out infinite;opacity:.6"></div>
+      <div class="orb orb-blue" style="width:400px;height:400px;bottom:-20%;right:-5%;animation:drift2 12s ease-in-out infinite;opacity:.6"></div>
+    </div>
+    <div style="position:relative;z-index:1">
+      <div class="cta-gold-line rv"></div>
+      <h2 class="cta-h2 rv">Ihre Immobilie verdient<br>die <em>beste Vermarktung.</em></h2>
+      <p class="cta-sub rv">
+        Lassen Sie mich Ihre Immobilie kostenlos bewerten und erfahren Sie,
+        was Sie wirklich erzielen können. Unverbindlich, ehrlich, persönlich.
+      </p>
+      <div class="cta-btns rv">
+        <a href="#kontakt" class="btn-gold magnetic">Kostenlos bewerten lassen</a>
+        <a href="tel:+4915735792768" class="btn-outline magnetic">📞 0157 3579 2768</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ KONTAKT ═══ -->
+  <section class="kontakt" id="kontakt">
+    <div class="kontakt-inner">
+      <div class="kontakt-info">
+        <div class="section-eyebrow rv">Direktkontakt</div>
+        <h2 class="section-h2 rv">Sprechen wir <em>miteinander.</em></h2>
+        <p class="section-sub rv">
+          Ich melde mich in der Regel innerhalb von 24 Stunden.
+          Oft auch viel früher.
+        </p>
+        <div class="kinfo-item rv">
+          <div class="kinfo-icon">📞</div>
           <div>
-            <div class="kontakt-item-label">Telefon</div>
-            <div class="kontakt-item-val"><a href="tel:+49XXXXXXXXXX">+49 XXX XXX XXXX</a></div>
+            <div class="kinfo-label">Telefon</div>
+            <div class="kinfo-val"><a href="tel:+4915735792768">0157 3579 2768</a></div>
           </div>
         </div>
-        <div class="kontakt-item reveal delay-1">
-          <div class="kontakt-item-icon">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
+        <div class="kinfo-item rv">
+          <div class="kinfo-icon">✉️</div>
           <div>
-            <div class="kontakt-item-label">E-Mail</div>
-            <div class="kontakt-item-val"><a href="mailto:info@schiwig-immobilien.de">info@schiwig-immobilien.de</a></div>
+            <div class="kinfo-label">E-Mail</div>
+            <div class="kinfo-val"><a href="mailto:lukasschiwig@gmail.com">lukasschiwig@gmail.com</a></div>
           </div>
         </div>
-        <div class="kontakt-item reveal delay-2">
-          <div class="kontakt-item-icon">
-            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
+        <div class="kinfo-item rv">
+          <div class="kinfo-icon">📍</div>
           <div>
-            <div class="kontakt-item-label">Standort</div>
-            <div class="kontakt-item-val">Comeniusweg 23<br>08056 Zwickau</div>
+            <div class="kinfo-label">Büro</div>
+            <div class="kinfo-val">Bruno-Escher-Str. 13<br>08115 Lichtentanne</div>
           </div>
+        </div>
+        <div class="kinfo-item rv">
+          <div class="kinfo-icon">⏰</div>
+          <div>
+            <div class="kinfo-label">Erreichbarkeit</div>
+            <div class="kinfo-val">Mo–Fr: 8–18 Uhr<br>Sa: nach Vereinbarung</div>
+          </div>
+        </div>
+      </div>
+      <div class="kontakt-form rv">
+        <div class="glass" style="padding:40px;border-radius:var(--r)">
+          <form action="https://formspree.io/f/mlgpooqw" method="POST">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Vorname</label>
+                <input type="text" name="vorname" placeholder="Max" required>
+              </div>
+              <div class="form-group">
+                <label>Nachname</label>
+                <input type="text" name="nachname" placeholder="Mustermann" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>E-Mail</label>
+              <input type="email" name="email" placeholder="max@beispiel.de" required>
+            </div>
+            <div class="form-group">
+              <label>Telefon (optional)</label>
+              <input type="tel" name="telefon" placeholder="0157 ...">
+            </div>
+            <div class="form-group">
+              <label>Anliegen</label>
+              <textarea name="nachricht" placeholder="Ich möchte meine Immobilie bewerten lassen / Ich suche eine Wohnung in ..."></textarea>
+            </div>
+            <button type="submit" class="form-submit magnetic">Nachricht senden →</button>
+            <p class="form-note">Kostenlos · Unverbindlich · §19 UStG</p>
+          </form>
         </div>
       </div>
     </div>
+  </section>
 
-    <form action="https://formspree.io/f/mlgpooqw" method="POST" id="kontakt-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="name">Ihr Name *</label>
-          <input type="text" id="name" name="name" placeholder="Max Mustermann" required>
-        </div>
-        <div class="form-group">
-          <label for="telefon">Telefon</label>
-          <input type="tel" id="telefon" name="telefon" placeholder="0371 / ...">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="email">E-Mail *</label>
-        <input type="email" id="email" name="email" placeholder="ihre@email.de" required>
-      </div>
-      <div class="form-group">
-        <label for="anliegen">Ihr Anliegen</label>
-        <select id="anliegen" name="anliegen">
-          <option value="">— Bitte wählen —</option>
-          <option>Immobilie verkaufen</option>
-          <option>Immobilie kaufen</option>
-          <option>Immobilie vermieten</option>
-          <option>Kostenlose Bewertung</option>
-          <option>Sonstiges</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="nachricht">Nachricht *</label>
-        <textarea id="nachricht" name="nachricht" placeholder="Was kann ich für Sie tun? Beschreiben Sie kurz Ihre Situation..." required></textarea>
-      </div>
-      <div class="form-check">
-        <input type="checkbox" id="dsgvo" name="dsgvo" required>
-        <label for="dsgvo">Ich stimme der Verarbeitung meiner Daten gemäß der <a href="#datenschutz">Datenschutzerklärung</a> zu. *</label>
-      </div>
-      <button type="submit" class="btn-submit">Nachricht senden →</button>
-      <div id="form-success">Vielen Dank! Ich melde mich persönlich bei Ihnen. — Lukas</div>
-    </form>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div>
-    <div class="footer-logo">SCHIWIG <span>Immobilien</span></div>
-    <div class="footer-copy" style="margin-top:6px">© 2025 Lukas Schiwig · Comeniusweg 23, 08056 Zwickau</div>
-  </div>
-  <div class="footer-legal">
-    <a href="#impressum">Impressum</a>
-    <a href="#datenschutz">Datenschutz</a>
-  </div>
-</footer>
-
-<!-- LEGAL -->
-<section class="legal-section" id="impressum">
-  <div class="legal-inner">
-    <h2 class="legal-h">Impressum</h2>
-    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Angaben gemäß § 5 TMG</strong><br>
-    Lukas Schiwig<br>Comeniusweg 23<br>08056 Zwickau<br>Deutschland</p>
-    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Kontakt</strong><br>
-    Telefon: <a href="tel:+49XXXXXXXXXX">+49 XXX XXX XXXX</a><br>
-    E-Mail: <a href="mailto:info@schiwig-immobilien.de">info@schiwig-immobilien.de</a></p>
-    <p class="legal-p">Umsatzsteuer: Gemäß § 19 UStG wird keine Umsatzsteuer ausgewiesen.</p>
-
-    <h2 class="legal-h" id="datenschutz">Datenschutzerklärung</h2>
-    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Verantwortlicher</strong><br>
-    Lukas Schiwig, Comeniusweg 23, 08056 Zwickau · info@schiwig-immobilien.de</p>
-    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Erhobene Daten</strong><br>
-    Über das Kontaktformular werden Name, E-Mail und Nachricht zur Bearbeitung Ihrer Anfrage erhoben. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.</p>
-    <p class="legal-p"><strong style="color:rgba(255,255,255,.6)">Externe Dienste</strong><br>
-    Formspree Inc. (USA) · Google Fonts (Google LLC, USA) · Pexels (Canva Pty Ltd, Australien)</p>
-    <p class="legal-p">Beschwerderecht: Sächsischer Datenschutzbeauftragter, Devrientstraße 5, 01067 Dresden.</p>
-  </div>
-</section>
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="foot-logo">SCH<span>I</span>WIG Immobilien</div>
+    <div class="foot-copy">© 2025 Lukas Schiwig · Bruno-Escher-Str. 13 · 08115 Lichtentanne</div>
+    <div class="foot-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </div>
+  </footer>
 
 </div><!-- /page-wrap -->
 
-<!-- MOBILE STICKY -->
-<div class="sticky-bar">
-  <div class="sticky-bar-left">
-    <div class="sticky-bar-title">SCHIWIG Immobilien</div>
-    <div class="sticky-bar-sub">Zwickau & Umgebung</div>
-  </div>
-  <a href="tel:+49XXXXXXXXXX" class="s-call">📞 Anrufen</a>
-  <a href="#kontakt" class="s-wa">Anfragen</a>
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/4915735792768" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.113 1.523 5.843L0 24l6.338-1.494A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.793 9.793 0 01-5.034-1.393l-.36-.215-3.762.887.926-3.656-.236-.376A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
+  </svg>
+</a>
+
+<!-- MOBILE STICKY BAR -->
+<div class="mob-bar">
+  <a href="tel:+4915735792768" class="mob-call">📞 Anrufen</a>
+  <a href="https://wa.me/4915735792768" class="mob-wa" target="_blank">💬 WhatsApp</a>
 </div>
 
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
 <script>
-// Reveal on scroll
-const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+gsap.registerPlugin(ScrollTrigger);
 
-// Animated counters
-function animateCounter(el){
-  const target = parseInt(el.dataset.target);
-  if(!target) return;
-  let start = 0;
-  const duration = 1800;
-  const step = timestamp => {
-    if(!start) start = timestamp;
-    const progress = Math.min((timestamp - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.floor(ease * target) + (el.dataset.suffix || '');
-    if(progress < 1) requestAnimationFrame(step);
-    else el.textContent = target + (el.dataset.suffix || '');
-  };
-  requestAnimationFrame(step);
-}
-const counterObs = new IntersectionObserver(e=>e.forEach(x=>{
-  if(x.isIntersecting){
-    animateCounter(x.target);
-    counterObs.unobserve(x.target);
+/* ── LOADER ─────────────────────────────── */
+const loaderFill = document.getElementById('loader-fill');
+const loaderPct  = document.getElementById('loader-pct');
+const loader     = document.getElementById('loader');
+
+gsap.to(loaderFill, {
+  width: '100%',
+  duration: 1.6,
+  ease: 'power2.inOut',
+  onUpdate() {
+    const pct = Math.round(this.ratio * 100);
+    loaderPct.textContent = pct + '%';
+  },
+  onComplete() {
+    gsap.to(loader, {
+      yPercent: -100,
+      duration: 0.9,
+      ease: 'power4.inOut',
+      onComplete() {
+        loader.style.display = 'none';
+        initPage();
+      }
+    });
   }
-}),{threshold:.5});
-document.querySelectorAll('[data-target]').forEach(el=>counterObs.observe(el));
-
-// Form
-const form = document.getElementById('kontakt-form');
-const success = document.getElementById('form-success');
-form.addEventListener('submit', async function(e){
-  e.preventDefault();
-  const btn = form.querySelector('.btn-submit');
-  btn.textContent = 'Wird gesendet…';btn.disabled=true;
-  try{
-    const res = await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
-    if(res.ok){form.style.display='none';success.style.display='block';}
-    else{btn.textContent='Fehler — erneut versuchen';btn.disabled=false;}
-  }catch{btn.textContent='Fehler — erneut versuchen';btn.disabled=false;}
 });
+
+/* ── INIT ───────────────────────────────── */
+function initPage() {
+
+  // Scroll progress bar
+  const prog = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const max = document.body.scrollHeight - window.innerHeight;
+    prog.style.transform = 'scaleX(' + (window.scrollY / max) + ')';
+  }, { passive: true });
+
+  // ── HERO ANIMATIONS ───────────────────
+  const eyebrow = document.getElementById('heroEyebrow');
+  gsap.to(eyebrow, { opacity: 1, y: 0, duration: 0.8, delay: 0.1, ease: 'power3.out',
+    from: { opacity: 0, y: 20 } });
+  gsap.from(eyebrow, { opacity: 0, y: 20, duration: 0.8, delay: 0.1, ease: 'power3.out' });
+
+  // SplitText on hero h1
+  function splitChars(el) {
+    el.innerHTML = [...el.textContent].map(c =>
+      c === ' ' ? ' ' :
+      `<span style="display:inline-block;overflow:hidden;vertical-align:bottom">` +
+      `<span class="ch" style="display:inline-block;will-change:transform">${c}</span></span>`
+    ).join('');
+  }
+  const h1 = document.getElementById('heroH1');
+  // Preserve inner HTML tags — split the text nodes only approach:
+  // Simpler: wrap the full text in visible split spans
+  // Actually let's use word splitting to keep <strong>/<em> intact
+  function splitWords(el) {
+    const html = el.innerHTML;
+    // wrap each word in a span while keeping tags
+    el.innerHTML = html.replace(/([^\s<>]+)/g, (m, w) =>
+      `<span style="display:inline-block;overflow:hidden;vertical-align:bottom">` +
+      `<span class="wd" style="display:inline-block">${w}</span></span>`
+    );
+  }
+  splitWords(h1);
+  gsap.from('.wd', {
+    y: '110%',
+    rotateZ: 4,
+    stagger: 0.04,
+    duration: 1,
+    ease: 'power4.out',
+    delay: 0.3
+  });
+
+  gsap.to('#heroSub', { opacity: 1, y: 0, duration: 0.9, delay: 0.85, ease: 'power3.out',
+    from: { opacity: 0, y: 24 } });
+  gsap.from('#heroSub', { opacity: 0, y: 24, duration: 0.9, delay: 0.85, ease: 'power3.out' });
+
+  gsap.from('#heroBtns', { opacity: 0, y: 24, duration: 0.8, delay: 1.1, ease: 'power3.out' });
+  gsap.to('#heroBtns', { opacity: 1, delay: 1.1 });
+
+  gsap.from('#heroStats', { opacity: 0, y: 20, duration: 0.8, delay: 1.35, ease: 'power3.out' });
+  gsap.to('#heroStats', { opacity: 1, delay: 1.35 });
+
+  gsap.from('#heroScroll', { opacity: 0, duration: 0.8, delay: 1.9, ease: 'power2.out' });
+  gsap.to('#heroScroll', { opacity: 1, delay: 1.9 });
+
+  // Hero image parallax
+  gsap.to('#heroImg', {
+    yPercent: -20,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '.hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true
+    }
+  });
+
+  // ── MARQUEE ───────────────────────────
+  const mtrack = document.getElementById('marqueeTrack');
+  mtrack.innerHTML += mtrack.innerHTML;
+  const mw = mtrack.scrollWidth / 2;
+  gsap.to(mtrack, { x: -mw, duration: 22, ease: 'none', repeat: -1 });
+
+  // ── SCROLL REVEALS (.rv) ──────────────
+  ScrollTrigger.batch('.rv', {
+    interval: 0.1,
+    batchMax: 4,
+    onEnter: els =>
+      gsap.from(els, {
+        opacity: 0,
+        y: 52,
+        duration: 1,
+        ease: 'power3.out',
+        stagger: 0.1
+      }),
+    start: 'top 88%'
+  });
+
+  // ── COUNTERS ──────────────────────────
+  document.querySelectorAll('.counter').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const obj = { v: 0 };
+    gsap.to(obj, {
+      v: target,
+      duration: 2.4,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 82%' },
+      onUpdate() { el.textContent = Math.round(obj.v); }
+    });
+  });
+
+  // ── HORIZONTAL SCROLL (listings) ──────
+  const track = document.getElementById('listings-track');
+  const section = document.getElementById('listings-section');
+  if (window.innerWidth > 768 && track) {
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: () => '+=' + (track.scrollWidth - window.innerWidth + 112),
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      animation: gsap.to(track, {
+        x: () => -(track.scrollWidth - window.innerWidth) + 112,
+        ease: 'none'
+      })
+    });
+  }
+
+  // ── IMAGE CURTAIN (Über Lukas) ─────────
+  gsap.to('#aboutCover', {
+    scaleY: 0,
+    transformOrigin: 'bottom',
+    duration: 1.4,
+    ease: 'power4.inOut',
+    scrollTrigger: {
+      trigger: '.about',
+      start: 'top 70%'
+    }
+  });
+
+  // ── TESTIMONIALS MARQUEE ───────────────
+  const ttrack = document.getElementById('testiTrack');
+  if (ttrack) {
+    ttrack.innerHTML += ttrack.innerHTML;
+    const tw = ttrack.scrollWidth / 2;
+    gsap.to(ttrack, { x: -tw, duration: 35, ease: 'none', repeat: -1 });
+  }
+
+  // ── NAV HIDE ON SCROLL ─────────────────
+  let lastY = 0;
+  ScrollTrigger.create({
+    onUpdate: self => {
+      const y = self.scroll();
+      gsap.to('#mainNav', {
+        y: y > lastY && y > 120 ? -90 : 0,
+        duration: 0.45,
+        ease: 'power2.out'
+      });
+      lastY = y;
+    }
+  });
+
+  // ── CUSTOM CURSOR (desktop only) ───────
+  gsap.matchMedia().add('(min-width: 769px)', () => {
+    const ring = document.getElementById('curRing');
+    const dot  = document.getElementById('curDot');
+
+    window.addEventListener('mousemove', e => {
+      gsap.to(ring, { x: e.clientX - 19, y: e.clientY - 19, duration: 0.5, ease: 'power2.out' });
+      gsap.to(dot,  { x: e.clientX - 2.5, y: e.clientY - 2.5, duration: 0.08 });
+    });
+
+    document.querySelectorAll('a, button, .leis-card, .listing-card, .warum-card, .testi-card').forEach(el => {
+      el.addEventListener('mouseenter', () => gsap.to(ring, { scale: 2.2, duration: 0.3, borderColor: 'rgba(201,162,39,.9)' }));
+      el.addEventListener('mouseleave', () => gsap.to(ring, { scale: 1, duration: 0.3, borderColor: 'rgba(201,162,39,.5)' }));
+    });
+  });
+
+  // ── MAGNETIC BUTTONS (desktop only) ───
+  gsap.matchMedia().add('(min-width: 769px)', () => {
+    document.querySelectorAll('.magnetic').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        gsap.to(btn, { x: x * 0.24, y: y * 0.24, duration: 0.35, ease: 'power2.out' });
+      });
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.4)' });
+      });
+    });
+  });
+
+  // ── HERO VISUAL: zoom on load ──────────
+  gsap.from('#heroImg', { scale: 1.12, duration: 2.2, ease: 'power3.out', delay: 0.2 });
+
+  // Refresh after images load
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+}
+
+/* ── MOBILE NAV ─────────────────────────── */
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navMob').classList.toggle('open');
+});
+function closeMob() {
+  document.getElementById('navMob').classList.remove('open');
+}
 </script>
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "SCHIWIG Immobilien",
+  "description": "Immobilienmakler in Zwickau — Kaufen, Verkaufen, Vermieten und Bewertung.",
+  "url": "https://bochmann-dienstleistungen.github.io/schiwig-immo-demo/",
+  "telephone": "+4915735792768",
+  "email": "lukasschiwig@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Bruno-Escher-Str. 13",
+    "addressLocality": "Lichtentanne",
+    "postalCode": "08115",
+    "addressCountry": "DE"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.6",
+    "reviewCount": "37"
+  }
+}
+</script>
+
 </body>
 </html>
