@@ -802,8 +802,8 @@ nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;widt
 const TOTAL = 6;
 let current = 0;
 let animating = false;
-const DURATION = 0.9;
-const EASE = 'power3.inOut';
+const DURATION = 0.62;
+const EASE = 'power4.out';
 const animated = new Set();
 
 // Panel light/dark config
@@ -1085,11 +1085,8 @@ function handleWheel(e) {
     if (e.deltaY < 0 && !atTop) return;
     if (e.deltaY > 0 && !atBottom) return;
   }
-  clearTimeout(wheelTimeout);
-  wheelTimeout = setTimeout(() => {
-    if (e.deltaY > 0) goTo(current + 1);
-    else goTo(current - 1);
-  }, 40);
+  if (e.deltaY > 0) goTo(current + 1);
+  else goTo(current - 1);
 }
 
 function handleTouchStart(e) { touchStartY = e.touches[0].clientY; }
