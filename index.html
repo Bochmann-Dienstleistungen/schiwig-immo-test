@@ -809,12 +809,31 @@ const animated = new Set();
 // Panel light/dark config
 const panelDark = [true, true, false, false, false, false]; // true = dark panel
 
-/* ─── Slide positions ─── */
+/* ─── Slide positions + pre-hide animated elements ─── */
 function positionSlides() {
   const slides = document.querySelectorAll('.slide');
   slides.forEach((s, i) => {
     gsap.set(s, { yPercent: i === 0 ? 0 : 100 });
   });
+
+  // Panel 1 — bento cards hidden before entry
+  gsap.set('.hbc', { opacity: 0, clipPath: 'inset(10% 10% 10% 10% round 22px)', scale: 0.9 });
+
+  // Panel 2 — portrait clipped, text invisible
+  gsap.set('.lukas-portrait-wrap',        { clipPath: 'inset(0 0 100% 0 round 20px)' });
+  gsap.set('#slide-lukas .section-eyebrow, .lukas-pills, .lukas-p, .lukas-btns, .lukas-stat', { opacity: 0, y: 20 });
+
+  // Panel 3 — header + cards invisible
+  gsap.set('.port-header', { opacity: 0, y: 20 });
+  gsap.set('.port-link',   { opacity: 0, x: 20 });
+  gsap.set('.por-card',    { opacity: 0, y: 48, scale: 0.96 });
+
+  // Panel 4 — split columns hidden
+  gsap.set('.rechner-inner > *:first-child', { opacity: 0, x: -48 });
+  gsap.set('.rechner-result',                { opacity: 0, x:  48 });
+
+  // Panel 5 — hidden
+  gsap.set('.kontakt-inner', { opacity: 0 });
 }
 
 /* ─── Go to slide ─── */
@@ -868,57 +887,35 @@ function updateUI() {
 /* ─── Per-panel enter animations ─── */
 function animatePanel(index) {
   if (index === 1) {
-    // Hero bento — clip-path + scale reveal stagger
-    gsap.fromTo('.hbc', {
-      clipPath: 'inset(10% 10% 10% 10% round 22px)',
-      opacity: 0, scale: 0.90
-    }, {
-      clipPath: 'inset(0% 0% 0% 0% round 18px)',
-      opacity: 1, scale: 1,
-      duration: 0.9, stagger: 0.08, ease: 'expo.out'
-    });
-    // Main image slow reveal scale
-    gsap.from('.hbc-mainimg img', { scale: 1.12, duration: 1.8, ease: 'power3.out' });
-    // Rating count up
+    gsap.to('.hbc', { clipPath: 'inset(0% 0% 0% 0% round 18px)', opacity: 1, scale: 1, duration: 0.85, stagger: 0.08, ease: 'expo.out' });
+    gsap.from('.hbc-mainimg img', { scale: 1.1, duration: 1.6, ease: 'power3.out' });
+    gsap.fromTo('.hbc-portrait-badge', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, delay: 0.55, ease: 'power3.out' });
     animateRating();
-    // Badge slide up
-    gsap.fromTo('.hbc-portrait-badge', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, delay: 0.6, ease: 'power3.out' });
   } else if (index === 2) {
-    // Portrait iris wipe reveal
-    gsap.fromTo('.lukas-portrait-wrap',
-      { clipPath: 'inset(0 0 100% 0 round 20px)' },
-      { clipPath: 'inset(0 0 0% 0 round 20px)', duration: 1.1, ease: 'expo.inOut' }
-    );
-    // Eyebrow from left
-    gsap.fromTo('#slide-lukas .section-eyebrow', { x: -24, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, delay: 0.2, ease: 'power3.out' });
-    // Heading line mask
+    gsap.to('.lukas-portrait-wrap', { clipPath: 'inset(0 0 0% 0 round 20px)', duration: 1.1, ease: 'expo.inOut' });
+    gsap.to('#slide-lukas .section-eyebrow', { x: 0, opacity: 1, duration: 0.6, delay: 0.2, ease: 'power3.out' });
     lineReveal('#slide-lukas .section-h2', 0.35);
-    // Pills + text
-    gsap.fromTo('.lukas-pills', { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, delay: 0.55, ease: 'power3.out' });
-    gsap.fromTo('.lukas-p', { y: 18, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, delay: 0.65, ease: 'power3.out' });
-    gsap.fromTo('.lukas-btns', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, delay: 0.8, ease: 'power3.out' });
-    // Stats cards + count up
-    gsap.fromTo('.lukas-stat', { y: 32, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, duration: 0.65, delay: 0.85, ease: 'power3.out' });
+    gsap.to('.lukas-pills', { y: 0, opacity: 1, duration: 0.55, delay: 0.55, ease: 'power3.out' });
+    gsap.to('.lukas-p',     { y: 0, opacity: 1, stagger: 0.1, delay: 0.65, ease: 'power3.out' });
+    gsap.to('.lukas-btns',  { y: 0, opacity: 1, duration: 0.55, delay: 0.8, ease: 'power3.out' });
+    gsap.to('.lukas-stat',  { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, delay: 0.85, ease: 'power3.out' });
     setTimeout(() => {
       countUp(document.querySelector('.lukas-stat:nth-child(1) .lukas-stat-val'), 37);
       countUp(document.querySelector('.lukas-stat:nth-child(2) .lukas-stat-val'), 11);
       countUp(document.querySelector('.lukas-stat:nth-child(3) .lukas-stat-val'), 100, '', '%');
     }, 900);
   } else if (index === 3) {
-    // Header fades in as unit, then cards cascade up — no line reveal
-    gsap.fromTo('.port-header', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' });
-    gsap.fromTo('.port-link',   { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.5, delay: 0.1, ease: 'power2.out' });
-    gsap.fromTo('.por-card', { opacity: 0, y: 48, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.07, ease: 'power3.out', delay: 0.15 });
+    gsap.to('.port-header', { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' });
+    gsap.to('.port-link',   { opacity: 1, x: 0, duration: 0.5, delay: 0.1, ease: 'power2.out' });
+    gsap.to('.por-card',    { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.07, ease: 'power3.out', delay: 0.15 });
     startInfiniteSlider();
   } else if (index === 4) {
-    // Left column slides in from left, result card from right — split feel
-    gsap.fromTo('.rechner-inner > *:first-child', { x: -48, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: 'power3.out' });
-    gsap.fromTo('.rechner-result',                { x:  48, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, delay: 0.1, ease: 'power3.out' });
+    gsap.to('.rechner-inner > *:first-child', { x: 0, opacity: 1, duration: 0.75, ease: 'power3.out' });
+    gsap.to('.rechner-result',                { x: 0, opacity: 1, duration: 0.75, delay: 0.1, ease: 'power3.out' });
   } else if (index === 5) {
-    // Staggered reveal top-to-bottom, no line mask
-    gsap.fromTo('.kontakt-inner', { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
-    gsap.fromTo('.kontakt-inner > *:first-child > *', { y: 22, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.09, duration: 0.6, ease: 'power3.out', delay: 0.1 });
-    gsap.fromTo('.kontakt-inner > *:last-child',      { y: 32, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, delay: 0.25, ease: 'power3.out' });
+    gsap.to('.kontakt-inner', { opacity: 1, duration: 0.35, ease: 'power2.out' });
+    gsap.fromTo('.kontakt-inner > *:first-child > *', { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, duration: 0.55, ease: 'power3.out', delay: 0.1 });
+    gsap.fromTo('.kontakt-inner > *:last-child',      { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, delay: 0.2, ease: 'power3.out' });
   }
 }
 
