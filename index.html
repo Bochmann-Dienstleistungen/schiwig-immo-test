@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1">
+<link rel="preload" as="image" href="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1">
 <link rel="preload" as="image" href="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1400">
 <link rel="preload" as="image" href="./lukas portrait groß .jpeg">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -450,7 +450,7 @@ nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;widt
   <!-- ═══ PANEL 0 — REVEAL ═══ -->
   <div class="slide" id="slide-reveal">
     <div class="intro-bg">
-      <img src="https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1" alt="" fetchpriority="high">
+      <img src="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1" alt="" fetchpriority="high">
     </div>
     <div class="orbs">
       <div class="orb" style="width:700px;height:700px;background:radial-gradient(circle,rgba(26,63,143,.15),transparent 65%);top:-20%;left:-10%;animation:drift1 14s ease-in-out infinite"></div>
@@ -482,7 +482,7 @@ nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;widt
           </div>
         </div>
         <div class="hbc hbc-mainimg">
-          <img src="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Immobilien Zwickau" fetchpriority="high">
+          <img src="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1" alt="Immobilien Zwickau" fetchpriority="high">
           <div class="hbc-grad"></div>
           <div class="hbc-tag">Zwickau &amp; Region</div>
         </div>
@@ -900,16 +900,41 @@ function goTo(index) {
     }
   }
 
-  // Special crossfade: intro → hero
+  // Special cinematic transition: intro → hero
   if (current === 0 && index === 1) {
+    // Phase 1: Logo letters collapse upward (staggered)
+    gsap.to('.reveal-logo .rl', {
+      y: -28, opacity: 0, stagger: 0.028, duration: 0.32, ease: 'power2.in'
+    });
+    gsap.to('#revealSub, #revealLine, .swipe-hint', {
+      opacity: 0, duration: 0.22, ease: 'power1.in'
+    });
+    // Phase 2: Background image zooms in cinematically (same image as hbc-mainimg)
+    gsap.to('.intro-bg img', {
+      scale: 1.18, duration: DURATION + 0.55, ease: 'power3.in',
+      transformOrigin: 'center 55%'
+    });
+
     gsap.set(to, { yPercent: 0, opacity: 0 });
     const tl = gsap.timeline({ onComplete: () => {
       gsap.set(from, { yPercent: -100, opacity: 1 });
+      // Reset intro bg scale so it's ready if user navigates back
+      gsap.set('.intro-bg img', { scale: 1.04 });
       done();
     }});
-    tl.to(from, { opacity: 0, scale: 1.04, duration: DURATION * 0.65, ease: 'power2.in' }, 0);
-    tl.to(to,   { opacity: 1, duration: DURATION * 0.85, ease: 'power2.out' }, DURATION * 0.2);
+    // Intro fades slightly later — let the zoom breathe first
+    tl.to(from, { opacity: 0, duration: DURATION * 0.62, ease: 'power2.in' }, DURATION * 0.22);
+    // Hero fades in — overlap with intro fade-out for seamless feel
+    tl.to(to,   { opacity: 1, duration: DURATION * 0.82, ease: 'power2.out' }, DURATION * 0.5);
     return;
+  }
+
+  // Back transition: hero → intro — restore intro panel gracefully
+  if (current === 1 && index === 0) {
+    gsap.set('.intro-bg img', { scale: 1.04 });
+    gsap.to('.reveal-logo .rl', { y: 0, opacity: 1, stagger: 0.028, duration: 0.38, ease: 'power3.out', delay: DURATION * 0.52 });
+    gsap.to('#revealSub, .swipe-hint', { opacity: 1, duration: 0.4, delay: DURATION * 0.72 });
+    gsap.to('#revealLine', { width: 140, duration: 0.65, delay: DURATION * 0.82, ease: 'power2.out' });
   }
 
   // Normal yPercent slide for all other panels
@@ -946,9 +971,35 @@ function updateUI() {
 /* ─── Per-panel enter animations ─── */
 function animatePanel(index) {
   if (index === 1) {
-    gsap.to('.hbc', { clipPath: 'inset(0% 0% 0% 0% round 18px)', opacity: 1, scale: 1, duration: 0.85, stagger: 0.08, ease: 'expo.out' });
-    gsap.from('.hbc-mainimg img', { scale: 1.1, duration: 1.6, ease: 'power3.out' });
-    gsap.fromTo('.hbc-portrait-badge', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, delay: 0.55, ease: 'power3.out' });
+    // 1. Main image cell first — visual anchor/continuity from intro zoom
+    gsap.to('.hbc-mainimg', {
+      clipPath: 'inset(0% 0% 0% 0% round 18px)', opacity: 1, scale: 1,
+      duration: 0.5, ease: 'power3.out'
+    });
+    // Subtle scale on the image itself (continuous zoom effect from intro)
+    gsap.fromTo('.hbc-mainimg img',
+      { scale: 1.14 },
+      { scale: 1, duration: 1.9, ease: 'power3.out' }
+    );
+    // 2. Portrait + Rating column (left + right anchors)
+    gsap.to('.hbc-portrait', {
+      clipPath: 'inset(0% 0% 0% 0% round 18px)', opacity: 1, scale: 1,
+      duration: 0.72, delay: 0.16, ease: 'expo.out'
+    });
+    gsap.to('.hbc-rating', {
+      clipPath: 'inset(0% 0% 0% 0% round 18px)', opacity: 1, scale: 1,
+      duration: 0.72, delay: 0.22, ease: 'expo.out'
+    });
+    // 3. Bottom row assembles last
+    gsap.to(['.hbc-headline', '.hbc-cta', '.hbc-loc'], {
+      clipPath: 'inset(0% 0% 0% 0% round 18px)', opacity: 1, scale: 1,
+      duration: 0.65, stagger: 0.07, delay: 0.34, ease: 'expo.out'
+    });
+    // 4. Portrait badge slides up
+    gsap.fromTo('.hbc-portrait-badge',
+      { y: 22, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.55, delay: 0.6, ease: 'power3.out' }
+    );
     animateRating();
   } else if (index === 2) {
     gsap.to('.lukas-portrait-wrap', { clipPath: 'inset(0 0 0% 0 round 20px)', duration: 1.1, ease: 'expo.inOut' });
