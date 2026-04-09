@@ -809,6 +809,7 @@ nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;widt
 const TOTAL = 6;
 let current = 0;
 let animating = false;
+let cooldown = false;
 const DURATION = 0.72;
 const EASE = 'power3.inOut';
 const animated = new Set();
@@ -827,25 +828,30 @@ function positionSlides() {
   gsap.set('.hbc', { opacity: 0, clipPath: 'inset(10% 10% 10% 10% round 22px)', scale: 0.9 });
 
   // Panel 2 — portrait clipped, text invisible
-  gsap.set('.lukas-portrait-wrap',        { clipPath: 'inset(0 0 100% 0 round 20px)' });
-  gsap.set('#slide-lukas .section-eyebrow, .lukas-pills, .lukas-p, .lukas-btns, .lukas-stat', { opacity: 0, y: 20 });
+  gsap.set('.lukas-portrait-wrap',     { clipPath: 'inset(0 0 100% 0 round 20px)' });
+  gsap.set('#slide-lukas .section-eyebrow', { opacity: 0, y: 20 });
+  gsap.set('.lukas-pills',             { opacity: 0, y: 20 });
+  gsap.set('.lukas-p',                 { opacity: 0, y: 20 });
+  gsap.set('.lukas-btns',              { opacity: 0, y: 20 });
+  gsap.set('.lukas-stat',              { opacity: 0, y: 20 });
 
   // Panel 3 — header + cards invisible
   gsap.set('.port-header', { opacity: 0, y: 20 });
   gsap.set('.port-link',   { opacity: 0, x: 20 });
   gsap.set('.por-card',    { opacity: 0, y: 48, scale: 0.96 });
 
-  // Panel 4 — split columns hidden
+  // Panel 4 — both columns hidden
   gsap.set('.rechner-inner > *:first-child', { opacity: 0, x: -48 });
-  gsap.set('.rechner-result',                { opacity: 0, x:  48 });
+  gsap.set('.rechner-inner > *:last-child',  { opacity: 0, x:  48 });
 
-  // Panel 5 — hidden
-  gsap.set('.kontakt-inner', { opacity: 0 });
+  // Panel 5 — children hidden individually (not parent, avoids flash)
+  gsap.set('.kontakt-inner > *:first-child > *', { opacity: 0, y: 22 });
+  gsap.set('.kontakt-inner > *:last-child',       { opacity: 0, y: 28 });
 }
 
 /* ─── Go to slide ─── */
 function goTo(index) {
-  if (animating || index === current || index < 0 || index >= TOTAL) return;
+  if (animating || cooldown || index === current || index < 0 || index >= TOTAL) return;
   animating = true;
 
   const slides = document.querySelectorAll('.slide');
@@ -856,6 +862,8 @@ function goTo(index) {
   function done() {
     current = index;
     animating = false;
+    cooldown = true;
+    setTimeout(() => { cooldown = false; }, 420);
     updateUI();
     if (!animated.has(index)) {
       animated.add(index);
@@ -933,11 +941,10 @@ function animatePanel(index) {
     startInfiniteSlider();
   } else if (index === 4) {
     gsap.to('.rechner-inner > *:first-child', { x: 0, opacity: 1, duration: 0.75, ease: 'power3.out' });
-    gsap.to('.rechner-result',                { x: 0, opacity: 1, duration: 0.75, delay: 0.1, ease: 'power3.out' });
+    gsap.to('.rechner-inner > *:last-child',  { x: 0, opacity: 1, duration: 0.75, delay: 0.12, ease: 'power3.out' });
   } else if (index === 5) {
-    gsap.to('.kontakt-inner', { opacity: 1, duration: 0.35, ease: 'power2.out' });
-    gsap.fromTo('.kontakt-inner > *:first-child > *', { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, duration: 0.55, ease: 'power3.out', delay: 0.1 });
-    gsap.fromTo('.kontakt-inner > *:last-child',      { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, delay: 0.2, ease: 'power3.out' });
+    gsap.to('.kontakt-inner > *:first-child > *', { y: 0, opacity: 1, stagger: 0.08, duration: 0.55, ease: 'power3.out' });
+    gsap.to('.kontakt-inner > *:last-child',       { y: 0, opacity: 1, duration: 0.65, delay: 0.18, ease: 'power3.out' });
   }
 }
 
@@ -1096,19 +1103,19 @@ function buildDots() {
 }
 
 /* ─── Wheel & Touch ─── */
-let wheelTimeout;
 let touchStartY = 0;
 
 function handleWheel(e) {
   const slide = document.querySelectorAll('.slide')[current];
   if (slide && slide.classList.contains('scrollable')) {
-    const atTop = slide.scrollTop === 0;
+    const atTop    = slide.scrollTop === 0;
     const atBottom = slide.scrollTop + slide.clientHeight >= slide.scrollHeight - 2;
-    if (e.deltaY < 0 && !atTop) return;
+    if (e.deltaY < 0 && !atTop)    return;
     if (e.deltaY > 0 && !atBottom) return;
   }
+  e.preventDefault();
   if (e.deltaY > 0) goTo(current + 1);
-  else goTo(current - 1);
+  else              goTo(current - 1);
 }
 
 function handleTouchStart(e) { touchStartY = e.touches[0].clientY; }
