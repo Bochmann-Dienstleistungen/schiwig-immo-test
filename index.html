@@ -108,6 +108,10 @@ nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;widt
 /* PANEL 0 — REVEAL                        */
 /* ═══════════════════════════════════════ */
 #slide-reveal{background:var(--dark);display:flex;align-items:center;justify-content:center;flex-direction:column}
+.intro-bg{position:absolute;inset:0;z-index:0}
+.intro-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;transform:scale(1.04);animation:introDrift 18s ease-in-out infinite alternate}
+.intro-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,14,34,.55) 0%,rgba(6,14,34,.82) 100%)}
+@keyframes introDrift{0%{transform:scale(1.04) translate(0,0)}100%{transform:scale(1.08) translate(-1%,-.5%)}}
 .reveal-logo{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,10vw,8rem);font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#fff;overflow:hidden;display:flex;gap:0}
 .rl{display:inline-block;opacity:0;transform:translateY(60px)}
 .rl.accent{color:var(--gold2)}
@@ -423,6 +427,9 @@ nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;widt
 
   <!-- ═══ PANEL 0 — REVEAL ═══ -->
   <div class="slide" id="slide-reveal">
+    <div class="intro-bg">
+      <img src="https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1" alt="" fetchpriority="high">
+    </div>
     <div class="orbs">
       <div class="orb" style="width:700px;height:700px;background:radial-gradient(circle,rgba(26,63,143,.15),transparent 65%);top:-20%;left:-10%;animation:drift1 14s ease-in-out infinite"></div>
       <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(42,86,198,.1),transparent 65%);bottom:-15%;right:-8%;animation:drift2 10s ease-in-out infinite"></div>
@@ -802,8 +809,8 @@ nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:500;widt
 const TOTAL = 6;
 let current = 0;
 let animating = false;
-const DURATION = 0.62;
-const EASE = 'power4.out';
+const DURATION = 0.72;
+const EASE = 'power3.inOut';
 const animated = new Set();
 
 // Panel light/dark config
@@ -837,30 +844,45 @@ function positionSlides() {
 }
 
 /* ─── Go to slide ─── */
-function goTo(index, dir) {
+function goTo(index) {
   if (animating || index === current || index < 0 || index >= TOTAL) return;
   animating = true;
 
   const slides = document.querySelectorAll('.slide');
   const from = slides[current];
-  const to = slides[index];
+  const to   = slides[index];
   const direction = index > current ? 1 : -1;
 
-  gsap.set(to, { yPercent: direction * 100 });
-  const tl = gsap.timeline({
-    onComplete: () => {
-      gsap.set(from, { yPercent: -direction * 100 });
-      current = index;
-      animating = false;
-      updateUI();
-      if (!animated.has(index)) {
-        animated.add(index);
-        animatePanel(index);
-      }
+  function done() {
+    current = index;
+    animating = false;
+    updateUI();
+    if (!animated.has(index)) {
+      animated.add(index);
+      animatePanel(index);
     }
-  });
+  }
+
+  // Special crossfade: intro → hero
+  if (current === 0 && index === 1) {
+    gsap.set(to, { yPercent: 0, opacity: 0 });
+    const tl = gsap.timeline({ onComplete: () => {
+      gsap.set(from, { yPercent: -100, opacity: 1 });
+      done();
+    }});
+    tl.to(from, { opacity: 0, scale: 1.04, duration: DURATION * 0.65, ease: 'power2.in' }, 0);
+    tl.to(to,   { opacity: 1, duration: DURATION * 0.85, ease: 'power2.out' }, DURATION * 0.2);
+    return;
+  }
+
+  // Normal yPercent slide for all other panels
+  gsap.set(to, { yPercent: direction * 100 });
+  const tl = gsap.timeline({ onComplete: () => {
+    gsap.set(from, { yPercent: -direction * 100 });
+    done();
+  }});
   tl.to(from, { yPercent: -direction * 100, duration: DURATION, ease: EASE }, 0);
-  tl.to(to,   { yPercent: 0, duration: DURATION, ease: EASE }, 0);
+  tl.to(to,   { yPercent: 0,                duration: DURATION, ease: EASE }, 0);
 }
 
 /* ─── Update UI (dots, counter, nav) ─── */
