@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SCHIWIG Immobilien — Lukas Schiwig · Zwickau</title>
 <meta name="description" content="Lukas Schiwig — Ihr Immobilienmakler in Zwickau. Kauf, Verkauf, Bewertung. Persönlich. Kompetent. Transparent.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,300;1,400;1,300&display=swap" rel="stylesheet">
 <style>
 /* ─── TOKENS ─────────────────────────────────────────────────── */
 :root {
@@ -15,7 +18,7 @@
   --cream:  #ede8df;
   --mist:   rgba(237,232,223,0.06);
   --sans:   'Helvetica Neue', Arial, sans-serif;
-  --serif:  Georgia, 'Times New Roman', serif;
+  --serif:  'Playfair Display', Georgia, serif;
 }
 
 /* ─── RESET ──────────────────────────────────────────────────── */
@@ -68,24 +71,43 @@ body::after {
 #hero-video {
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover;
-  opacity: 0; transition: opacity 1.2s ease;
+  opacity: 0; transition: opacity 1.4s ease;
   transform: scale(1.05);
+  /* 4K color grade: slight contrast boost, cool shadows, desaturated */
+  filter: contrast(1.12) saturate(0.78) brightness(0.92);
 }
-#hero-video.on { opacity: 0.55; }
+#hero-video.on { opacity: 1; }
+
+/* Cinematic vignette */
+#hero-vignette {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 110% 90% at 50% 50%,
+    transparent 40%, rgba(6,8,15,0.55) 75%, rgba(6,8,15,0.9) 100%);
+}
 #hero-grad {
   position: absolute; inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(6,8,15,0.3) 0%,
-    rgba(6,8,15,0)   40%,
-    rgba(6,8,15,0.7) 100%
+    rgba(6,8,15,0.5)  0%,
+    rgba(6,8,15,0.05) 30%,
+    rgba(6,8,15,0.05) 60%,
+    rgba(6,8,15,0.85) 100%
   );
-  z-index: 1;
+  z-index: 2;
 }
+/* Letterbox bars — cinematic */
+#hero-sticky::before,
+#hero-sticky::after {
+  content: ''; position: absolute; left: 0; right: 0; z-index: 10;
+  height: clamp(28px, 4.5vh, 56px);
+  background: var(--ink); pointer-events: none;
+}
+#hero-sticky::before { top: 0; }
+#hero-sticky::after  { bottom: 0; }
 
 /* Text stage — positioned in lower half */
 #hero-stage {
-  position: absolute; inset: 0; z-index: 2;
+  position: absolute; inset: 0; z-index: 4;
   display: flex; flex-direction: column;
   justify-content: flex-end;
   padding: 0 6vw 8vh;
@@ -99,12 +121,14 @@ body::after {
 }
 .h-headline {
   font-family: var(--serif);
-  font-size: clamp(4.5rem, 12vw, 13rem);
-  font-weight: 400; line-height: 0.92;
+  font-size: clamp(4rem, 13.5vw, 15rem);
+  font-weight: 300; line-height: 0.9;
+  letter-spacing: -0.01em;
   margin-bottom: 3rem;
   will-change: transform, opacity;
+  text-shadow: 0 2px 40px rgba(6,8,15,0.5);
 }
-.h-headline em { font-style: italic; color: var(--gold-l); }
+.h-headline em { font-style: italic; color: var(--gold-l); font-weight: 300; }
 .h-row {
   display: flex; justify-content: space-between; align-items: flex-end;
   gap: 4rem;
@@ -419,7 +443,18 @@ footer {
 <div id="hero-pin">
   <div id="hero-sticky">
     <video id="hero-video" src="video.mp4" muted playsinline preload="auto" loop></video>
+    <div id="hero-vignette"></div>
     <div id="hero-grad"></div>
+
+    <!-- 4K HUD elements -->
+    <div id="hero-hud-tl" style="position:absolute;top:clamp(36px,6vh,70px);left:3.5rem;z-index:5;pointer-events:none;">
+      <span style="font-size:0.5rem;letter-spacing:0.45em;color:rgba(184,154,106,0.45);text-transform:uppercase;">50°43′N · 12°29′E</span>
+    </div>
+    <div id="hero-hud-tr" style="position:absolute;top:clamp(36px,6vh,70px);right:3.5rem;z-index:5;pointer-events:none;text-align:right;">
+      <span style="font-size:0.5rem;letter-spacing:0.35em;color:rgba(184,154,106,0.45);text-transform:uppercase;">Zwickau · 2026</span>
+    </div>
+    <!-- thin gold line across -->
+    <div id="hero-rule" style="position:absolute;bottom:clamp(36px,4.5vh,56px);left:3.5rem;right:3.5rem;z-index:5;height:1px;background:linear-gradient(to right,transparent,rgba(184,154,106,0.35),transparent);pointer-events:none;"></div>
 
     <div id="hero-stage">
       <p class="h-eyebrow" id="he">Immobilien · Zwickau · Sachsen</p>
