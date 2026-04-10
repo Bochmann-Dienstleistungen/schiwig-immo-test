@@ -10,6 +10,7 @@
 html{scroll-behavior:smooth;}
 body{background:var(--navy);color:var(--white);font-family:'Georgia',serif;overflow-x:hidden;}
 
+/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 3rem;transition:background 0.4s;}
 nav.scrolled{background:rgba(10,15,30,0.92);backdrop-filter:blur(12px);}
 .nav-logo{font-size:1.1rem;letter-spacing:0.25em;color:var(--white);text-decoration:none;}
@@ -18,27 +19,32 @@ nav.scrolled{background:rgba(10,15,30,0.92);backdrop-filter:blur(12px);}
 .nav-links a{font-family:'Helvetica Neue',sans-serif;font-size:0.7rem;letter-spacing:0.2em;color:rgba(245,243,238,0.7);text-decoration:none;text-transform:uppercase;transition:color 0.3s;}
 .nav-links a:hover{color:var(--gold);}
 
-/* SCROLL VIDEO HERO */
-#hero-stage{position:relative;height:600vh;}
-#hero-sticky{position:sticky;top:0;height:100vh;overflow:hidden;background:#060c18;}
-#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.6s;}
+/* ── HERO ── */
+#hero{position:relative;height:100vh;display:flex;align-items:flex-end;overflow:hidden;background:#060c18;}
+
+/* Video as bg — scrubbed by scroll */
+#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s;transform:scale(1.08);transform-origin:center bottom;}
 #hero-video.ready{opacity:1;}
-#hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,15,30,0.5) 0%,rgba(10,15,30,0) 40%,rgba(10,15,30,0) 60%,rgba(10,15,30,0.8) 100%);z-index:1;}
-#hero-text{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 6rem;}
-.hero-eyebrow{font-family:'Helvetica Neue',sans-serif;font-size:0.65rem;letter-spacing:0.35em;color:var(--gold);text-transform:uppercase;margin-bottom:1.5rem;will-change:opacity,transform;}
-.hero-headline{font-size:clamp(2.5rem,6vw,5.5rem);font-weight:400;line-height:1.05;margin-bottom:2rem;max-width:700px;will-change:opacity,transform;}
-.hero-headline em{font-style:italic;color:var(--gold-light);}
-.hero-sub{font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;line-height:1.8;color:rgba(245,243,238,0.65);max-width:440px;margin-bottom:2.5rem;will-change:opacity,transform;}
-.hero-cta{display:inline-flex;align-items:center;gap:1rem;padding:1rem 2rem;border:1px solid var(--gold);color:var(--gold);font-family:'Helvetica Neue',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;will-change:opacity,transform;transition:background 0.3s,color 0.3s;}
-.hero-cta:hover{background:var(--gold);color:var(--navy);}
+#hero-veil{position:absolute;inset:0;background:linear-gradient(to top, rgba(6,12,24,0.85) 0%, rgba(6,12,24,0.2) 50%, rgba(10,15,30,0.55) 100%);z-index:1;}
 
-#scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem;transition:opacity 0.5s;}
-#scroll-hint.hidden{opacity:0;}
-.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,transparent,var(--gold));animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
-.scroll-label{font-family:'Helvetica Neue',sans-serif;font-size:0.55rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;}
+/* Text sits at bottom */
+#hero-content{position:relative;z-index:2;padding:0 6rem 6rem;width:100%;}
+.h-line{overflow:hidden;} /* clip container for line reveal */
+.h-inner{display:block;transform:translateY(110%);} /* starts below */
+.h-eyebrow{font-family:'Helvetica Neue',sans-serif;font-size:0.65rem;letter-spacing:0.4em;color:var(--gold);text-transform:uppercase;margin-bottom:1.6rem;}
+.h-headline{font-size:clamp(3rem,7vw,6.5rem);font-weight:400;line-height:1.0;margin-bottom:2rem;}
+.h-headline em{font-style:italic;color:var(--gold-light);}
+.h-sub{font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;line-height:1.8;color:rgba(245,243,238,0.6);max-width:460px;margin-bottom:2.5rem;}
+.h-cta{display:inline-flex;align-items:center;gap:1rem;padding:1rem 2rem;border:1px solid var(--gold);color:var(--gold);font-family:'Helvetica Neue',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:background 0.3s,color 0.3s;}
+.h-cta:hover{background:var(--gold);color:var(--navy);}
 
-/* CONTENT SECTIONS */
+/* Scroll indicator */
+#scroll-hint{position:absolute;bottom:2.5rem;right:3rem;z-index:3;display:flex;flex-direction:column;align-items:center;gap:0.5rem;}
+.s-line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--gold));animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:0.3;transform:scaleY(0.7)}50%{opacity:1;transform:scaleY(1)}}
+.s-lbl{font-family:'Helvetica Neue',sans-serif;font-size:0.5rem;letter-spacing:0.35em;color:var(--gold);text-transform:uppercase;}
+
+/* ── SCROLL SECTIONS ── */
 .content-section{padding:8rem 6rem;}
 .light{background:var(--white);color:#1a1a1a;}
 .dark{background:var(--navy);color:var(--white);}
@@ -48,7 +54,6 @@ nav.scrolled{background:rgba(10,15,30,0.92);backdrop-filter:blur(12px);}
 .sec-b{font-family:'Helvetica Neue',sans-serif;font-size:0.95rem;line-height:1.8;max-width:520px;}
 .light .sec-b{color:#555;}
 .dark .sec-b{color:rgba(245,243,238,0.6);}
-
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:4rem;}
 .card{padding:2.5rem;border:1px solid rgba(201,169,110,0.2);}
 .card-num{font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);font-family:'Helvetica Neue',sans-serif;margin-bottom:1rem;}
@@ -58,31 +63,28 @@ nav.scrolled{background:rgba(10,15,30,0.92);backdrop-filter:blur(12px);}
 .card-text{font-family:'Helvetica Neue',sans-serif;font-size:0.85rem;line-height:1.7;}
 .light .card-text{color:#666;}
 .dark .card-text{color:rgba(245,243,238,0.55);}
-
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(201,169,110,0.2);margin-top:5rem;}
 .stat{padding:3rem 2rem;border-right:1px solid rgba(201,169,110,0.2);}
 .stat:last-child{border-right:none;}
 .stat-num{font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--gold);line-height:1;}
 .stat-label{font-family:'Helvetica Neue',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;margin-top:0.5rem;color:rgba(245,243,238,0.5);}
-
 .cta-band{background:var(--gold);padding:6rem;display:flex;justify-content:space-between;align-items:center;gap:3rem;}
 .cta-band h2{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:400;color:var(--navy);max-width:500px;line-height:1.1;}
 .cta-btn{display:inline-flex;align-items:center;gap:1rem;padding:1.2rem 2.5rem;background:var(--navy);color:var(--gold);font-family:'Helvetica Neue',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:opacity 0.3s;white-space:nowrap;}
 .cta-btn:hover{opacity:0.8;}
-
 footer{background:#060c18;padding:3rem 6rem;display:flex;justify-content:space-between;align-items:center;}
 .foot-logo{font-size:0.9rem;letter-spacing:0.3em;color:rgba(255,255,255,0.4);}
 .foot-logo span{color:var(--gold);}
 .foot-copy{font-family:'Helvetica Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.25);}
-
-/* WhatsApp */
 .wa-btn{position:fixed;bottom:2rem;right:2rem;z-index:99;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.3);transition:transform 0.2s;}
 .wa-btn:hover{transform:scale(1.1);}
 
+/* reveal utility */
+[data-reveal]{opacity:0;transform:translateY(40px);}
+
 @media(max-width:768px){
-  nav{padding:1.2rem 1.5rem;}
-  .nav-links{display:none;}
-  #hero-text{padding:0 2rem;}
+  nav{padding:1.2rem 1.5rem;}.nav-links{display:none;}
+  #hero-content{padding:0 2rem 4rem;}
   .content-section{padding:5rem 2rem;}
   .cards{grid-template-columns:1fr;}
   .stats-row{grid-template-columns:repeat(2,1fr);}
@@ -102,36 +104,44 @@ footer{background:#060c18;padding:3rem 6rem;display:flex;justify-content:space-b
   </ul>
 </nav>
 
-<div id="hero-stage">
-  <div id="hero-sticky">
-    <video id="hero-video" src="video.mp4" muted playsinline preload="auto"></video>
-    <div id="hero-overlay"></div>
-    <div id="hero-text">
-      <p class="hero-eyebrow" id="t1">Immobilien · Zwickau</p>
-      <h1 class="hero-headline" id="t2">Jede Immobilie hat<br>ihre <em>Geschichte.</em></h1>
-      <p class="hero-sub" id="t3">Lukas Schiwig begleitet Sie beim Kauf, Verkauf und der Bewertung Ihrer Immobilie — persönlich, kompetent und transparent.</p>
-      <a href="#kontakt" class="hero-cta" id="t4">Kostenlose Bewertung anfragen <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></a>
+<!-- HERO: video bg + text reveal from bottom -->
+<div id="hero">
+  <video id="hero-video" src="video.mp4" muted playsinline preload="auto"></video>
+  <div id="hero-veil"></div>
+
+  <div id="hero-content">
+    <div class="h-line h-eyebrow"><span class="h-inner" id="hi0">Immobilien · Zwickau</span></div>
+    <div class="h-headline">
+      <div class="h-line"><span class="h-inner" id="hi1">Jede Immobilie hat</span></div>
+      <div class="h-line"><span class="h-inner" id="hi2">ihre <em>Geschichte.</em></span></div>
     </div>
-    <div id="scroll-hint"><div class="scroll-line"></div><span class="scroll-label">Scrollen</span></div>
+    <div class="h-line h-sub"><span class="h-inner" id="hi3">Lukas Schiwig begleitet Sie beim Kauf, Verkauf und der<br>Bewertung Ihrer Immobilie — persönlich und transparent.</span></div>
+    <div class="h-line" style="margin-top:0.5rem"><span class="h-inner" id="hi4"><a href="#kontakt" class="h-cta">Kostenlose Bewertung anfragen <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></a></span></div>
+  </div>
+
+  <div id="scroll-hint">
+    <div class="s-line"></div>
+    <span class="s-lbl">Scroll</span>
   </div>
 </div>
 
+<!-- CONTENT SECTIONS -->
 <section class="content-section light" id="leistungen">
-  <p class="sec-eye">Leistungen</p>
-  <h2 class="sec-h">Was wir für Sie tun können</h2>
-  <p class="sec-b">Von der ersten Besichtigung bis zur Schlüsselübergabe — wir begleiten Sie durch jeden Schritt mit Expertise und persönlichem Engagement.</p>
+  <p class="sec-eye" data-reveal>Leistungen</p>
+  <h2 class="sec-h" data-reveal>Was wir für Sie tun können</h2>
+  <p class="sec-b" data-reveal>Von der ersten Besichtigung bis zur Schlüsselübergabe — wir begleiten Sie durch jeden Schritt mit Expertise und persönlichem Engagement.</p>
   <div class="cards">
-    <div class="card">
+    <div class="card" data-reveal>
       <p class="card-num">01</p>
       <h3 class="card-title">Immobilienbewertung</h3>
       <p class="card-text">Professionelle Marktpreisanalyse Ihrer Immobilie — kostenlos und unverbindlich, auf Basis aktueller Vergleichsdaten aus der Region Zwickau.</p>
     </div>
-    <div class="card">
+    <div class="card" data-reveal>
       <p class="card-num">02</p>
       <h3 class="card-title">Verkauf & Vermietung</h3>
-      <p class="card-text">Vollumfängliche Vermarktung Ihrer Immobilie: professionelle Fotos, Exposé, Besichtigungen, Käuferprüfung und Vertragsabwicklung.</p>
+      <p class="card-text">Vollumfängliche Vermarktung: professionelle Fotos, Exposé, Besichtigungen, Käuferprüfung und Vertragsabwicklung.</p>
     </div>
-    <div class="card">
+    <div class="card" data-reveal>
       <p class="card-num">03</p>
       <h3 class="card-title">Kauf & Suche</h3>
       <p class="card-text">Wir finden Ihre Wunschimmobilie — auch abseits des öffentlichen Marktes. Mit persönlicher Beratung und regionalem Netzwerk.</p>
@@ -140,18 +150,18 @@ footer{background:#060c18;padding:3rem 6rem;display:flex;justify-content:space-b
 </section>
 
 <section class="content-section dark" id="zahlen">
-  <p class="sec-eye">Zahlen & Fakten</p>
-  <h2 class="sec-h">Erfahrung, die<br><em>zählt.</em></h2>
-  <p class="sec-b">Seit Jahren begleiten wir Menschen in der Region Zwickau bei den wichtigsten Entscheidungen ihres Lebens.</p>
+  <p class="sec-eye" data-reveal>Zahlen & Fakten</p>
+  <h2 class="sec-h" data-reveal>Erfahrung, die<br><em>zählt.</em></h2>
+  <p class="sec-b" data-reveal>Seit Jahren begleiten wir Menschen in der Region Zwickau bei den wichtigsten Entscheidungen ihres Lebens.</p>
   <div class="stats-row">
-    <div class="stat"><div class="stat-num">150+</div><div class="stat-label">Verkaufte Immobilien</div></div>
-    <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Kundenzufriedenheit</div></div>
-    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Jahre Erfahrung</div></div>
-    <div class="stat"><div class="stat-num">∅ 42</div><div class="stat-label">Tage bis Verkauf</div></div>
+    <div class="stat" data-reveal><div class="stat-num">150+</div><div class="stat-label">Verkaufte Immobilien</div></div>
+    <div class="stat" data-reveal><div class="stat-num">98%</div><div class="stat-label">Kundenzufriedenheit</div></div>
+    <div class="stat" data-reveal><div class="stat-num">8</div><div class="stat-label">Jahre Erfahrung</div></div>
+    <div class="stat" data-reveal><div class="stat-num">∅ 42</div><div class="stat-label">Tage bis Verkauf</div></div>
   </div>
 </section>
 
-<div class="cta-band" id="kontakt">
+<div class="cta-band" id="kontakt" data-reveal>
   <h2>Bereit, Ihre Immobilie zu verkaufen oder zu kaufen?</h2>
   <a href="https://wa.me/4915254190819" class="cta-btn">Jetzt Kontakt aufnehmen <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></a>
 </div>
@@ -165,72 +175,85 @@ footer{background:#060c18;padding:3rem 6rem;display:flex;justify-content:space-b
   <svg width="26" height="26" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-const video   = document.getElementById('hero-video');
-const stage   = document.getElementById('hero-stage');
-const hint    = document.getElementById('scroll-hint');
-const nav     = document.getElementById('mainNav');
-const els     = [t1, t2, t3, t4]; // hero text elements
+gsap.registerPlugin(ScrollTrigger);
 
-// ── Easing helpers ──────────────────────────────────────────
-function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
-function mapRange(v, a, b, c, d){ return c + (d - c) * clamp((v - a) / (b - a), 0, 1); }
+const video = document.getElementById('hero-video');
+const nav   = document.getElementById('mainNav');
+const hint  = document.getElementById('scroll-hint');
 
-// ── Show video immediately when ready ───────────────────────
-function showVideo(){
-  video.classList.add('ready');
-  animateText(0); // draw initial state
-}
-video.addEventListener('canplay', showVideo, { once: true });
-setTimeout(showVideo, 2000); // hard fallback
+// ── 1. VIDEO: show on canplay ─────────────────────────────
+video.addEventListener('canplay', () => video.classList.add('ready'), {once:true});
+setTimeout(() => video.classList.add('ready'), 2000);
 
-// ── Per-element scroll animation ────────────────────────────
-// Each element enters offset staggered, exits together
-const ENTER_START = 0.0;   // scroll progress where text starts entering
-const ENTER_END   = 0.18;  // fully visible
-const EXIT_START  = 0.72;  // starts fading out
-const EXIT_END    = 0.88;  // fully gone
+// ── 2. HERO TEXT: lines slide up from below on load ────────
+const heroLines = [hi0, hi1, hi2, hi3, hi4];
+gsap.to(heroLines, {
+  y: '0%',
+  duration: 1.1,
+  ease: 'power3.out',
+  stagger: 0.08,
+  delay: 0.3
+});
 
-function animateText(p) {
-  els.forEach((el, i) => {
-    const delay = i * 0.04; // stagger between elements
-    const enterP = mapRange(p, ENTER_START + delay, ENTER_END + delay, 0, 1);
-    const exitP  = mapRange(p, EXIT_START,           EXIT_END,           0, 1);
+// ── 3. HERO VIDEO: subtle vertical parallax + scale ────────
+// As user scrolls down, video zooms slightly and rises
+gsap.to('#hero-video', {
+  scale: 1.0,           // from 1.08 to 1.0 → zooms OUT = reveals more
+  y: '-8%',             // rises upward = vertical movement
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '#hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: 1
+  }
+});
 
-    const opacity   = clamp(enterP - exitP * enterP, 0, 1);
-    const translateY = (1 - enterP) * 32 + exitP * -24; // slide in from below, exit upward
+// ── 4. HERO TEXT: parallax upward on scroll (exits faster) ─
+gsap.to('#hero-content', {
+  y: '-25%',
+  opacity: 0,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '#hero',
+    start: 'top top',
+    end: '60% top',
+    scrub: true
+  }
+});
 
-    el.style.opacity   = opacity;
-    el.style.transform = `translateY(${translateY}px)`;
-  });
-}
+// ── 5. SCROLL HINT: hide on scroll ────────────────────────
+ScrollTrigger.create({
+  trigger: '#hero',
+  start: '5% top',
+  onEnter: () => hint.style.opacity = '0',
+  onLeaveBack: () => hint.style.opacity = '1'
+});
 
-// ── Scroll → video scrub ─────────────────────────────────────
-let ticking = false;
-let lastP   = -1;
+// ── 6. NAV scroll background ──────────────────────────────
+ScrollTrigger.create({
+  start: '60px top',
+  onEnter: () => nav.classList.add('scrolled'),
+  onLeaveBack: () => nav.classList.remove('scrolled')
+});
 
-window.addEventListener('scroll', () => {
-  if (ticking) return;
-  ticking = true;
-  requestAnimationFrame(() => {
-    const scrolled = window.scrollY - stage.offsetTop;
-    const total    = stage.offsetHeight - window.innerHeight;
-    const p        = clamp(scrolled / total, 0, 1);
-
-    // Only update video if progress changed meaningfully
-    if (Math.abs(p - lastP) > 0.002 && video.readyState >= 2) {
-      video.currentTime = p * video.duration;
-      lastP = p;
+// ── 7. SECTION REVEALS: elements slide up on scroll ────────
+gsap.utils.toArray('[data-reveal]').forEach((el, i) => {
+  gsap.to(el, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 88%',
+      toggleActions: 'play none none none'
     }
-
-    animateText(p);
-
-    hint.classList.toggle('hidden', scrolled > 80);
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-
-    ticking = false;
   });
-}, { passive: true });
+});
 </script>
 </body>
 </html>
