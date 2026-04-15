@@ -2,751 +2,2370 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCHIWIG Immobilien — Lukas Schiwig · Zwickau</title>
-<meta name="description" content="Lukas Schiwig — Ihr Immobilienmakler in Zwickau. Kauf, Verkauf, Bewertung. Persönlich. Kompetent. Transparent.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Schiwig Immobilien – Ihr Makler in Zwickau | Kaufen, Verkaufen, Mieten</title>
+<meta name="description" content="Schiwig Immobilien – Ihr persönlicher Immobilienmakler in Zwickau. 150+ vermittelte Objekte, 4.9 Sterne, 12 Jahre Erfahrung. Jetzt kostenlose Beratung anfragen.">
+<meta property="og:title" content="Schiwig Immobilien – Immobilienmakler Zwickau">
+<meta property="og:description" content="Persönlich. Lokal. Ergebnisorientiert. Ihr Immobilienmakler in Zwickau mit 12 Jahren Erfahrung.">
+<meta property="og:image" content="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1200">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1a3f8f">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>🏡</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,300;1,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
-/* ─── TOKENS ─────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════
+   CUSTOM PROPERTIES
+═══════════════════════════════════════════ */
 :root {
-  --ink:    #06080f;
-  --navy:   #0a0f1e;
-  --gold:   #b89a6a;
-  --gold-l: #d4b87a;
-  --cream:  #ede8df;
-  --mist:   rgba(237,232,223,0.06);
-  --sans:   'Helvetica Neue', Arial, sans-serif;
-  --serif:  'Playfair Display', Georgia, serif;
+  --color-bg: #ffffff;
+  --color-dark: #060e22;
+  --color-mid: #0a1932;
+  --color-accent: #1a3f8f;
+  --color-accent-light: #2a56c6;
+  --color-surface: #f4f7fd;
+  --color-text: #0a1a3c;
+  --color-text-muted: #6b7ea8;
+  --fs-hero: clamp(4.5rem, 11vw, 11rem);
+  --fs-h2: clamp(2.2rem, 5vw, 4.5rem);
+  --fs-h3: clamp(1.4rem, 2.5vw, 2rem);
+  --fs-body: clamp(0.95rem, 1.3vw, 1.05rem);
+  --fs-label: 0.72rem;
+  --ls-label: 0.3em;
+  --max-w: 1280px;
+  --pad-x: clamp(1.5rem, 5vw, 5rem);
 }
 
-/* ─── RESET ──────────────────────────────────────────────────── */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { font-size:16px; }
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
 body {
-  background: var(--ink);
-  color: var(--cream);
-  font-family: var(--sans);
-  overflow-x: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-
-/* ─── FILM GRAIN ─────────────────────────────────────────────── */
 body::after {
   content: '';
-  position: fixed; inset: 0;
-  z-index: 9998; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0.028;
-  mix-blend-mode: overlay;
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 8000;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; height: auto; }
+button { font-family: inherit; border: none; background: none; }
+section { padding: clamp(5rem, 10vw, 10rem) 0; }
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════════ */
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--color-dark);
+  line-height: 1.1;
+}
+h1 { font-size: var(--fs-hero); font-weight: 300; letter-spacing: -0.02em; }
+h2 { font-size: var(--fs-h2); font-weight: 300; letter-spacing: -0.01em; }
+h3 { font-size: var(--fs-h3); font-weight: 400; }
+p { font-size: var(--fs-body); color: var(--color-text-muted); line-height: 1.75; }
+
+.section-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--color-accent);
+  display: block;
+  margin-bottom: 1.2rem;
 }
 
-/* ─── NAV ────────────────────────────────────────────────────── */
-#nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 2rem 3.5rem;
-  mix-blend-mode: difference;
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 1.4rem var(--pad-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
 }
 .nav-logo {
-  font-family: var(--serif); font-size: 0.95rem;
-  letter-spacing: 0.2em; color: #fff; text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  gap: 2px;
 }
-.nav-logo b { font-weight: 400; font-style: italic; }
-.nav-links { display: flex; gap: 3rem; list-style: none; }
+.nav-logo-main {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #fff;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+.nav-logo-sub {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  transition: color 0.3s ease;
+}
+nav.scrolled .nav-logo-main { color: var(--color-dark); }
+nav.scrolled .nav-logo-sub { color: var(--color-text-muted); }
+
+.nav-links {
+  display: flex;
+  gap: 2.2rem;
+  list-style: none;
+}
 .nav-links a {
-  font-size: 0.65rem; letter-spacing: 0.22em;
-  color: rgba(255,255,255,0.65); text-decoration: none;
-  text-transform: uppercase; transition: color 0.3s;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  transition: color 0.25s ease;
+  position: relative;
 }
-.nav-links a:hover { color: #fff; }
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.nav-links a:hover::after { transform: scaleX(1); }
+nav.scrolled .nav-links a { color: var(--color-text); }
+nav.scrolled .nav-links a:hover { color: var(--color-accent); }
 
-/* ─── HERO ───────────────────────────────────────────────────── */
-#hero-pin    { position: relative; height: 350vh; }
-#hero-sticky {
-  position: sticky; top: 0; height: 100vh; overflow: hidden;
-  background: var(--ink);
+.nav-cta {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-dark);
+  background: var(--color-accent);
+  padding: 0.7rem 1.6rem;
+  border-radius: 2px;
+  transition: background 0.25s ease, transform 0.2s ease;
 }
-#hero-img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center 40%;
+.nav-cta:hover { background: var(--color-accent-light); transform: translateY(-1px); }
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.nav-hamburger span {
   display: block;
-  transform-origin: center center;
-  transform: scale(1.0);
-  will-change: transform;
+  width: 24px;
+  height: 1.5px;
+  background: #fff;
+  transition: background 0.3s;
 }
+nav.scrolled .nav-hamburger span { background: var(--color-dark); }
 
-/* Cinematic vignette */
-#hero-vignette {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: radial-gradient(ellipse 110% 90% at 50% 50%,
-    transparent 40%, rgba(6,8,15,0.55) 75%, rgba(6,8,15,0.9) 100%);
+/* Mobile Nav */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--color-dark);
+  z-index: 999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
-#hero-grad {
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(6,8,15,0.5)  0%,
-    rgba(6,8,15,0.05) 30%,
-    rgba(6,8,15,0.05) 60%,
-    rgba(6,8,15,0.85) 100%
-  );
-  z-index: 2;
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--color-bg);
+  letter-spacing: 0.05em;
 }
-/* Letterbox bars — cinematic */
-#hero-sticky::before,
-#hero-sticky::after {
-  content: ''; position: absolute; left: 0; right: 0; z-index: 10;
-  height: clamp(28px, 4.5vh, 56px);
-  background: var(--ink); pointer-events: none;
+.mobile-nav a:hover { color: var(--color-accent); }
+.mobile-nav-close {
+  position: absolute;
+  top: 1.5rem; right: var(--pad-x);
+  font-size: 1.8rem;
+  color: rgba(255,255,255,0.6);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
 }
-#hero-sticky::before { top: 0; }
-#hero-sticky::after  { bottom: 0; }
+.mobile-nav-close:hover { color: #fff; }
 
-/* Text stage — positioned in lower half */
-#hero-stage {
-  position: absolute; inset: 0; z-index: 4;
-  display: flex; flex-direction: column;
-  justify-content: flex-end;
-  padding: 0 6vw 8vh;
-  pointer-events: none;
-}
-.h-eyebrow {
-  font-size: 0.6rem; letter-spacing: 0.45em;
-  color: var(--gold); text-transform: uppercase;
-  margin-bottom: 2rem;
-  will-change: transform, opacity;
-}
-.h-headline {
-  font-family: var(--serif);
-  font-size: clamp(4rem, 13.5vw, 15rem);
-  font-weight: 300; line-height: 0.9;
-  letter-spacing: -0.01em;
-  margin-bottom: 3rem;
-  will-change: transform, opacity;
-  text-shadow: 0 2px 40px rgba(6,8,15,0.5);
-}
-.h-headline em { font-style: italic; color: var(--gold-l); font-weight: 300; }
-.h-row {
-  display: flex; justify-content: space-between; align-items: flex-end;
-  gap: 4rem;
-  will-change: transform, opacity;
-}
-.h-sub {
-  font-size: 0.88rem; line-height: 1.85;
-  color: rgba(237,232,223,0.55); max-width: 360px;
-}
-.h-cta-wrap { flex-shrink: 0; pointer-events: all; }
-.h-cta {
-  display: inline-flex; align-items: center; gap: 1.2rem;
-  padding: 1.1rem 2.2rem;
-  border: 1px solid rgba(184,154,106,0.6);
-  color: var(--gold);
-  font-size: 0.65rem; letter-spacing: 0.22em;
-  text-transform: uppercase; text-decoration: none;
-  transition: background 0.35s, color 0.35s, border-color 0.35s;
-}
-.h-cta:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
-
-/* scroll line — center bottom */
-#scroll-indicator {
-  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-  z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-}
-.si-line {
-  width: 1px; height: 64px;
-  background: linear-gradient(to bottom, transparent, var(--gold));
-  animation: drip 2.2s ease-in-out infinite;
-}
-@keyframes drip { 0%,100%{transform:scaleY(0.5);opacity:0.3} 55%{transform:scaleY(1);opacity:1} }
-.si-lbl {
-  font-size: 0.5rem; letter-spacing: 0.4em;
-  color: var(--gold); text-transform: uppercase;
-}
-
-/* ─── MARQUEE ────────────────────────────────────────────────── */
-#marquee {
-  overflow: hidden; border-top: 1px solid var(--mist);
-  border-bottom: 1px solid var(--mist);
-  padding: 1.2rem 0; background: var(--ink);
-}
-.marquee-track {
-  display: flex; gap: 0; white-space: nowrap;
-  animation: marquee 28s linear infinite;
-}
-.marquee-track span {
-  font-size: 0.65rem; letter-spacing: 0.35em;
-  text-transform: uppercase; color: rgba(237,232,223,0.25);
-  padding: 0 3rem;
-}
-.marquee-track span b { color: var(--gold); font-weight: 400; }
-@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-/* ─── ABOUT ──────────────────────────────────────────────────── */
-#about {
-  display: grid; grid-template-columns: 1fr 1fr;
-  min-height: 90vh; background: var(--ink);
-}
-.about-img {
-  position: relative; overflow: hidden;
-  clip-path: inset(100% 0 0 0); /* revealed bottom-up by GSAP */
-}
-.about-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.about-text {
-  padding: 8rem 7vw;
-  display: flex; flex-direction: column; justify-content: center;
-}
-.sec-label {
-  font-size: 0.6rem; letter-spacing: 0.4em;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 2.5rem; opacity: 0; transform: translateY(20px);
-}
-.sec-title {
-  font-family: var(--serif);
-  font-size: clamp(2.2rem, 4.5vw, 4.5rem);
-  font-weight: 400; line-height: 1.05;
-  margin-bottom: 2.5rem; opacity: 0; transform: translateY(30px);
-}
-.sec-title em { font-style: italic; color: var(--gold-l); }
-.sec-body {
-  font-size: 0.92rem; line-height: 1.9;
-  color: rgba(237,232,223,0.55); max-width: 440px;
-  margin-bottom: 3rem; opacity: 0; transform: translateY(20px);
-}
-.sec-rule {
-  width: 0; height: 1px; background: var(--gold);
-  margin-bottom: 3rem;
-}
-.about-detail {
-  font-size: 0.65rem; letter-spacing: 0.2em;
-  color: rgba(237,232,223,0.35); text-transform: uppercase;
-  opacity: 0;
-}
-
-/* ─── SERVICES ───────────────────────────────────────────────── */
-#services {
-  padding: 10rem 6vw; background: var(--navy);
-  border-top: 1px solid var(--mist);
-}
-.services-head { margin-bottom: 7rem; }
-.services-grid {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  gap: 1px; background: var(--mist);
-}
-.service-item {
-  padding: 3.5rem; background: var(--navy);
-  opacity: 0; transform: translateY(40px);
-}
-.svc-num {
-  font-size: 0.55rem; letter-spacing: 0.4em;
-  color: var(--gold); text-transform: uppercase; margin-bottom: 2.5rem;
-  display: flex; align-items: center; gap: 1rem;
-}
-.svc-num::after { content: ''; flex: 1; height: 1px; background: rgba(184,154,106,0.2); }
-.svc-title {
-  font-family: var(--serif); font-size: clamp(1.4rem, 2.2vw, 2rem);
-  font-weight: 400; margin-bottom: 1.5rem; line-height: 1.1;
-}
-.svc-body {
-  font-size: 0.82rem; line-height: 1.85;
-  color: rgba(237,232,223,0.45);
-}
-
-/* ─── STATS ──────────────────────────────────────────────────── */
-#stats {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  background: var(--ink);
-}
-.stat-cell {
-  padding: 6rem 3.5rem; border-right: 1px solid var(--mist);
-  opacity: 0; transform: translateY(30px);
-}
-.stat-cell:last-child { border-right: none; }
-.stat-num {
-  font-family: var(--serif);
-  font-size: clamp(3.5rem, 6vw, 6rem);
-  font-weight: 300; line-height: 1;
-  color: var(--gold); display: block; margin-bottom: 0.8rem;
-  font-variant-numeric: tabular-nums;
-}
-.stat-label {
-  font-size: 0.6rem; letter-spacing: 0.3em;
-  text-transform: uppercase; color: rgba(237,232,223,0.3);
-}
-
-/* ─── PROPERTIES (horizontal scroll) ────────────────────────── */
-#properties {
-  padding: 10rem 0 10rem 6vw;
-  background: var(--navy);
-  border-top: 1px solid var(--mist);
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 640px;
   overflow: hidden;
 }
-.props-head { padding-right: 6vw; margin-bottom: 5rem; }
-.props-track {
-  display: flex; gap: 2rem;
-  width: max-content;
-  padding-right: 6vw;
+.hero-bg-image {
+  position: absolute;
+  inset: -20% 0 -20% 0;
+  /* ░░ PLACEHOLDER: luxury property photo ░░ */
+  background-image: url('https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&w=1920');
+  background-size: cover;
+  background-position: center 60%;
+  z-index: 1;
+  will-change: transform;
 }
-.prop-card {
-  width: 28vw; min-width: 320px; flex-shrink: 0;
-  opacity: 0; transform: translateY(40px);
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  /* Maison-style: heavy bottom-left, lighter top-right */
+  background:
+    linear-gradient(to top, rgba(4,8,20,0.72) 0%, rgba(4,8,20,0.3) 55%, transparent 100%),
+    linear-gradient(to right, rgba(4,8,20,0.65) 0%, rgba(4,8,20,0.15) 60%, transparent 100%);
+  z-index: 2;
 }
-.prop-img {
-  width: 100%; aspect-ratio: 4/3; overflow: hidden; margin-bottom: 1.5rem;
-  background: #111;
+.hero-content {
+  position: absolute;
+  left: var(--pad-x);
+  bottom: 10vh;           /* bottom-left like Maison */
+  z-index: 3;
+  max-width: min(900px, 80vw);
 }
-.prop-img img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  transform: scale(1.06); transition: transform 0.7s ease;
+
+/* Tiny brand label above headline */
+.hero-brand-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.8rem;
 }
-.prop-card:hover .prop-img img { transform: scale(1); }
-.prop-type {
-  font-size: 0.58rem; letter-spacing: 0.35em;
-  color: var(--gold); text-transform: uppercase; margin-bottom: 0.7rem;
+.hero-brand-label::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: rgba(255,255,255,0.35);
 }
-.prop-name {
-  font-family: var(--serif); font-size: 1.3rem; font-weight: 400;
+
+/* Headline: two lines, different weights like "The Art of / Inhabiting" */
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: var(--fs-hero);
+  font-weight: 300;
+  color: #fff;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  margin-bottom: 2.4rem;
+  overflow: hidden;
+}
+.hero-title-line1 {
+  display: block;
+  /* lighter, smaller — like "The Art of" */
+  opacity: 0.88;
+}
+.hero-title-line2 {
+  display: block;
+  font-style: italic;
+  font-weight: 300;
+  /* the dominant word — like "Inhabiting" */
+}
+
+/* Subtitle below headline: "CURATED REAL ESTATE · MUNICH" */
+.hero-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 2.8rem;
+}
+.hero-subtitle::before {
+  content: '';
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 1.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+/* Minimal CTA — text link with arrow, Maison style */
+.hero-cta-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  padding-bottom: 0.2rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+.hero-cta-text:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
+.hero-cta-arrow {
+  display: inline-block;
+  transition: transform 0.2s;
+}
+.hero-cta-text:hover .hero-cta-arrow { transform: translateX(4px); }
+.btn-primary {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-dark);
+  background: var(--color-accent);
+  padding: 0.85rem 2rem;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+.btn-primary:hover { background: var(--color-accent-light); transform: translateY(-2px); }
+.btn-outline {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.45);
+  padding: 0.85rem 2rem;
+  border-radius: 2px;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+.btn-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+/* Property card */
+.hero-property-card {
+  position: absolute;
+  bottom: 8%; right: 6%;
+  background: rgba(248,246,242,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.6);
+  padding: 1.4rem 1.8rem;
+  border-radius: 4px;
+  min-width: 260px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+  z-index: 4;
+  will-change: transform;
+}
+.property-card-tag {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.property-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 0.25rem;
+}
+.property-card-address {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.9rem;
+}
+.property-card-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+.property-card-meta span {
+  font-size: 0.75rem;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.property-card-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding-top: 0.7rem;
+}
+
+/* Hero scroll indicator */
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hero-scroll span {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.hero-scroll-line {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  50% { transform: scaleY(0.4); opacity: 0.3; }
+}
+
+/* ═══════════════════════════════════════════
+   WHY / STATS SECTION
+═══════════════════════════════════════════ */
+.why-section {
+  background: var(--color-bg);
+}
+.why-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 6vw, 7rem);
+  align-items: center;
+}
+.why-text h2 { margin-bottom: 1.4rem; }
+.why-text p { margin-bottom: 1.2rem; }
+.why-text p:last-of-type { margin-bottom: 0; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5px;
+  background: var(--color-surface);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.stat-item {
+  background: var(--color-bg);
+  padding: 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+  transition: background 0.3s ease;
+}
+.stat-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 1.8rem; right: 1.8rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+.stat-item:hover::after { transform: scaleX(1); }
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300;
+  color: var(--color-dark);
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.stat-number { display: inline-block; }
+.stat-suffix {
+  font-size: 0.55em;
+  color: var(--color-accent);
+  font-weight: 400;
+}
+.stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ═══════════════════════════════════════════
+   GALLERY
+═══════════════════════════════════════════ */
+.gallery-section {
+  background: var(--color-surface);
+  padding-bottom: 0;
+}
+.gallery-section .section-label { text-align: center; }
+.gallery-heading { text-align: center; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-rows: 340px 260px;
+  gap: 6px;
+  max-height: 610px;
+}
+.gallery-item {
+  overflow: hidden;
+  position: relative;
+}
+.gallery-item:first-child {
+  grid-row: 1 / 3;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.gallery-item:hover img { transform: scale(1.04); }
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15,15,13,0.5), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+/* ═══════════════════════════════════════════
+   PROCESS
+═══════════════════════════════════════════ */
+.process-section {
+  background: var(--color-dark);
+  color: #fff;
+}
+.process-section .section-label { color: var(--color-accent-light); }
+.process-heading { color: #fff; margin-bottom: clamp(3rem, 6vw, 5rem); }
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  position: relative;
+}
+.process-steps::before {
+  content: '';
+  position: absolute;
+  top: 2rem;
+  left: calc(100% / 6);
+  right: calc(100% / 6);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(26,63,143,0.5), transparent);
+}
+.process-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+.process-step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: rgba(26,63,143,0.25);
+  line-height: 1;
+  position: absolute;
+  top: -1rem;
+  right: 0;
+}
+.process-step-icon {
+  width: 4rem;
+  height: 4rem;
+  border: 1px solid rgba(26,63,143,0.4);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--color-accent);
+  flex-shrink: 0;
+  transition: border-color 0.3s, background 0.3s;
+}
+.process-step:hover .process-step-icon {
+  border-color: var(--color-accent);
+  background: rgba(26,63,143,0.08);
+}
+.process-step h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  color: #fff;
+  font-weight: 400;
+  margin-top: 0.4rem;
+}
+.process-step p { color: rgba(255,255,255,0.55); font-size: 0.92rem; }
+
+/* ═══════════════════════════════════════════
+   DUAL SECTIONS (Verkäufer / Käufer)
+═══════════════════════════════════════════ */
+.dual-section {
+  background: var(--color-bg);
+}
+.dual-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 600px;
+}
+.dual-inner.reverse { direction: rtl; }
+.dual-inner.reverse > * { direction: ltr; }
+.dual-image {
+  position: relative;
+  overflow: hidden;
+}
+.dual-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+.dual-image:hover img { transform: scale(1.04); }
+.dual-text {
+  padding: clamp(3rem, 6vw, 7rem) clamp(2.5rem, 5vw, 6rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--color-surface);
+}
+.dual-text h2 { margin-bottom: 1.2rem; }
+.dual-text p { margin-bottom: 1.4rem; }
+.dual-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
+}
+.dual-list li {
+  font-size: 0.88rem;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.dual-list li::before {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+.btn-dark {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--color-dark);
+  padding: 0.85rem 2rem;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  transition: background 0.25s ease;
+}
+.btn-dark:hover { background: var(--color-mid); }
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════ */
+.testimonials-section {
+  background: var(--color-dark);
+  overflow: hidden;
+}
+.testimonials-section .section-label { color: var(--color-accent-light); }
+.testimonials-heading { color: #fff; text-align: center; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.testimonials-wrapper { overflow: hidden; }
+.testimonials-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: hidden;
+  padding: 20px 0 40px;
+  cursor: grab;
+}
+.testi-card {
+  flex-shrink: 0;
+  width: 360px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color 0.3s ease;
+}
+.testi-card:hover { border-color: rgba(26,63,143,0.35); }
+.testi-stars {
+  display: flex;
+  gap: 3px;
+  color: var(--color-accent);
+  font-size: 0.85rem;
+}
+.testi-text {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.75;
+  flex: 1;
+}
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 1rem;
+}
+.testi-author img {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.testi-author-info { display: flex; flex-direction: column; gap: 2px; }
+.testi-name {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.9);
+  font-weight: 500;
+}
+.testi-location {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+
+/* ═══════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════ */
+.services-section {
+  background: var(--color-bg);
+}
+.services-heading { text-align: center; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.service-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  aspect-ratio: 3/4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.service-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.service-card-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+.service-card:hover .service-card-bg img { transform: scale(1.06); }
+.service-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15,15,13,0.88) 0%, rgba(15,15,13,0.2) 60%, transparent 100%);
+  z-index: 2;
+}
+.service-card-content {
+  position: relative;
+  z-index: 3;
+  padding: 2rem 1.8rem;
+}
+.service-card-icon {
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+}
+.service-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.service-card p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+}
+.service-card-link {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: gap 0.2s;
+}
+.service-card:hover .service-card-link { gap: 0.8rem; }
+.service-card-link::after { content: '→'; }
+
+/* ═══════════════════════════════════════════
+   SUPPORT
+═══════════════════════════════════════════ */
+.support-section {
+  background: var(--color-surface);
+}
+.support-heading { text-align: center; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.support-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.support-card {
+  background: var(--color-bg);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 4px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.support-card:hover {
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  transform: translateY(-4px);
+}
+.support-icon {
+  width: 3rem; height: 3rem;
+  background: rgba(26,63,143,0.1);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+.support-card h3 {
+  font-size: 1.3rem;
+  color: var(--color-dark);
+}
+.support-card p { font-size: 0.88rem; }
+
+/* ═══════════════════════════════════════════
+   BLOG
+═══════════════════════════════════════════ */
+.blog-section {
+  background: var(--color-bg);
+}
+.blog-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.blog-see-all {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: gap 0.2s;
+}
+.blog-see-all:hover { gap: 0.7rem; }
+.blog-see-all::after { content: '→'; }
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.blog-card-image {
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  border-radius: 3px;
+}
+.blog-card-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.blog-card:hover .blog-card-image img { transform: scale(1.05); }
+.blog-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.blog-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.blog-date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+.blog-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--color-dark);
+  line-height: 1.35;
+  transition: color 0.2s;
+}
+.blog-card:hover h3 { color: var(--color-accent); }
+.blog-card p { font-size: 0.85rem; line-height: 1.65; }
+.blog-read-more {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.2s, gap 0.2s;
+}
+.blog-read-more::after { content: '→'; }
+.blog-card:hover .blog-read-more { color: var(--color-accent); gap: 0.7rem; }
+
+/* ═══════════════════════════════════════════
+   CTA SECTION
+═══════════════════════════════════════════ */
+.cta-section {
+  background: var(--color-dark);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(26,63,143,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-section .section-label { color: var(--color-accent-light); }
+.cta-section h2 { color: #fff; margin-bottom: 1.2rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+.cta-section p { color: rgba(255,255,255,0.55); margin-bottom: 2.5rem; }
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-accent-outline {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-light);
+  border: 1px solid rgba(26,63,143,0.5);
+  padding: 0.85rem 2rem;
+  border-radius: 2px;
+  transition: border-color 0.25s, background 0.25s;
+}
+.btn-accent-outline:hover { border-color: var(--color-accent); background: rgba(26,63,143,0.07); }
+
+/* Contact Form */
+.cta-form {
+  max-width: 540px;
+  margin: 2.5rem auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+.cta-form input,
+.cta-form textarea,
+.cta-form select {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 0.85rem 1.1rem;
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.25s;
+  width: 100%;
+}
+.cta-form input::placeholder,
+.cta-form textarea::placeholder { color: rgba(255,255,255,0.3); }
+.cta-form input:focus,
+.cta-form textarea:focus { border-color: rgba(26,63,143,0.6); }
+.cta-form textarea { grid-column: 1 / -1; resize: vertical; min-height: 100px; }
+.cta-form .form-full { grid-column: 1 / -1; }
+.cta-form button[type="submit"] {
+  grid-column: 1 / -1;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-dark);
+  background: var(--color-accent);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.cta-form button[type="submit"]:hover { background: var(--color-accent-light); }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  background: #0A0A09;
+  color: rgba(255,255,255,0.55);
+}
+.footer-top {
+  padding: clamp(4rem, 8vw, 7rem) 0 clamp(2.5rem, 5vw, 4rem);
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #fff;
+  text-transform: uppercase;
+}
+.footer-tagline {
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.footer-brand p { font-size: 0.85rem; line-height: 1.7; }
+.footer-socials {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+}
+.footer-social {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  transition: border-color 0.2s, color 0.2s;
+}
+.footer-social:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.footer-col h4 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 1.2rem;
+  font-weight: 500;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.footer-links a {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--color-accent); }
+.footer-contact-item {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+  align-items: flex-start;
+}
+.footer-contact-item span:first-child { flex-shrink: 0; }
+.footer-contact-item a { color: rgba(255,255,255,0.45); transition: color 0.2s; }
+.footer-contact-item a:hover { color: var(--color-accent); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 1.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.footer-bottom p { font-size: 0.75rem; }
+.footer-bottom-links {
+  display: flex;
+  gap: 1.5rem;
+}
+.footer-bottom-links a {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+  transition: color 0.2s;
+}
+.footer-bottom-links a:hover { color: var(--color-accent); }
+
+/* ═══════════════════════════════════════════
+   WHATSAPP FLOAT
+═══════════════════════════════════════════ */
+.wa-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 7000;
+  width: 52px; height: 52px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.wa-float:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 8px 30px rgba(37,211,102,0.45);
+}
+.wa-float svg { width: 26px; height: 26px; fill: #fff; }
+
+/* ═══════════════════════════════════════════
+   COOKIE BANNER
+═══════════════════════════════════════════ */
+.cookie-banner {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 7500;
+  background: var(--color-dark);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 1rem var(--pad-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  transform: translateY(0);
+  transition: transform 0.4s ease;
+}
+.cookie-banner.hidden { transform: translateY(100%); }
+.cookie-banner p {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.55);
+  flex: 1;
+}
+.cookie-banner a { color: var(--color-accent-light); text-decoration: underline; }
+.cookie-btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-dark);
+  background: var(--color-accent);
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.cookie-btn:hover { background: var(--color-accent-light); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  .hero-content { left: 5%; max-width: 90vw; }
+  .hero-property-card { display: none; }
+  .why-inner { grid-template-columns: 1fr; }
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    max-height: none;
+  }
+  .gallery-item:first-child { grid-row: auto; }
+  .process-steps { grid-template-columns: 1fr; }
+  .process-steps::before { display: none; }
+  .dual-inner, .dual-inner.reverse { grid-template-columns: 1fr; direction: ltr; }
+  .dual-image { aspect-ratio: 16/9; }
+  .services-grid { grid-template-columns: 1fr; }
+  .support-grid { grid-template-columns: 1fr; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .cta-form { grid-template-columns: 1fr; }
+  .cta-form input, .cta-form textarea, .cta-form select, .cta-form button[type="submit"] { grid-column: 1; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .footer-top { grid-template-columns: 1fr; }
+  .hero-title { font-size: clamp(2.8rem, 11vw, 4rem); }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+
+/* ═══════════════════════════════════════════
+   WERTRECHNER
+═══════════════════════════════════════════ */
+.rechner-section {
+  background: var(--color-surface);
+  padding: clamp(5rem, 10vw, 10rem) 0;
+}
+.rechner-section .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+.rechner-intro .section-label { margin-bottom: 1.2rem; }
+.rechner-form { display: flex; flex-direction: column; gap: 1.6rem; }
+.rcl-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.6rem;
+}
+.rcl-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.rcl-pill {
+  padding: 0.5rem 1.1rem;
+  border-radius: 100px;
+  border: 1px solid rgba(26,63,143,0.2);
+  background: #fff;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: 'Outfit', sans-serif;
+}
+.rcl-pill:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.rcl-pill.active { border-color: var(--color-accent); background: var(--color-accent); color: #fff; }
+.rcl-slider-wrap { display: flex; flex-direction: column; gap: 0.4rem; }
+.rcl-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: rgba(26,63,143,0.15);
+  border-radius: 2px;
+  outline: none;
+}
+.rcl-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  cursor: pointer;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+.rcl-readout {
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  font-weight: 500;
+}
+.rcl-options { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.rcl-option {
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  border: 1px solid rgba(26,63,143,0.2);
+  background: #fff;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: 'Outfit', sans-serif;
+}
+.rcl-option:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.rcl-option.active { border-color: var(--color-accent); background: rgba(26,63,143,0.08); color: var(--color-accent); font-weight: 500; }
+.rechner-result {
+  background: var(--color-dark);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: sticky;
+  top: 100px;
+}
+.rr-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  display: block;
+  margin-bottom: 1rem;
+}
+.rr-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1;
   margin-bottom: 0.4rem;
 }
-.prop-loc {
-  font-size: 0.78rem; color: rgba(237,232,223,0.35);
+.rr-range {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 1.4rem;
 }
-
-/* ─── QUOTE ──────────────────────────────────────────────────── */
-#quote {
-  padding: 12rem 6vw;
-  background: var(--ink);
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center; border-top: 1px solid var(--mist);
+.rr-divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(255,255,255,0.15);
+  margin: 1.4rem auto;
 }
-.quote-mark {
-  font-family: var(--serif); font-size: 8rem; line-height: 0.5;
-  color: rgba(184,154,106,0.12); margin-bottom: 3rem; display: block;
-  opacity: 0;
+.rr-note {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+  margin-bottom: 1.8rem;
 }
-.quote-text {
-  font-family: var(--serif);
-  font-size: clamp(1.8rem, 3.5vw, 3.2rem);
-  font-weight: 400; line-height: 1.25;
-  max-width: 800px; margin-bottom: 3rem;
-  color: var(--cream);
-  opacity: 0; transform: translateY(30px);
+.rr-cta {
+  display: inline-block;
+  width: 100%;
+  padding: 1rem;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background 0.25s;
+  cursor: pointer;
 }
-.quote-text em { font-style: italic; color: var(--gold-l); }
-.quote-attr {
-  font-size: 0.6rem; letter-spacing: 0.35em;
-  color: rgba(237,232,223,0.3); text-transform: uppercase;
-  opacity: 0;
+.rr-cta:hover { background: var(--color-accent-light); }
+.rr-disclaimer {
+  font-size: 0.62rem;
+  color: var(--color-text-muted);
+  margin-top: 0.8rem;
+  text-align: center;
 }
-
-/* ─── CTA BAND ───────────────────────────────────────────────── */
-#cta-band {
-  background: var(--gold);
-  padding: 8rem 6vw;
-  display: flex; justify-content: space-between; align-items: center; gap: 4rem;
-  overflow: hidden; position: relative;
-}
-.cta-bg-text {
-  position: absolute; right: -2rem; top: 50%; transform: translateY(-50%);
-  font-family: var(--serif); font-size: 18vw; font-weight: 400;
-  color: rgba(6,8,15,0.07); white-space: nowrap; pointer-events: none;
-  line-height: 1;
-}
-.cta-h {
-  font-family: var(--serif);
-  font-size: clamp(2rem, 4vw, 4rem);
-  font-weight: 400; line-height: 1.05;
-  color: var(--ink); max-width: 520px; position: relative; z-index: 1;
-}
-.cta-btn {
-  position: relative; z-index: 1; flex-shrink: 0;
-  display: inline-flex; align-items: center; gap: 1.2rem;
-  padding: 1.3rem 2.8rem;
-  background: var(--ink); color: var(--gold);
-  font-size: 0.65rem; letter-spacing: 0.22em;
-  text-transform: uppercase; text-decoration: none;
-  transition: opacity 0.3s;
-  white-space: nowrap;
-}
-.cta-btn:hover { opacity: 0.8; }
-
-/* ─── FOOTER ─────────────────────────────────────────────────── */
-footer {
-  background: var(--ink); padding: 4rem 3.5rem;
-  border-top: 1px solid var(--mist);
-  display: grid; grid-template-columns: 1fr auto 1fr;
-  align-items: center; gap: 2rem;
-}
-.foot-logo {
-  font-family: var(--serif); font-size: 0.95rem;
-  letter-spacing: 0.2em; color: rgba(237,232,223,0.3);
-}
-.foot-logo b { font-style: italic; font-weight: 400; }
-.foot-links { display: flex; gap: 2.5rem; justify-content: center; }
-.foot-links a {
-  font-size: 0.58rem; letter-spacing: 0.25em;
-  color: rgba(237,232,223,0.2); text-decoration: none;
-  text-transform: uppercase; transition: color 0.3s;
-}
-.foot-links a:hover { color: var(--gold); }
-.foot-copy {
-  font-size: 0.6rem; letter-spacing: 0.15em;
-  color: rgba(237,232,223,0.15); text-align: right;
-}
-
-/* ─── WHATSAPP ───────────────────────────────────────────────── */
-.wa {
-  position: fixed; bottom: 2.5rem; right: 2.5rem; z-index: 199;
-  width: 50px; height: 50px; border-radius: 50%;
-  background: #25D366; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  transition: transform 0.25s; text-decoration: none;
-}
-.wa:hover { transform: scale(1.1); }
-
-/* ─── RESPONSIVE ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  #nav { padding: 1.5rem 1.8rem; }
-  .nav-links { display: none; }
-  #hero-stage { padding: 0 2rem 5vh; }
-  .h-headline { font-size: clamp(3rem, 14vw, 6rem); }
-  .h-row { flex-direction: column; align-items: flex-start; gap: 2rem; }
-  #about { grid-template-columns: 1fr; }
-  .about-img { height: 60vw; }
-  .about-text { padding: 5rem 2rem; }
-  .services-grid { grid-template-columns: 1fr; }
-  #stats { grid-template-columns: 1fr 1fr; }
-  .stat-cell:nth-child(2) { border-right: none; }
-  .prop-card { width: 80vw; }
-  #cta-band { flex-direction: column; padding: 6rem 2rem; }
-  footer { grid-template-columns: 1fr; text-align: center; }
-  .foot-copy { text-align: center; }
+  .rechner-section .container { grid-template-columns: 1fr; gap: 3rem; }
+  .rechner-result { position: static; }
 }
 </style>
 </head>
 <body>
 
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+  <a href="#kaufen">Kaufen</a>
+  <a href="#verkaufen">Verkaufen</a>
+  <a href="#mieten">Mieten</a>
+  <a href="#ueber-uns">Über uns</a>
+  <a href="#blog">Blog</a>
+  <a href="#kontakt" style="color:var(--color-accent);">Beratung anfragen</a>
+</div>
+
 <!-- NAV -->
-<nav id="nav">
-  <a href="#" class="nav-logo">SCH<b>i</b>W<b>i</b>G <span style="color:rgba(255,255,255,0.3);margin:0 0.5em">—</span> Immobilien</a>
+<nav id="mainNav">
+  <a href="#" class="nav-logo" aria-label="Schiwig Immobilien">
+    <span class="nav-logo-main">Schiwig</span>
+    <span class="nav-logo-sub">Immobilien · Zwickau</span>
+  </a>
   <ul class="nav-links">
-    <li><a href="#about">Über uns</a></li>
-    <li><a href="#services">Leistungen</a></li>
-    <li><a href="#properties">Objekte</a></li>
-    <li><a href="#cta-band">Kontakt</a></li>
+    <li><a href="#kaufen">Kaufen</a></li>
+    <li><a href="#verkaufen">Verkaufen</a></li>
+    <li><a href="#mieten">Mieten</a></li>
+    <li><a href="#ueber-uns">Über uns</a></li>
+    <li><a href="#bewertung">Wertrechner</a></li>
+    <li><a href="selbstauskunft.html">Selbstauskunft</a></li>
   </ul>
+  <a href="#kontakt" class="nav-cta">Beratung anfragen</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- ── HERO ── -->
-<div id="hero-pin">
-  <div id="hero-sticky">
-    <img id="hero-img" src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=2560" alt="Luxusimmobilie" fetchpriority="high">
-    <div id="hero-vignette"></div>
-    <div id="hero-grad"></div>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg-image"></div>
+  <div class="hero-overlay"></div>
 
-    <!-- 4K HUD elements -->
-    <div id="hero-hud-tl" style="position:absolute;top:clamp(36px,6vh,70px);left:3.5rem;z-index:5;pointer-events:none;">
-      <span style="font-size:0.5rem;letter-spacing:0.45em;color:rgba(184,154,106,0.45);text-transform:uppercase;">50°43′N · 12°29′E</span>
-    </div>
-    <div id="hero-hud-tr" style="position:absolute;top:clamp(36px,6vh,70px);right:3.5rem;z-index:5;pointer-events:none;text-align:right;">
-      <span style="font-size:0.5rem;letter-spacing:0.35em;color:rgba(184,154,106,0.45);text-transform:uppercase;">Zwickau · 2026</span>
-    </div>
-    <!-- thin gold line across -->
-    <div id="hero-rule" style="position:absolute;bottom:clamp(36px,4.5vh,56px);left:3.5rem;right:3.5rem;z-index:5;height:1px;background:linear-gradient(to right,transparent,rgba(184,154,106,0.35),transparent);pointer-events:none;"></div>
+  <div class="hero-content">
+    <!-- Brand label — like "Maison" above headline -->
+    <div class="hero-brand-label">Schiwig Immobilien</div>
 
-    <div id="hero-stage">
-      <p class="h-eyebrow" id="he">Immobilien · Zwickau · Sachsen</p>
-      <h1 class="h-headline" id="hh1">Jede Immobilie</h1>
-      <h1 class="h-headline" id="hh2" style="padding-left:10vw">hat ihre <em>Geschichte.</em></h1>
-      <div class="h-row" id="hrow">
-        <p class="h-sub">Lukas Schiwig begleitet Sie beim Kauf, Verkauf und der Bewertung Ihrer Immobilie — persönlich, kompetent und mit tiefem Verständnis für die Region.</p>
-        <div class="h-cta-wrap">
-          <a href="#cta-band" class="h-cta">Kostenlose Bewertung <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></a>
+    <!-- Two-line headline: "The Art of / Inhabiting" structure -->
+    <h1 class="hero-title">
+      <span class="hero-title-line1">Die Kunst,</span>
+      <span class="hero-title-line2">zu wohnen.</span>
+    </h1>
+
+    <!-- "CURATED REAL ESTATE · MUNICH" equivalent -->
+    <div class="hero-subtitle">Immobilienmakler · Zwickau</div>
+
+    <!-- Minimal CTAs -->
+    <div class="hero-ctas">
+      <a href="#kontakt" class="hero-cta-text">
+        Beratung anfragen <span class="hero-cta-arrow">→</span>
+      </a>
+      <a href="#leistungen" class="hero-cta-text">
+        Unsere Leistungen <span class="hero-cta-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Floating property card — glassmorphism -->
+  <div class="hero-property-card">
+    <span class="property-card-tag">Neu eingestellt</span>
+    <div class="property-card-title">Einfamilienhaus in Toplage</div>
+    <div class="property-card-address">Zwickau-Eckersbach, Sachsen</div>
+    <div class="property-card-meta">
+      <span>142 m²</span>
+      <span>4 Zi.</span>
+      <span>615 m² Grund</span>
+    </div>
+    <div class="property-card-price">329.000 €</div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scrollen</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- WHY / STATS -->
+<section class="why-section" id="ueber-uns">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-text fade-up">
+        <span class="section-label">Warum Schiwig Immobilien</span>
+        <h2 class="reveal-heading">Mehr als ein<br><em>Makler.</em></h2>
+        <p>Wir glauben, dass jede Immobilientransaktion mehr ist als ein Geschäft. Hinter jedem Kauf, jedem Verkauf, jeder Vermietung steht ein Mensch mit echten Träumen – und die verdienen echte Aufmerksamkeit.</p>
+        <p>Lukas Schiwig begleitet Sie persönlich von der ersten Besichtigung bis zur Schlüsselübergabe. Keine anonymen Callcenter, keine überhasteten Abschlüsse. Nur ehrliche Beratung, die wirklich zu Ihrer Situation passt.</p>
+        <p>In Zwickau und der Region verwurzelt – mit dem lokalen Wissen, das den Unterschied macht.</p>
+      </div>
+      <div class="stats-grid fade-up">
+        <div class="stat-item">
+          <div class="stat-value">
+            <span class="stat-number" data-count="150">0</span><span class="stat-suffix">+</span>
+          </div>
+          <div class="stat-label">Vermittelte Objekte</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">
+            <span class="stat-number" data-count="4" data-decimal=".9">4</span><span class="stat-suffix">★</span>
+          </div>
+          <div class="stat-label">Google-Bewertung</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">
+            <span class="stat-number" data-count="12">0</span><span class="stat-suffix"> J.</span>
+          </div>
+          <div class="stat-label">Jahre Erfahrung</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">
+            <span class="stat-number" data-count="98">0</span><span class="stat-suffix">%</span>
+          </div>
+          <div class="stat-label">Weiterempfehlung</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="referenzen">
+  <div class="container" style="max-width:100%;padding:0 var(--pad-x) clamp(3rem,5vw,5rem)">
+    <span class="section-label" style="text-align:center;display:block">Immobilien-Portfolio</span>
+    <h2 class="reveal-heading gallery-heading">Ausgewählte<br><em>Objekte</em></h2>
+  </div>
+  <div class="gallery-grid" style="max-width:var(--max-w);margin:0 auto;padding:0 var(--pad-x)">
+    <div class="gallery-item fade-up">
+      <img src="https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Modernes Einfamilienhaus" loading="lazy">
+      <div class="gallery-item-overlay"></div>
+    </div>
+    <div class="gallery-item fade-up">
+      <img src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Elegante Wohnküche" loading="lazy">
+      <div class="gallery-item-overlay"></div>
+    </div>
+    <div class="gallery-item fade-up">
+      <img src="https://images.pexels.com/photos/1643384/pexels-photo-1643384.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Stadthaus mit Garten" loading="lazy">
+      <div class="gallery-item-overlay"></div>
+    </div>
+    <div class="gallery-item fade-up">
+      <img src="https://images.pexels.com/photos/2121121/pexels-photo-2121121.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Penthouse Aussicht" loading="lazy">
+      <div class="gallery-item-overlay"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section">
+  <div class="container">
+    <span class="section-label">So arbeiten wir</span>
+    <h2 class="reveal-heading process-heading">Ihr Weg zum<br><em style="font-style:italic">Traumobjekt</em></h2>
+    <div class="process-steps">
+      <div class="process-step fade-up">
+        <span class="process-step-num">01</span>
+        <div class="process-step-icon">🤝</div>
+        <h3>Persönliches Gespräch</h3>
+        <p>Wir nehmen uns Zeit für Sie. In einem kostenlosen Erstgespräch klären wir Ihre Wünsche, Vorstellungen und Möglichkeiten – ohne Druck, ohne Verpflichtung.</p>
+      </div>
+      <div class="process-step fade-up">
+        <span class="process-step-num">02</span>
+        <div class="process-step-icon">📋</div>
+        <h3>Klare Strategie</h3>
+        <p>Auf Basis Ihrer Ziele erarbeiten wir gemeinsam einen maßgeschneiderten Plan. Marktanalyse, Preisfindung und Zeitrahmen werden transparent kommuniziert.</p>
+      </div>
+      <div class="process-step fade-up">
+        <span class="process-step-num">03</span>
+        <div class="process-step-icon">🏡</div>
+        <h3>Erfolgreicher Abschluss</h3>
+        <p>Wir begleiten Sie bis zum Notartermin und darüber hinaus. Auf den Schlüssel folgt unsere Nachbetreuung – denn zufriedene Kunden sind unser bestes Aushängeschild.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DUAL: Verkäufer -->
+<section class="dual-section" id="verkaufen">
+  <div class="dual-inner">
+    <div class="dual-image fade-up">
+      <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Immobilie verkaufen in Zwickau" loading="lazy">
+    </div>
+    <div class="dual-text">
+      <span class="section-label">Für Verkäufer</span>
+      <h2 class="reveal-heading">Ihr Verkauf.<br><em>Unser Einsatz.</em></h2>
+      <p>Wir kennen den Zwickauer Markt wie kein anderer. Mit fundierter Marktanalyse, professioneller Präsentation und einem bewährten Netzwerk erzielen wir den bestmöglichen Preis für Ihre Immobilie.</p>
+      <ul class="dual-list">
+        <li>Kostenlose Marktwertermittlung</li>
+        <li>Professionelle Fotos & 360°-Tour</li>
+        <li>Gezieltes Marketing auf allen Kanälen</li>
+        <li>Rechtssichere Vertragsabwicklung</li>
+        <li>Persönliche Begleitung bis zur Übergabe</li>
+      </ul>
+      <a href="#kontakt" class="btn-dark">Jetzt Bewertung anfragen</a>
+    </div>
+  </div>
+</section>
+
+<!-- DUAL: Käufer -->
+<section class="dual-section" id="kaufen" style="background:var(--color-surface)">
+  <div class="dual-inner reverse">
+    <div class="dual-image fade-up">
+      <img src="https://images.pexels.com/photos/1370704/pexels-photo-1370704.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Immobilie kaufen in Zwickau" loading="lazy">
+    </div>
+    <div class="dual-text" style="background:var(--color-bg)">
+      <span class="section-label">Für Käufer</span>
+      <h2 class="reveal-heading">Ihr neues<br><em>Zuhause wartet.</em></h2>
+      <p>Ob Erstkauf, Kapitalanlage oder Umzug – wir suchen gemeinsam mit Ihnen das Objekt, das wirklich zu Ihnen passt. Dabei behalten wir Ihr Budget stets im Blick und sparen Ihnen wertvolle Zeit.</p>
+      <ul class="dual-list">
+        <li>Exklusive Off-Market-Objekte</li>
+        <li>Ausführliche Besichtigungsbegleitung</li>
+        <li>Finanzierungsberatung & Netzwerk</li>
+        <li>Prüfung aller Unterlagen</li>
+        <li>Unterstützung bei der Preisverhandlung</li>
+      </ul>
+      <a href="#kontakt" class="btn-dark">Suchanfrage stellen</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="container">
+    <span class="section-label" style="text-align:center;display:block">Was unsere Kunden sagen</span>
+    <h2 class="reveal-heading testimonials-heading">Echte Erfahrungen.<br><em>Echte Ergebnisse.</em></h2>
+  </div>
+  <div class="testimonials-wrapper">
+    <div class="testimonials-track" id="testimonialsTrack">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Lukas hat unser Haus in nur drei Wochen verkauft – und das zum Wunschpreis. Die Betreuung war von Anfang bis Ende erstklassig. Kein einziger Moment, in dem wir uns allein gelassen gefühlt haben."</p>
+        <div class="testi-author">
+          <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=80" alt="Klaus M." loading="lazy">
+          <div class="testi-author-info">
+            <span class="testi-name">Klaus M.</span>
+            <span class="testi-location">Zwickau</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Als Erstkäufer hatte ich unzählige Fragen – Lukas hat sie alle geduldig beantwortet. Er hat uns das perfekte Reihenhaus in Glauchau gefunden und durch den gesamten Kaufprozess begleitet. Absolut empfehlenswert!"</p>
+        <div class="testi-author">
+          <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=80" alt="Sandra K." loading="lazy">
+          <div class="testi-author-info">
+            <span class="testi-name">Sandra K.</span>
+            <span class="testi-location">Glauchau</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Ich habe meine Eigentumswohnung über Schiwig Immobilien vermietet. Schnelle Reaktion, sorgfältige Mieterauswahl, alles professionell dokumentiert. Ich bin sehr zufrieden und komme beim nächsten Objekt gerne wieder."</p>
+        <div class="testi-author">
+          <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=80" alt="Thomas R." loading="lazy">
+          <div class="testi-author-info">
+            <span class="testi-name">Thomas R.</span>
+            <span class="testi-location">Werdau</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Nach dem Tod meines Vaters mussten wir das Familienhaus verkaufen – eine emotional belastende Situation. Lukas hat uns mit großem Einfühlungsvermögen begleitet und alles reibungslos abgewickelt. Herzlichen Dank!"</p>
+        <div class="testi-author">
+          <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=80" alt="Martina H." loading="lazy">
+          <div class="testi-author-info">
+            <span class="testi-name">Martina H.</span>
+            <span class="testi-location">Lichtentanne</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Kompetent, ehrlich und immer erreichbar. Schiwig Immobilien hat genau das geliefert, was versprochen wurde – und noch mehr. Der Verkauf lief in Rekordzeit ab. Definitiv 5 Sterne verdient!"</p>
+        <div class="testi-author">
+          <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=80" alt="Bernd &amp; Anke W." loading="lazy">
+          <div class="testi-author-info">
+            <span class="testi-name">Bernd &amp; Anke W.</span>
+            <span class="testi-location">Crimmitschau</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section" id="leistungen">
+  <div class="container">
+    <span class="section-label" style="text-align:center;display:block">Unsere Leistungen</span>
+    <h2 class="reveal-heading services-heading">Was wir für Sie<br><em>tun können</em></h2>
+    <div class="services-grid">
+      <div class="service-card" id="kaufen-card">
+        <div class="service-card-bg">
+          <img src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Immobilie kaufen" loading="lazy">
+        </div>
+        <div class="service-card-overlay"></div>
+        <div class="service-card-content">
+          <div class="service-card-icon">🏠</div>
+          <h3>Kaufen</h3>
+          <p>Wir begleiten Sie beim Erwerb Ihrer Traumimmobilie – von der Suche bis zur Schlüsselübergabe.</p>
+          <span class="service-card-link">Mehr erfahren</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-bg">
+          <img src="https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Immobilie verkaufen" loading="lazy">
+        </div>
+        <div class="service-card-overlay"></div>
+        <div class="service-card-content">
+          <div class="service-card-icon">💰</div>
+          <h3>Verkaufen</h3>
+          <p>Wir erzielen für Ihre Immobilie den bestmöglichen Preis – diskret, schnell und professionell.</p>
+          <span class="service-card-link">Mehr erfahren</span>
+        </div>
+      </div>
+      <div class="service-card" id="mieten-card">
+        <div class="service-card-bg">
+          <img src="https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Immobilie mieten" loading="lazy">
+        </div>
+        <div class="service-card-overlay"></div>
+        <div class="service-card-content">
+          <div class="service-card-icon">🔑</div>
+          <h3>Mieten</h3>
+          <p>Ihr neues Zuhause zur Miete in Zwickau und Umgebung – wir finden das passende Objekt für Sie.</p>
+          <span class="service-card-link">Mehr erfahren</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WERTRECHNER -->
+<section class="rechner-section" id="bewertung">
+  <div class="container">
+    <div class="rechner-intro">
+      <span class="section-label">Immobilienbewertung</span>
+      <h2 class="reveal-heading" style="margin-top:1.2rem;margin-bottom:1rem">Was ist Ihre<br><em>Immobilie wert?</em></h2>
+      <p style="color:var(--color-text-muted);font-size:var(--fs-body);line-height:1.8;margin-bottom:2.5rem;max-width:42ch">Erhalten Sie in Sekunden eine erste Einschätzung des Marktwerts – basierend auf aktuellen Daten aus der Region Zwickau.</p>
+
+      <div class="rechner-form">
+        <div>
+          <span class="rcl-label">Immobilientyp</span>
+          <div class="rcl-pills">
+            <span class="rcl-pill active" data-type="haus">Haus</span>
+            <span class="rcl-pill" data-type="wohnung">Wohnung</span>
+            <span class="rcl-pill" data-type="mfh">Mehrfamilienhaus</span>
+            <span class="rcl-pill" data-type="grundstueck">Grundstück</span>
+          </div>
+        </div>
+        <div>
+          <span class="rcl-label">Wohnfläche</span>
+          <div class="rcl-slider-wrap">
+            <input type="range" class="rcl-slider" id="areaSlider" min="40" max="400" value="120" step="5">
+            <span class="rcl-readout" id="areaReadout">120 m²</span>
+          </div>
+        </div>
+        <div>
+          <span class="rcl-label">Baujahr</span>
+          <div class="rcl-options">
+            <span class="rcl-option active" data-year="alt">vor 1970</span>
+            <span class="rcl-option" data-year="mid">1970–1990</span>
+            <span class="rcl-option" data-year="neu">1990–2010</span>
+            <span class="rcl-option" data-year="modern">ab 2010</span>
+          </div>
+        </div>
+        <div>
+          <span class="rcl-label">Zustand</span>
+          <div class="rcl-options">
+            <span class="rcl-option active" data-cond="renovierungsbedarf">Renovierungsbedarf</span>
+            <span class="rcl-option" data-cond="gepflegt">Gepflegt</span>
+            <span class="rcl-option" data-cond="modernisiert">Modernisiert</span>
+            <span class="rcl-option" data-cond="neubau">Neubauqualität</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div id="scroll-indicator">
-      <div class="si-line"></div>
-      <span class="si-lbl">Scroll</span>
-    </div>
-  </div>
-</div>
-
-<!-- ── MARQUEE ── -->
-<div id="marquee">
-  <div class="marquee-track" id="mtrack"></div>
-</div>
-
-<!-- ── ABOUT ── -->
-<section id="about">
-  <div class="about-img" id="about-img">
-    <img src="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Lukas Schiwig" loading="lazy">
-  </div>
-  <div class="about-text">
-    <p class="sec-label" id="al">Über Lukas Schiwig</p>
-    <div class="sec-rule" id="ar"></div>
-    <h2 class="sec-title" id="at">Makler mit<br><em>Leidenschaft</em><br>für Zwickau.</h2>
-    <p class="sec-body" id="ab">Seit über acht Jahren begleite ich Menschen bei einer der wichtigsten Entscheidungen ihres Lebens. Was mich antreibt: echte Beratung statt bloße Vermittlung. Ich kenne jeden Stadtteil, jeden Markt — und nehme mir die Zeit, die Ihre Immobilie verdient.</p>
-    <p class="about-detail" id="ad">Zugelassener Immobilienmakler · IHK Zwickau · Seit 2016</p>
-  </div>
-</section>
-
-<!-- ── SERVICES ── -->
-<section id="services">
-  <div class="services-head">
-    <p class="sec-label" id="sl">Leistungen</p>
-    <h2 class="sec-title" id="st" style="max-width:500px">Was wir für<br>Sie <em>tun können.</em></h2>
-  </div>
-  <div class="services-grid">
-    <div class="service-item">
-      <p class="svc-num">01 — Bewertung</p>
-      <h3 class="svc-title">Immobilien&shy;bewertung</h3>
-      <p class="svc-body">Fundierte Marktpreisanalyse auf Basis aktueller Vergleichsdaten. Kostenlos und unverbindlich — damit Sie wissen, was Ihre Immobilie wirklich wert ist.</p>
-    </div>
-    <div class="service-item">
-      <p class="svc-num">02 — Verkauf</p>
-      <h3 class="svc-title">Verkauf & Vermarktung</h3>
-      <p class="svc-body">Professionelle Fotografie, hochwertiges Exposé, gezielte Käuferansprache. Wir verkaufen Ihre Immobilie zum bestmöglichen Preis — diskret oder öffentlich.</p>
-    </div>
-    <div class="service-item">
-      <p class="svc-num">03 — Kauf</p>
-      <h3 class="svc-title">Kauf & Beratung</h3>
-      <p class="svc-body">Wir finden Ihre Wunschimmobilie — auch abseits des öffentlichen Marktes. Mit persönlicher Begleitung von der Suche bis zur Schlüsselübergabe.</p>
+    <div>
+      <div class="rechner-result fade-up">
+        <span class="rr-eyebrow">Ihr Immobilienwert</span>
+        <div class="rr-value" id="rrValue">192.000 €</div>
+        <div class="rr-divider"></div>
+        <p class="rr-note">Eine erste Orientierung auf Basis aktueller Vergleichsdaten für Zwickau und Umgebung. Der tatsächlich erzielbare Preis hängt von weiteren Faktoren ab — lassen Sie uns sprechen.</p>
+        <a href="#kontakt" class="rr-cta">Kostenloses Bewertungsgespräch</a>
+      </div>
+      <p class="rr-disclaimer">Unverbindliche Orientierungsschätzung · Kostenlose Präzisionsbewertung auf Anfrage</p>
     </div>
   </div>
 </section>
 
-<!-- ── STATS ── -->
-<div id="stats">
-  <div class="stat-cell">
-    <span class="stat-num" data-count="150" data-suffix="+">0</span>
-    <span class="stat-label">Verkaufte Immobilien</span>
-  </div>
-  <div class="stat-cell">
-    <span class="stat-num" data-count="98" data-suffix="%">0</span>
-    <span class="stat-label">Kundenzufriedenheit</span>
-  </div>
-  <div class="stat-cell">
-    <span class="stat-num" data-count="8" data-suffix=" Jahre">0</span>
-    <span class="stat-label">Marktexpertise</span>
-  </div>
-  <div class="stat-cell">
-    <span class="stat-num" data-count="42" data-prefix="∅ " data-suffix=" Tage">0</span>
-    <span class="stat-label">Bis zum Verkauf</span>
-  </div>
-</div>
-
-<!-- ── PROPERTIES ── -->
-<section id="properties">
-  <div class="props-head">
-    <p class="sec-label" id="pl">Aktuelle Objekte</p>
-    <h2 class="sec-title" id="pt">Ausgewählte<br><em>Immobilien.</em></h2>
-  </div>
-  <div class="props-track" id="props-track">
-    <div class="prop-card">
-      <div class="prop-img"><img src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"></div>
-      <p class="prop-type">Einfamilienhaus · Kauf</p>
-      <p class="prop-name">Stadtvillla in Eckersbach</p>
-      <p class="prop-loc">Zwickau · 245 m² · auf Anfrage</p>
-    </div>
-    <div class="prop-card">
-      <div class="prop-img"><img src="https://images.pexels.com/photos/1974596/pexels-photo-1974596.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"></div>
-      <p class="prop-type">Eigentumswohnung · Kauf</p>
-      <p class="prop-name">Altbau-Loft Innenstadt</p>
-      <p class="prop-loc">Zwickau Mitte · 118 m² · auf Anfrage</p>
-    </div>
-    <div class="prop-card">
-      <div class="prop-img"><img src="https://images.pexels.com/photos/2121121/pexels-photo-2121121.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"></div>
-      <p class="prop-type">Mehrfamilienhaus · Invest</p>
-      <p class="prop-name">Renditeobjekt Marienthal</p>
-      <p class="prop-loc">Zwickau · 6 Einheiten · auf Anfrage</p>
-    </div>
-    <div class="prop-card">
-      <div class="prop-img"><img src="https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" loading="lazy"></div>
-      <p class="prop-type">Einfamilienhaus · Miete</p>
-      <p class="prop-name">Neubau mit Garten</p>
-      <p class="prop-loc">Zwickau-Planitz · 160 m² · auf Anfrage</p>
+<!-- SUPPORT -->
+<section class="support-section">
+  <div class="container">
+    <span class="section-label" style="text-align:center;display:block">Rundum-Betreuung</span>
+    <h2 class="reveal-heading support-heading" style="text-align:center;margin-bottom:clamp(2.5rem,5vw,4rem)">Wir begleiten Sie<br><em>bei jedem Schritt</em></h2>
+    <div class="support-grid">
+      <div class="support-card fade-up">
+        <div class="support-icon">📊</div>
+        <h3>Marktanalyse & Bewertung</h3>
+        <p>Unsere fundierte Marktkenntnis sichert Ihnen eine realistische und faire Wertermittlung Ihrer Immobilie – kostenfrei und unverbindlich.</p>
+      </div>
+      <div class="support-card fade-up">
+        <div class="support-icon">📸</div>
+        <h3>Professionelle Vermarktung</h3>
+        <p>Hochwertige Fotografie, ansprechende Exposés und zielgerichtetes Online-Marketing auf allen relevanten Plattformen inklusive.</p>
+      </div>
+      <div class="support-card fade-up">
+        <div class="support-icon">⚖️</div>
+        <h3>Rechtliche Sicherheit</h3>
+        <p>Von der Vertragsgestaltung bis zum Notartermin – wir stellen sicher, dass alles rechtssicher abläuft und Sie keine bösen Überraschungen erleben.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ── QUOTE ── -->
-<section id="quote">
-  <span class="quote-mark" id="qm">"</span>
-  <p class="quote-text" id="qt">Eine Immobilie zu verkaufen bedeutet nicht, ein Objekt zu inserieren — es bedeutet, das <em>Vertrauen</em> eines Menschen zu tragen.</p>
-  <p class="quote-attr" id="qa">— Lukas Schiwig, Inhaber SCHIWIG Immobilien</p>
+<!-- BLOG -->
+<section class="blog-section" id="blog">
+  <div class="container">
+    <div class="blog-header">
+      <div>
+        <span class="section-label">Ratgeber & News</span>
+        <h2 class="reveal-heading">Wissen, das<br><em>weiterhelfen</em> hilft</h2>
+      </div>
+      <a href="#blog" class="blog-see-all">Alle Artikel</a>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card fade-up">
+        <div class="blog-card-image">
+          <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Hausverkauf in Sachsen" loading="lazy">
+        </div>
+        <div class="blog-card-meta">
+          <span class="blog-tag">Verkaufen</span>
+          <span class="blog-date">März 2025</span>
+        </div>
+        <h3>5 Tipps für den erfolgreichen Hausverkauf in Sachsen</h3>
+        <p>Was Sie wissen müssen, bevor Sie Ihre Immobilie auf den Markt bringen – von der Preisfindung bis zum richtigen Zeitpunkt.</p>
+        <span class="blog-read-more">Artikel lesen</span>
+      </div>
+      <div class="blog-card fade-up">
+        <div class="blog-card-image">
+          <img src="https://images.pexels.com/photos/1546168/pexels-photo-1546168.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Immobilienmarkt Zwickau" loading="lazy">
+        </div>
+        <div class="blog-card-meta">
+          <span class="blog-tag">Marktbericht</span>
+          <span class="blog-date">Februar 2025</span>
+        </div>
+        <h3>Immobilienmarkt Zwickau 2025: Was sich geändert hat</h3>
+        <p>Die aktuellen Entwicklungen im Zwickauer Immobilienmarkt – Preise, Nachfrage und was das für Käufer und Verkäufer bedeutet.</p>
+        <span class="blog-read-more">Artikel lesen</span>
+      </div>
+      <div class="blog-card fade-up">
+        <div class="blog-card-image">
+          <img src="https://images.pexels.com/photos/1370704/pexels-photo-1370704.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Finanzierung Immobilien" loading="lazy">
+        </div>
+        <div class="blog-card-meta">
+          <span class="blog-tag">Finanzierung</span>
+          <span class="blog-date">Januar 2025</span>
+        </div>
+        <h3>Erstimmobilie kaufen: So finanzieren Sie richtig</h3>
+        <p>Eigenkapital, Förderungen, Zinsbindung – wir erklären die wichtigsten Bausteine einer soliden Immobilienfinanzierung.</p>
+        <span class="blog-read-more">Artikel lesen</span>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ── CTA ── -->
-<div id="cta-band">
-  <div class="cta-bg-text">S</div>
-  <h2 class="cta-h">Sprechen wir über Ihre Immobilie.</h2>
-  <a href="https://wa.me/4915254190819" class="cta-btn">
-    Jetzt anfragen
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-  </a>
-</div>
+<!-- CTA SECTION -->
+<section class="cta-section" id="kontakt">
+  <div class="container" style="position:relative;z-index:1">
+    <span class="section-label">Jetzt starten</span>
+    <h2 class="reveal-heading">Ihr Zuhause wartet.<br><em>Wir finden es.</em></h2>
+    <p>Kontaktieren Sie uns für ein kostenloses und unverbindliches Erstgespräch. In 15 Minuten klären wir, wie wir Ihnen am besten helfen können.</p>
+    <div class="cta-buttons">
+      <a href="tel:015735792768" class="btn-primary">📞 0157 3579 2768</a>
+      <a href="https://wa.me/4915725792768" class="btn-accent-outline" target="_blank" rel="noopener">WhatsApp schreiben</a>
+    </div>
+    <form class="cta-form" id="kontakt-form" onsubmit="submitKontakt(event)">
+      <input type="text" name="name" placeholder="Ihr Name" required>
+      <input type="tel" name="phone" placeholder="Ihre Telefonnummer">
+      <input type="email" name="email" placeholder="Ihre E-Mail" required class="form-full">
+      <textarea name="message" placeholder="Ihr Anliegen – Was suchen Sie? Was möchten Sie verkaufen?"></textarea>
+      <button type="submit" id="kontakt-btn">Nachricht senden →</button>
+      <p id="kontakt-status" style="display:none;grid-column:1/-1;font-size:14px;margin-top:4px"></p>
+    </form>
+  </div>
+</section>
 
-<!-- ── FOOTER ── -->
+<!-- FOOTER -->
 <footer>
-  <span class="foot-logo">SCH<b>i</b>W<b>i</b>G Immobilien</span>
-  <div class="foot-links">
-    <a href="#">Impressum</a>
-    <a href="#">Datenschutz</a>
-    <a href="https://wa.me/4915254190819">WhatsApp</a>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div>
+          <div class="footer-logo">Schiwig</div>
+          <div class="footer-tagline">Persönlich · Lokal · Ergebnisorientiert</div>
+        </div>
+        <p>Schiwig Immobilien – Ihr vertrauensvoller Partner für Kauf, Verkauf und Vermietung in Zwickau und der Region. Seit über 12 Jahren.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social" aria-label="Facebook">f</a>
+          <a href="#" class="footer-social" aria-label="Instagram">in</a>
+          <a href="#" class="footer-social" aria-label="LinkedIn">li</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Leistungen</h4>
+        <ul class="footer-links">
+          <li><a href="#kaufen">Immobilien kaufen</a></li>
+          <li><a href="#verkaufen">Immobilien verkaufen</a></li>
+          <li><a href="#mieten">Immobilien mieten</a></li>
+          <li><a href="#leistungen">Marktbewertung</a></li>
+          <li><a href="#leistungen">Vermarktung</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Unternehmen</h4>
+        <ul class="footer-links">
+          <li><a href="#ueber-uns">Über uns</a></li>
+          <li><a href="#blog">Ratgeber</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Kontakt</h4>
+        <div class="footer-contact-item">
+          <span>📍</span>
+          <span>Bruno-Escher-Str. 13<br>08115 Lichtentanne</span>
+        </div>
+        <div class="footer-contact-item">
+          <span>📞</span>
+          <a href="tel:015735792768">0157 3579 2768</a>
+        </div>
+        <div class="footer-contact-item">
+          <span>✉️</span>
+          <a href="mailto:lukasschiwig@gmail.com">lukasschiwig@gmail.com</a>
+        </div>
+        <div class="footer-contact-item" style="margin-top:0.8rem">
+          <span style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)">Mo–Fr: 9:00–18:00 Uhr</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Schiwig Immobilien · Lukas Schiwig · Alle Rechte vorbehalten.</p>
+      <div class="footer-bottom-links">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+    </div>
   </div>
-  <span class="foot-copy">© 2026 Lukas Schiwig · Zwickau</span>
 </footer>
 
-<!-- WHATSAPP -->
-<a href="https://wa.me/4915254190819" class="wa" target="_blank">
-  <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/4915725792768" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp Kontakt">
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.817.735 5.46 2.024 7.754L0 32l8.494-2.001A15.937 15.937 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm8.02 22.3c-.34.955-1.992 1.825-2.73 1.94-.738.115-1.656.163-2.67-.168-1.013-.331-2.31-.773-3.97-1.516-3.494-1.5-5.773-5.037-5.948-5.27-.175-.233-1.428-1.902-1.428-3.625S8 11.38 8.35 11.03c.35-.35.777-.437 1.037-.437.26 0 .52 0 .747.01.24.01.563-.09.88.67.328.77 1.115 2.668 1.213 2.86.098.192.163.417.033.672-.13.255-.195.413-.39.637-.195.224-.41.5-.585.672-.195.195-.397.405-.17.795.226.39.998 1.645 2.143 2.665 1.473 1.314 2.716 1.72 3.106 1.915.39.195.617.163.845-.098.228-.26.97-1.13 1.228-1.52.258-.39.515-.325.87-.195.355.13 2.257 1.064 2.647 1.258.39.195.649.29.745.453.097.162.097.942-.244 1.897z"/></svg>
 </a>
 
-<!-- ── SCRIPTS ── -->
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner">
+  <p>Diese Website verwendet Cookies, um Ihnen das beste Erlebnis zu bieten. <a href="datenschutz.html">Mehr erfahren</a></p>
+  <button class="cookie-btn" id="cookieAccept">Akzeptieren</button>
+</div>
+
+<!-- GOOGLE MAPS EMBED (hidden, for Schema reference) -->
+<div style="display:none">
+  <iframe src="https://maps.google.com/maps?q=Bruno-Escher-Str.+13,+08115+Lichtentanne&output=embed" title="Schiwig Immobilien Standort"></iframe>
+</div>
+
+<!-- Schema.org LocalBusiness JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "Schiwig Immobilien",
+  "alternateName": "Lukas Schiwig Immobilien",
+  "description": "Ihr persönlicher Immobilienmakler in Zwickau. Kaufen, Verkaufen und Mieten mit 12 Jahren Erfahrung. Persönlich. Lokal. Ergebnisorientiert.",
+  "url": "https://schiwig-immobilien.de",
+  "telephone": "+4915725792768",
+  "email": "lukasschiwig@gmail.com",
+  "founder": {
+    "@type": "Person",
+    "name": "Lukas Schiwig"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Bruno-Escher-Str. 13",
+    "addressLocality": "Lichtentanne",
+    "postalCode": "08115",
+    "addressRegion": "Sachsen",
+    "addressCountry": "DE"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 50.7444,
+    "longitude": 12.5192
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "37"
+  },
+  "areaServed": [
+    "Zwickau", "Glauchau", "Werdau", "Crimmitschau", "Lichtentanne", "Meerane"
+  ],
+  "priceRange": "€€"
+}
+</script>
+
 <script>
-/* ── LENIS smooth scroll ────────────────────────────────── */
-const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add(t => lenis.raf(t * 1000));
-gsap.ticker.lagSmoothing(0);
+// ═══════════════════════════════════════════
+// LENIS SMOOTH SCROLL
+// ═══════════════════════════════════════════
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+});
+function raf(time) {
+  lenis.raf(time);
+  ScrollTrigger.update();
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── KEN BURNS on scroll ────────────────────────────────── */
-// Startet leicht gezoomt, zoomt beim Scrollen weiter rein + pan
-// Ken Burns: scale gives travel room, translate stays within scale bounds
-// At scale 1.18: 9% overflow each side → safe to pan up to ±7%
-gsap.fromTo('#hero-img',
-  { scale: 1.0, xPercent: 0, yPercent: 0 },
-  {
-    scale: 1.18, xPercent: -3, yPercent: -4,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '#hero-pin',
-      start: 'top top',
-      end: '+=220%',
-      scrub: 2.5
+
+// ═══════════════════════════════════════════
+// HERO ANIMATIONS ON LOAD
+// ═══════════════════════════════════════════
+// Brand label fades first
+gsap.from('.hero-brand-label', { opacity: 0, y: 12, duration: 0.9, ease: 'power3.out', delay: 0.2 });
+// Line 1: slides in from left
+gsap.from('.hero-title-line1', { x: '-120%', opacity: 0, duration: 1.2, ease: 'power4.out', delay: 0.4 });
+// Line 2: slides in from right
+gsap.from('.hero-title-line2', { x: '120%', opacity: 0, duration: 1.2, ease: 'power4.out', delay: 0.55 });
+// Subtitle
+gsap.from('.hero-subtitle', { opacity: 0, y: 14, duration: 0.8, ease: 'power3.out', delay: 1.0 });
+// CTAs
+gsap.from('.hero-ctas', { opacity: 0, y: 12, duration: 0.7, ease: 'power3.out', delay: 1.2 });
+// Property card from right
+gsap.from('.hero-property-card', { x: 60, opacity: 0, duration: 1.0, ease: 'power3.out', delay: 0.8 });
+
+// ═══════════════════════════════════════════
+// HERO PARALLAX
+// ═══════════════════════════════════════════
+gsap.to('.hero-bg-image', {
+  y: '40%', ease: 'none',
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+});
+gsap.to('.hero-content', {
+  y: '20%', opacity: 0, ease: 'none',
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: '60% top', scrub: true }
+});
+gsap.to('.hero-property-card', {
+  y: '-15%', ease: 'none',
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+});
+
+// ═══════════════════════════════════════════
+// PROPERTY CARD FLOAT
+// ═══════════════════════════════════════════
+gsap.to('.hero-property-card', {
+  y: -10, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.5
+});
+
+// Rotating word removed — Maison aesthetic: static, editorial headline
+
+// ═══════════════════════════════════════════
+// NAV SCROLL AWARE
+// ═══════════════════════════════════════════
+const mainNav = document.getElementById('mainNav');
+ScrollTrigger.create({
+  start: 'top -60',
+  onUpdate: self => {
+    if (self.progress > 0) {
+      mainNav.style.background = 'rgba(248,246,242,0.95)';
+      mainNav.style.backdropFilter = 'blur(20px)';
+      mainNav.style.webkitBackdropFilter = 'blur(20px)';
+      mainNav.style.boxShadow = '0 1px 0 rgba(0,0,0,0.08)';
+      mainNav.classList.add('scrolled');
+    } else {
+      mainNav.style.background = 'transparent';
+      mainNav.style.backdropFilter = 'none';
+      mainNav.style.webkitBackdropFilter = 'none';
+      mainNav.style.boxShadow = 'none';
+      mainNav.classList.remove('scrolled');
     }
   }
-);
-
-/* ── MARQUEE content ─────────────────────────────────────── */
-const items = ['Immobilienbewertung','Verkauf','Ankauf','Vermietung','Beratung','Zwickau','Sachsen','Makler','Schiwig Immobilien'];
-const str = items.map(s => `<span><b>—</b> ${s} </span>`).join('') + items.map(s => `<span><b>—</b> ${s} </span>`).join('');
-document.getElementById('mtrack').innerHTML = str;
-
-/* ── HERO: vertical entrance on load ────────────────────── */
-gsap.set([he, hh1, hh2, hrow], { y: 80, opacity: 0 });
-gsap.to([he, hh1, hh2, hrow], {
-  y: 0, opacity: 1,
-  duration: 1.2, ease: 'power3.out',
-  stagger: 0.1, delay: 0.4
 });
 
-/* ── HERO: pin + vertical scroll-through ────────────────── */
-const heroTl = gsap.timeline({
-  scrollTrigger: {
-    trigger: '#hero-pin',
-    start: 'top top',
-    end: '+=220%',
-    pin: '#hero-sticky',
-    scrub: 1.2,
-    anticipatePin: 1
-  }
-});
-heroTl
-  .to('#hero-video', { scale: 1.12, y: '-6%', ease: 'none' }, 0)
-  .to([he, hh1], { y: '-55vh', opacity: 0, ease: 'power1.in' }, 0.1)
-  .to([hh2], { y: '-50vh', opacity: 0, ease: 'power1.in' }, 0.2)
-  .to([hrow], { y: '-45vh', opacity: 0, ease: 'power1.in' }, 0.28)
-  .to('#scroll-indicator', { opacity: 0, ease: 'none' }, 0);
-
-/* ── ABOUT: clip-path image reveal bottom-up ─────────────── */
-gsap.to('#about-img', {
-  clipPath: 'inset(0% 0 0 0)',
-  duration: 1.4, ease: 'power3.inOut',
-  scrollTrigger: { trigger: '#about-img', start: 'top 80%' }
-});
-gsap.to('#about-img img', {
-  scale: 1, duration: 1.8, ease: 'power2.out',
-  scrollTrigger: { trigger: '#about-img', start: 'top 80%' }
-});
-gsap.set('#about-img img', { scale: 1.1 });
-
-/* About text stagger */
-const aboutEls = [
-  { el: '#al', delay: 0 }, { el: '#ar', delay: 0.1 },
-  { el: '#at', delay: 0.2 }, { el: '#ab', delay: 0.35 }, { el: '#ad', delay: 0.5 }
-];
-aboutEls.forEach(({ el, delay }) => {
-  gsap.to(el, {
-    opacity: 1, y: 0, duration: 0.9, ease: 'power2.out', delay,
-    scrollTrigger: { trigger: '#about', start: 'top 70%' }
+// ═══════════════════════════════════════════
+// SECTION HEADING REVEAL
+// ═══════════════════════════════════════════
+gsap.utils.toArray('.reveal-heading').forEach(heading => {
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'overflow:hidden;';
+  heading.parentNode.insertBefore(wrapper, heading);
+  wrapper.appendChild(heading);
+  gsap.from(heading, {
+    scrollTrigger: {
+      trigger: wrapper,
+      start: 'top 82%',
+      toggleActions: 'play none none reverse'
+    },
+    y: '105%', duration: 0.9, ease: 'power4.out'
   });
 });
-gsap.to('#ar', {
-  width: '3rem', duration: 0.6, ease: 'power2.out', delay: 0.1,
-  scrollTrigger: { trigger: '#about', start: 'top 70%' }
+
+// ═══════════════════════════════════════════
+// FADE UP REVEALS
+// ═══════════════════════════════════════════
+gsap.utils.toArray('.fade-up').forEach((el, i) => {
+  gsap.from(el, {
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 85%',
+      toggleActions: 'play none none reverse'
+    },
+    y: 50, opacity: 0, duration: 0.85, ease: 'power3.out',
+    delay: (i % 3) * 0.1
+  });
 });
 
-/* Services head */
-gsap.to('#sl', { opacity:1, y:0, duration:0.8, ease:'power2.out',
-  scrollTrigger:{trigger:'#services',start:'top 75%'} });
-gsap.to('#st', { opacity:1, y:0, duration:0.9, ease:'power2.out', delay:0.1,
-  scrollTrigger:{trigger:'#services',start:'top 75%'} });
-
-/* Service cards stagger */
-gsap.to('.service-item', {
-  opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.12,
-  scrollTrigger: { trigger: '.services-grid', start: 'top 80%' }
+// ═══════════════════════════════════════════
+// SERVICES CLIP-PATH REVEAL
+// ═══════════════════════════════════════════
+gsap.utils.toArray('.service-card').forEach((card, i) => {
+  gsap.from(card, {
+    scrollTrigger: {
+      trigger: card,
+      start: 'top 80%',
+      toggleActions: 'play none none reverse'
+    },
+    clipPath: 'inset(0 100% 0 0)', opacity: 0,
+    duration: 0.9, ease: 'power4.inOut', delay: i * 0.15
+  });
 });
 
-/* ── STATS: count up ─────────────────────────────────────── */
-gsap.to('.stat-cell', {
-  opacity:1, y:0, duration:0.8, ease:'power2.out', stagger:0.1,
-  scrollTrigger:{trigger:'#stats',start:'top 80%',
-    onEnter: () => {
-      document.querySelectorAll('[data-count]').forEach(el => {
-        const end = +el.dataset.count;
-        const prefix = el.dataset.prefix || '';
-        const suffix = el.dataset.suffix || '';
-        let start = 0;
-        const dur = 1600;
-        const step = t => {
-          start += (end - start) * 0.06;
-          el.textContent = prefix + Math.round(start) + suffix;
-          if (Math.abs(end - start) > 0.5) requestAnimationFrame(step);
-          else el.textContent = prefix + end + suffix;
-        };
-        requestAnimationFrame(step);
-      });
+// ═══════════════════════════════════════════
+// STATS COUNTER
+// ═══════════════════════════════════════════
+document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+  const target = parseInt(el.dataset.count);
+  const isDecimal = el.dataset.decimal;
+  gsap.to({ val: 0 }, {
+    val: target,
+    duration: 2.2,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+    onUpdate() {
+      const v = Math.ceil(this.targets()[0].val);
+      el.textContent = isDecimal ? v + isDecimal : v;
     }
+  });
+});
+
+// Fix: 4.9 stat — animate to 4 then show static 4.9
+const starEl = document.querySelector('.stat-number[data-decimal]');
+if (starEl) {
+  starEl.textContent = '4.9';
+}
+
+// ═══════════════════════════════════════════
+// TESTIMONIALS AUTO-SCROLL
+// ═══════════════════════════════════════════
+const track = document.getElementById('testimonialsTrack');
+if (track) {
+  track.innerHTML += track.innerHTML;
+  let autoX = 0;
+  let paused = false;
+  track.addEventListener('mouseenter', () => paused = true);
+  track.addEventListener('mouseleave', () => paused = false);
+  (function scroll() {
+    if (!paused) {
+      autoX += 0.6;
+      if (autoX >= track.scrollWidth / 2) autoX = 0;
+      track.scrollLeft = autoX;
+    }
+    requestAnimationFrame(scroll);
+  })();
+}
+
+// ═══════════════════════════════════════════
+// MOBILE NAV
+// ═══════════════════════════════════════════
+const hamburger = document.getElementById('navHamburger');
+const mobileNav = document.getElementById('mobileNav');
+const mobileNavClose = document.getElementById('mobileNavClose');
+if (hamburger && mobileNav) {
+  hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
+  mobileNavClose.addEventListener('click', () => mobileNav.classList.remove('open'));
+  mobileNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => mobileNav.classList.remove('open'));
+  });
+}
+
+// ═══════════════════════════════════════════
+// COOKIE BANNER
+// ═══════════════════════════════════════════
+const cookieBanner = document.getElementById('cookieBanner');
+const cookieAccept = document.getElementById('cookieAccept');
+if (cookieBanner && cookieAccept) {
+  if (!localStorage.getItem('cookieAccepted')) {
+    setTimeout(() => cookieBanner.style.display = 'flex', 1500);
+  } else {
+    cookieBanner.style.display = 'none';
   }
-});
+  cookieAccept.addEventListener('click', () => {
+    localStorage.setItem('cookieAccepted', '1');
+    cookieBanner.classList.add('hidden');
+    setTimeout(() => cookieBanner.style.display = 'none', 400);
+  });
+}
 
-/* ── PROPERTIES ──────────────────────────────────────────── */
-gsap.to('#pl', { opacity:1, y:0, duration:0.8,
-  scrollTrigger:{trigger:'#properties',start:'top 75%'} });
-gsap.to('#pt', { opacity:1, y:0, duration:0.9, delay:0.1,
-  scrollTrigger:{trigger:'#properties',start:'top 75%'} });
-gsap.to('.prop-card', {
-  opacity:1, y:0, duration:0.8, ease:'power2.out', stagger:0.12,
-  scrollTrigger:{trigger:'#props-track',start:'top 85%'}
-});
+// ═══════════════════════════════════════════
+// WERTRECHNER
+// ═══════════════════════════════════════════
+function calcWert() {
+  const type = document.querySelector('#bewertung .rcl-pill.active')?.dataset.type || 'haus';
+  const area = parseInt(document.getElementById('areaSlider')?.value || 120);
+  const year = document.querySelector('#bewertung .rcl-option[data-year].active')?.dataset.year || 'alt';
+  const cond = document.querySelector('#bewertung .rcl-option[data-cond].active')?.dataset.cond || 'gepflegt';
 
-/* ── QUOTE ───────────────────────────────────────────────── */
-gsap.to('#qm', { opacity:1, duration:1,
-  scrollTrigger:{trigger:'#quote',start:'top 75%'} });
-gsap.to('#qt', { opacity:1, y:0, duration:1.1, ease:'power2.out', delay:0.2,
-  scrollTrigger:{trigger:'#quote',start:'top 75%'} });
-gsap.to('#qa', { opacity:1, duration:0.8, delay:0.5,
-  scrollTrigger:{trigger:'#quote',start:'top 75%'} });
+  const base = { haus: 1350, wohnung: 1180, mfh: 1050, grundstueck: 180 };
+  const yearMult = { alt: 0.8, mid: 0.9, neu: 1.0, modern: 1.15 };
+  const condMult = { renovierungsbedarf: 0.82, gepflegt: 1.0, modernisiert: 1.1, neubau: 1.22 };
+
+  const pricePerSqm = base[type] * yearMult[year] * condMult[cond];
+  // Konservativer Schätzwert: 88% des Marktpreises
+  // → Lukas erzielt im Gespräch/Abschluss nachweislich mehr → positiver Überraschungseffekt
+  const value = Math.round(pricePerSqm * area * 0.88 / 1000) * 1000;
+  const fmt = v => v.toLocaleString('de-DE') + ' €';
+
+  const valEl = document.getElementById('rrValue');
+  if (valEl) {
+    const current = parseFloat(valEl.textContent.replace(/[^0-9]/g,'')) || value;
+    gsap.to({ val: current }, {
+      val: value, duration: 0.55, ease: 'power2.out',
+      onUpdate: function() { valEl.textContent = fmt(Math.round(this.targets()[0].val / 1000) * 1000); }
+    });
+  }
+}
+
+(function setupWertrechner() {
+  document.querySelectorAll('#bewertung .rcl-pill').forEach(p => p.addEventListener('click', () => {
+    document.querySelectorAll('#bewertung .rcl-pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active'); calcWert();
+  }));
+  document.querySelectorAll('#bewertung .rcl-option[data-year]').forEach(p => p.addEventListener('click', () => {
+    document.querySelectorAll('#bewertung .rcl-option[data-year]').forEach(x => x.classList.remove('active'));
+    p.classList.add('active'); calcWert();
+  }));
+  document.querySelectorAll('#bewertung .rcl-option[data-cond]').forEach(p => p.addEventListener('click', () => {
+    document.querySelectorAll('#bewertung .rcl-option[data-cond]').forEach(x => x.classList.remove('active'));
+    p.classList.add('active'); calcWert();
+  }));
+  const slider = document.getElementById('areaSlider');
+  if (slider) slider.addEventListener('input', () => {
+    const ro = document.getElementById('areaReadout');
+    if (ro) ro.textContent = slider.value + ' m²';
+    calcWert();
+  });
+  calcWert();
+})();
+
+// ═══════════════════════════════════════════
+// PROPSTACK INTEGRATION
+// ═══════════════════════════════════════════
+const PS_KEY = '8SeAjrykEgpdi0L6lp_yl8I9HWdfFS4tKK64aIhn';
+const PS_API = 'https://api.propstack.de/v1';
+
+async function submitKontakt(e) {
+  e.preventDefault();
+  const fd   = new FormData(e.target);
+  const btn  = document.getElementById('kontakt-btn');
+  const stat = document.getElementById('kontakt-status');
+  btn.disabled = true;
+  btn.textContent = 'Wird gesendet …';
+
+  const fullName  = (fd.get('name') || '').trim().split(' ');
+  const firstName = fullName.slice(0, -1).join(' ') || fullName[0] || '';
+  const lastName  = fullName.length > 1 ? fullName[fullName.length - 1] : '';
+
+  let sent = false;
+  try {
+    const r = await fetch(`${PS_API}/contacts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-KEY': PS_KEY },
+      body: JSON.stringify({ contact: {
+        first_name: firstName,
+        last_name:  lastName,
+        email:      fd.get('email'),
+        phone:      fd.get('phone'),
+        tags:       ['Website Lead']
+      }})
+    });
+    if (r.ok) {
+      const j = await r.json();
+      const cid = j?.id || j?.contact?.id;
+      if (cid && fd.get('message')) {
+        await fetch(`${PS_API}/contacts/${cid}/notes`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-API-KEY': PS_KEY },
+          body: JSON.stringify({ note: { content: `Website-Anfrage:\n${fd.get('message')}` }})
+        });
+      }
+      sent = true;
+    }
+  } catch(_) {}
+
+  // Fallback Formspree
+  if (!sent) {
+    try {
+      await fetch('https://formspree.io/f/mlgpooqw', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: fd.get('name'), email: fd.get('email'),
+          phone: fd.get('phone'), message: fd.get('message') })
+      });
+      sent = true;
+    } catch(_) {}
+  }
+
+  stat.style.display = '';
+  if (sent) {
+    stat.style.color = '#1a7f4b';
+    stat.textContent = '✓ Nachricht gesendet — Lukas meldet sich in Kürze.';
+    btn.style.display = 'none';
+    e.target.reset();
+  } else {
+    btn.disabled = false;
+    btn.textContent = 'Nachricht senden →';
+    stat.style.color = '#c0392b';
+    stat.innerHTML = 'Fehler — bitte direkt anrufen: <a href="tel:015735792768">0157 3579 2768</a>';
+  }
+}
 </script>
 </body>
 </html>

@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mieter-Selbstauskunft — SCHIWIG Immobilien</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+/* ─── TOKENS ─────────────────────────────── */
+:root {
+  --bg:    #0A0A0A;
+  --bg2:   #111111;
+  --white: #FFFFFF;
+  --off:   #F7F6F3;
+  --gold:  #C9A96E;
+  --gold-l:#F0E0BE;
+  --gold-d:#A07840;
+  --g100:  #F2F1EE;
+  --g200:  #E4E2DC;
+  --g400:  #B0ADA5;
+  --g600:  #6B6860;
+  --g800:  #3A3834;
+  --black: #0A0A0A;
+  --sans:  'DM Sans', 'Segoe UI', sans-serif;
+  --mono:  'DM Mono', 'Courier New', monospace;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { font-size:16px; -webkit-font-smoothing:antialiased; }
+body { background:var(--off); font-family:var(--sans); color:var(--black); min-height:100vh; }
+
+/* ─── LAYOUT ─────────────────────────────── */
+.page {
+  min-height:100vh; background:var(--off);
+  position:relative;
+}
+.page::before {
+  content:''; position:fixed; left:0; top:0;
+  width:3px; height:100vh; background:var(--gold); z-index:100;
+}
+.container { max-width:760px; margin:0 auto; padding:0 24px 100px; }
+
+/* ─── HEADER ─────────────────────────────── */
+.sa-header {
+  padding:48px 0 40px;
+  border-bottom:1px solid var(--g200);
+  margin-bottom:48px;
+  display:flex; justify-content:space-between; align-items:flex-end;
+  flex-wrap:wrap; gap:1rem;
+}
+.sa-brand { text-decoration:none; }
+.sa-brand-eye {
+  font-size:9px; letter-spacing:.18em; color:var(--gold);
+  font-weight:700; text-transform:uppercase; margin-bottom:4px;
+}
+.sa-brand-name {
+  font-size:15px; letter-spacing:.12em; color:var(--black);
+  font-weight:500; text-transform:uppercase;
+}
+.sa-title-block {}
+.sa-title-eye {
+  font-size:10px; letter-spacing:.18em; color:var(--gold);
+  font-weight:700; text-transform:uppercase; margin-bottom:8px;
+}
+.sa-title {
+  font-size:clamp(28px,5vw,40px); font-weight:300;
+  letter-spacing:-.03em; line-height:1.05; color:var(--black);
+}
+
+/* ─── STEP NAV ───────────────────────────── */
+.steps {
+  display:flex; border-bottom:1px solid var(--g200);
+  margin-bottom:48px; overflow-x:auto;
+}
+.step-btn {
+  flex:1; min-width:80px; padding:14px 8px;
+  background:transparent; border:none;
+  border-bottom:2px solid transparent;
+  font-family:var(--sans); cursor:default;
+  transition:all .2s;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.step-btn.done { cursor:pointer; }
+.step-btn.active { border-bottom-color:var(--gold); }
+.step-num {
+  font-size:18px; font-weight:300; color:var(--g400);
+  line-height:1; letter-spacing:0;
+}
+.step-btn.active .step-num { color:var(--black); }
+.step-btn.done .step-num { color:var(--gold); }
+.step-lbl {
+  font-size:9px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--g200);
+}
+.step-btn.active .step-lbl { color:var(--g800); }
+.step-btn.done .step-lbl   { color:var(--g400); }
+
+/* ─── FORM GRID ──────────────────────────── */
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px 32px; }
+.span2 { grid-column:span 2; }
+
+/* Field */
+.field {}
+.field-label {
+  display:block; font-size:9px; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase;
+  color:var(--g400); margin-bottom:6px; transition:color .2s;
+}
+.field:focus-within .field-label { color:var(--gold-d); }
+.field-input {
+  width:100%; border:none; border-bottom:1.5px solid var(--g200);
+  background:transparent; padding:8px 0;
+  font-size:15px; font-family:var(--mono); color:var(--black);
+  outline:none; transition:border-color .2s;
+}
+.field-input:focus { border-color:var(--gold); }
+.field-input::placeholder { color:var(--g200); }
+
+/* Toggle */
+.toggle-label {
+  font-size:9px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--g400); margin-bottom:8px;
+  display:block;
+}
+.toggle-group { display:flex; flex-wrap:wrap; gap:6px; }
+.toggle-btn {
+  padding:7px 18px; border:1.5px solid var(--g200);
+  background:transparent; color:var(--g600);
+  font-size:12px; font-weight:700; letter-spacing:.05em;
+  cursor:pointer; transition:all .15s; font-family:var(--sans);
+}
+.toggle-btn.active {
+  border-color:var(--gold); background:rgba(201,169,110,0.08);
+  color:var(--gold-d);
+}
+
+/* Checkbox */
+.cb-item {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:14px 0; border-bottom:1px solid var(--g100);
+  cursor:pointer; user-select:none;
+}
+.cb-box {
+  width:18px; height:18px; flex-shrink:0; margin-top:2px;
+  border:1.5px solid var(--g200); background:transparent;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s;
+}
+.cb-box.checked { border-color:var(--gold); background:var(--gold); }
+.cb-text { font-size:13px; color:var(--g800); line-height:1.6; font-weight:300; }
+
+/* ─── INFO CARD ──────────────────────────── */
+.info-card {
+  padding:14px 18px; background:rgba(201,169,110,0.08);
+  border-left:3px solid var(--gold); font-size:11px;
+  color:var(--gold-d); line-height:1.7;
+}
+
+/* ─── OBJEKT CARD ────────────────────────── */
+.objekt-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:2px; background:var(--g200);
+}
+.objekt-cell {
+  background:var(--white); padding:14px 16px;
+}
+.objekt-cell-lbl {
+  font-size:8px; letter-spacing:.1em; color:var(--g400);
+  font-weight:700; text-transform:uppercase; margin-bottom:4px;
+}
+.objekt-cell-val { font-size:14px; color:var(--black); font-weight:500; }
+
+/* ─── PROPERTY SEARCH ───────────────────── */
+.ps-wrap { position: relative; }
+.ps-input-row {
+  display: flex; align-items: center;
+  border: 1.5px solid var(--g200); background: var(--white);
+  transition: border-color .2s;
+}
+.ps-input-row:focus-within { border-color: var(--gold); }
+.ps-icon { padding: 0 12px; font-size: 15px; color: var(--g400); flex-shrink: 0; }
+.ps-input {
+  flex: 1; border: none; outline: none; padding: 12px 0;
+  font-size: 14px; font-family: var(--mono); color: var(--black);
+  background: transparent;
+}
+.ps-input::placeholder { color: var(--g200); font-family: var(--sans); }
+.ps-clear {
+  padding: 0 14px; background: transparent; border: none;
+  color: var(--g400); font-size: 18px; cursor: pointer;
+  line-height: 1; display: none;
+}
+.ps-dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--white); border: 1px solid var(--g200);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  z-index: 50; max-height: 340px; overflow-y: auto;
+  display: none;
+}
+.ps-dropdown.open { display: block; }
+.ps-item {
+  padding: 14px 16px; cursor: pointer; border-bottom: 1px solid var(--g100);
+  transition: background .15s; display: flex; gap: 14px; align-items: flex-start;
+}
+.ps-item:last-child { border-bottom: none; }
+.ps-item:hover, .ps-item.focused { background: rgba(201,169,110,0.07); }
+.ps-item-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.ps-item-body {}
+.ps-item-addr { font-size: 14px; font-weight: 500; color: var(--black); margin-bottom: 3px; }
+.ps-item-meta { font-size: 11px; color: var(--g400); letter-spacing: .03em; }
+.ps-item-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; padding: 2px 7px;
+  background: rgba(201,169,110,0.12); color: var(--gold-d);
+  border-radius: 2px; margin-left: 6px;
+}
+.ps-no-results { padding: 20px 16px; font-size: 13px; color: var(--g400); text-align: center; }
+.ps-loading { padding: 20px 16px; text-align: center; }
+.ps-spinner {
+  width: 20px; height: 20px; border: 2px solid var(--g200);
+  border-top-color: var(--gold); border-radius: 50%;
+  animation: spin .7s linear infinite; display: inline-block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.ps-manual-link {
+  padding: 12px 16px; text-align: center; border-top: 1px solid var(--g100);
+  font-size: 12px; color: var(--g400); cursor: pointer;
+  transition: color .15s;
+}
+.ps-manual-link:hover { color: var(--gold-d); }
+.ps-selected-card {
+  border: 1.5px solid var(--gold); background: rgba(201,169,110,0.04);
+  padding: 18px 20px; display: none;
+}
+.ps-selected-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 14px;
+}
+.ps-selected-label {
+  font-size: 9px; letter-spacing: .15em; color: var(--gold);
+  font-weight: 700; text-transform: uppercase;
+}
+.ps-change-btn {
+  font-size: 10px; background: transparent; border: 1px solid var(--g200);
+  padding: 3px 10px; color: var(--g600); cursor: pointer;
+  font-family: var(--sans); letter-spacing: .05em; transition: border-color .15s;
+}
+.ps-change-btn:hover { border-color: var(--g400); }
+.ps-error {
+  padding: 14px 16px; background: #fff8f8;
+  border-left: 3px solid #e74c3c; font-size: 12px;
+  color: #c0392b; line-height: 1.6;
+}
+.ps-error a { color: var(--gold-d); cursor: pointer; }
+
+/* ─── SCANNER ────────────────────────────── */
+.scanner-zone {
+  border:1.5px dashed var(--g200); padding:2rem;
+  text-align:center; cursor:pointer; transition:border-color .2s;
+  background:transparent; font-family:var(--sans);
+}
+.scanner-zone:hover { border-color:var(--gold); }
+.scanner-zone input { display:none; }
+.scanner-icon { font-size:2rem; opacity:.3; margin-bottom:.8rem; display:block; }
+.scanner-txt { font-size:11px; color:var(--g400); line-height:1.8; }
+.scanner-gold { color:var(--gold); font-weight:600; }
+.scanner-result {
+  margin-top:1rem; padding:12px 16px;
+  background:rgba(201,169,110,0.07); border-left:2px solid var(--gold);
+  font-size:11px; color:var(--gold-d); line-height:1.7; display:none;
+}
+
+/* ─── LOAD UNIT SECTION ──────────────────── */
+.unit-load-row { display:flex; gap:12px; align-items:stretch; }
+.unit-id-input {
+  flex:1; border:1px solid var(--g200); background:var(--white);
+  padding:10px 14px; font-size:14px; font-family:var(--mono);
+  color:var(--black); outline:none; transition:border-color .2s;
+}
+.unit-id-input:focus { border-color:var(--gold); }
+.unit-load-btn {
+  padding:10px 20px; background:var(--black); color:var(--white);
+  border:none; font-size:11px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer; font-family:var(--sans);
+  transition:opacity .2s; white-space:nowrap;
+}
+.unit-load-btn:hover { opacity:.8; }
+.unit-load-btn:disabled { opacity:.4; cursor:default; }
+
+/* ─── NAV BUTTONS ────────────────────────── */
+.nav-row {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:52px; padding-top:24px; border-top:1px solid var(--g200);
+}
+.nav-back {
+  padding:13px 24px; background:transparent;
+  border:1.5px solid var(--g200); color:var(--g600);
+  font-size:11px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer; font-family:var(--sans);
+  transition:all .15s;
+}
+.nav-back:disabled { border-color:var(--g100); color:var(--g200); cursor:default; }
+.nav-back:not(:disabled):hover { border-color:var(--g400); }
+.nav-progress { font-size:9px; letter-spacing:.1em; color:var(--g400); font-weight:600; }
+.nav-next {
+  padding:13px 28px; background:var(--black); color:var(--white);
+  border:none; font-size:11px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer; font-family:var(--sans);
+  transition:all .2s;
+}
+.nav-next:hover { background:var(--g800); }
+.nav-next:disabled { background:var(--g100); color:var(--g400); cursor:default; }
+.nav-finish {
+  padding:13px 28px; background:var(--gold); color:var(--white);
+  border:none; font-size:11px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer; font-family:var(--sans);
+  transition:opacity .2s;
+}
+.nav-finish:hover { opacity:.85; }
+.nav-finish:disabled { opacity:.4; cursor:default; }
+
+/* ─── DONE SCREEN ────────────────────────── */
+.done-screen { display:none; padding-top:60px; }
+.done-check {
+  width:48px; height:48px; background:var(--gold);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:28px;
+}
+.done-title { font-size:32px; font-weight:300; letter-spacing:-.02em; margin-bottom:32px; }
+.done-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-bottom:40px; background:var(--g200); }
+.done-cell { background:var(--white); padding:18px 22px; }
+.done-cell-lbl { font-size:9px; letter-spacing:.12em; color:var(--g400); font-weight:700; text-transform:uppercase; margin-bottom:5px; }
+.done-cell-val { font-size:15px; color:var(--black); font-weight:500; }
+.done-dl-btn {
+  width:100%; padding:18px; background:var(--black); color:var(--white);
+  border:none; font-size:13px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer; margin-bottom:8px;
+  transition:background .2s; font-family:var(--sans);
+}
+.done-dl-btn:hover { background:var(--g800); }
+.done-new-btn {
+  width:100%; padding:14px; background:transparent; color:var(--g600);
+  border:1.5px solid var(--g200); font-size:13px; font-weight:600;
+  letter-spacing:.04em; cursor:pointer; font-family:var(--sans);
+  transition:border-color .15s;
+}
+.done-new-btn:hover { border-color:var(--g400); }
+.propstack-badge {
+  margin-top:24px; padding:12px 16px;
+  background:rgba(201,169,110,0.07); border-left:2px solid var(--gold);
+  font-size:11px; color:var(--gold-d); line-height:1.7;
+}
+.propstack-badge a { color:var(--gold); }
+
+/* ─── STATUS BAR ─────────────────────────── */
+.status-bar {
+  position:fixed; bottom:0; left:0; right:0; z-index:200;
+  padding:12px 20px; background:var(--black); color:var(--white);
+  font-size:12px; display:none; align-items:center; gap:12px;
+}
+.status-bar.show { display:flex; }
+.status-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.status-dot.loading { background:var(--gold); animation:pulse 1s infinite; }
+.status-dot.ok  { background:#4ade80; }
+.status-dot.err { background:#f87171; }
+@keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+/* ─── RESPONSIVE ─────────────────────────── */
+@media(max-width:600px) {
+  .form-grid { grid-template-columns:1fr; }
+  .span2 { grid-column:span 1; }
+  .sa-header { flex-direction:column; align-items:flex-start; }
+  .objekt-grid { grid-template-columns:1fr 1fr; }
+  .done-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page" id="app">
+  <div class="container">
+
+    <!-- Header -->
+    <header class="sa-header">
+      <a href="index.html" class="sa-brand" style="text-decoration:none">
+        <div class="sa-brand-eye">Propstack CRM Integration</div>
+        <div class="sa-brand-name">SCHIWIG Immobilien</div>
+      </a>
+      <div class="sa-title-block">
+        <div class="sa-title-eye">Digitales Formular</div>
+        <h1 class="sa-title">Mieter-Selbstauskunft</h1>
+      </div>
+    </header>
+
+    <!-- Step Navigation -->
+    <div class="steps" id="steps-nav"></div>
+
+    <!-- ── FORM STEPS ─────────────────────────────────── -->
+    <div id="form-area"></div>
+
+    <!-- ── DONE SCREEN ──────────────────────────────── -->
+    <div class="done-screen" id="done-screen">
+      <div class="done-check">
+        <svg width="22" height="18" viewBox="0 0 22 18"><polyline points="1,9 8,16 21,1" stroke="white" stroke-width="2.5" fill="none"/></svg>
+      </div>
+      <div style="font-size:11px;letter-spacing:.15em;color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:8px">Abgeschlossen</div>
+      <div class="done-title" id="done-title">Selbstauskunft erstellt</div>
+      <div class="done-grid" id="done-grid"></div>
+      <button class="done-dl-btn" onclick="downloadPDF()">PDF HERUNTERLADEN</button>
+      <button class="done-new-btn" onclick="resetForm()">Neue Selbstauskunft</button>
+      <div class="propstack-badge" id="crm-badge" style="display:none"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Status bar -->
+<div class="status-bar" id="status-bar">
+  <div class="status-dot loading" id="status-dot"></div>
+  <span id="status-msg">Verarbeite …</span>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   KONFIGURATION — API-Keys hier eintragen
+═══════════════════════════════════════════════════════════════ */
+const CFG = {
+  PROPSTACK_KEY:       '8SeAjrykEgpdi0L6lp_yl8I9HWdfFS4tKK64aIhn', // Kontakte anlegen
+  PROPSTACK_UNITS_KEY: 'R5QxJ4bs6iKB5rKetStWKgu17DMV0jTOrEXfJkmL',
+  ANTHROPIC_KEY:       'YOUR_ANTHROPIC_API_KEY',
+  PROPSTACK_API:       'https://api.propstack.de/v1',
+  ANTHROPIC_API:       'https://api.anthropic.com/v1',
+  FORMSPREE_ID:        'mlgpooqw'
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════════ */
+const INIT = {
+  propstack_unit_id:'', strasse:'', plz_ort:'', wohnungs_nr:'',
+  wohnflaeche:'', geschoss:'', lage:'', miete:'', nebenkosten:'',
+  mietbeginn:'', kaution:'', vertragsdauer:'',
+  name_vorname:'', adresse_telefon:'', email:'',
+  geburtsdatum:'', geburtsort:'', familienstand:'ledig',
+  beruf:'', aufenthaltserlaubnis:'ja',
+  nettoeinkommen:'', nebenverdienste:'', arbeitgeber:'',
+  beschaeftigung_dauer:'', vorheriger_vermieter:'', umzugsgrund:'',
+  haustiere:'nein', haustiere_welche:'',
+  musikinstrument:'nein', musikinstrument_welches:'',
+  ratenkredite:'nein', ratenkredite_hoehe:'',
+  leasing:'nein', leasing_hoehe:'',
+  buergschaft:'nein', buergschaft_hoehe:'',
+  unterhaltszahlungen:'nein', unterhalt_hoehe:'',
+  pfaendung:'nein', insolvenz:'nein',
+  keine_eidestattliche:false, kein_konkurs:false,
+  zahlfaehig:false, bonitaet:false, datum:''
+};
+
+let D = {...INIT};
+let step = 0;
+let unitLoaded = false;
+let propstackContactId = null;
+
+const STEPS = [
+  {key:'objekt',  label:'OBJEKT'},
+  {key:'person',  label:'PERSON'},
+  {key:'einkommen',label:'EINKOMMEN'},
+  {key:'finanzen',label:'FINANZEN'},
+  {key:'abschluss',label:'ABSCHLUSS'},
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS BAR
+═══════════════════════════════════════════════════════════════ */
+function showStatus(msg, type='loading') {
+  const bar = document.getElementById('status-bar');
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-msg');
+  txt.textContent = msg;
+  dot.className = 'status-dot ' + type;
+  bar.classList.add('show');
+  if (type !== 'loading') setTimeout(() => bar.classList.remove('show'), 3500);
+}
+function hideStatus() { document.getElementById('status-bar').classList.remove('show'); }
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════════════════ */
+function render() {
+  renderStepNav();
+  renderStep();
+}
+
+function renderStepNav() {
+  const nav = document.getElementById('steps-nav');
+  nav.innerHTML = STEPS.map((s,i) => {
+    const cls = i===step ? 'step-btn active' : i<step ? 'step-btn done' : 'step-btn';
+    const onclick = i<step ? `onclick="goToStep(${i})"` : '';
+    return `<button class="${cls}" ${onclick}>
+      <span class="step-num">${i<step ? '✓' : i+1}</span>
+      <span class="step-lbl">${s.label}</span>
+    </button>`;
+  }).join('');
+}
+
+function goToStep(n) { if(n<step){ step=n; unitLoaded = n>0 ? unitLoaded : false; render(); }}
+
+function renderStep() {
+  const area = document.getElementById('form-area');
+  area.innerHTML = '';
+
+  const grid = document.createElement('div');
+  grid.className = 'form-grid';
+
+  switch(step) {
+    case 0: renderObjekt(grid); break;
+    case 1: renderPerson(grid); break;
+    case 2: renderEinkommen(grid); break;
+    case 3: renderFinanzen(grid); break;
+    case 4: renderAbschluss(grid); break;
+  }
+
+  area.appendChild(grid);
+  area.appendChild(renderNavRow());
+}
+
+/* ─── STEP 0: Objekt ─────────────────────── */
+function renderObjekt(grid) {
+  grid.innerHTML = `<div class="span2" id="objekt-inner"></div>`;
+  renderObjektInner();
+}
+
+function renderObjektInner() {
+  const inner = document.getElementById('objekt-inner');
+  if (!inner) return;
+
+  if (unitLoaded && D.strasse) {
+    // Objekt ausgewählt — Bestätigungskarte
+    inner.innerHTML = `
+      <div class="ps-selected-card" style="display:block">
+        <div class="ps-selected-header">
+          <span class="ps-selected-label">✓ Objekt ausgewählt</span>
+          <button class="ps-change-btn" onclick="clearUnit()">Ändern</button>
+        </div>
+        <div class="objekt-grid">
+          ${objCell('Straße / Hausnr.', D.strasse)}
+          ${objCell('PLZ / Ort', D.plz_ort)}
+          ${objCell('Wohnung', D.wohnungs_nr ? 'Nr. '+D.wohnungs_nr : '—')}
+          ${objCell('Fläche', D.wohnflaeche ? D.wohnflaeche+' m²' : '—')}
+          ${objCell('Miete', D.miete ? D.miete+' €' : '—')}
+          ${objCell('Nebenkosten', D.nebenkosten ? D.nebenkosten+' €' : '—')}
+          ${objCell('Kaution', D.kaution ? D.kaution+' €' : '—')}
+          ${objCell('Mietbeginn', D.mietbeginn || '—')}
+        </div>
+      </div>`;
+  } else {
+    // Suche + Liste
+    inner.innerHTML = `
+      <div style="margin-bottom:20px">
+        <div style="font-size:9px;letter-spacing:.15em;color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:6px">Mietobjekt</div>
+        <div style="font-size:13px;color:var(--g600);line-height:1.6">Für welches Objekt möchten Sie sich bewerben?</div>
+      </div>
+      <div class="ps-wrap" id="ps-wrap">
+        <div class="ps-input-row">
+          <span class="ps-icon">🔍</span>
+          <input class="ps-input" id="ps-input" type="text"
+            placeholder="Adresse, Stadtteil oder Stichwort …"
+            autocomplete="off"
+            oninput="psSearch(this.value)"
+            onfocus="psOpen()"
+            onkeydown="psKeyNav(event)">
+          <button class="ps-clear" id="ps-clear" onclick="psClear()">×</button>
+        </div>
+        <div class="ps-dropdown" id="ps-dropdown"></div>
+      </div>
+      <div id="ps-error" style="display:none"></div>
+      <div id="ps-manual-fields" style="display:none;margin-top:28px">
+        <div style="font-size:10px;letter-spacing:.12em;color:var(--g400);font-weight:700;text-transform:uppercase;margin-bottom:16px">Manuelle Eingabe</div>
+        <div class="form-grid" style="padding:0">
+          ${field('Straße / Hausnummer','strasse','Hauptstraße 12')}
+          ${field('PLZ / Ort','plz_ort','08056 Zwickau')}
+          ${field('Wohnungsnummer','wohnungs_nr','z.B. 2a',true)}
+          ${field('Wohnfläche','wohnflaeche','z.B. 74',true,'number')}
+          ${field('Kaltmiete (€)','miete','z.B. 620',true,'number')}
+          ${field('Nebenkosten (€)','nebenkosten','z.B. 120',true,'number')}
+          ${field('Kaution (€)','kaution','z.B. 1.860',true)}
+          ${field('Gewünschter Mietbeginn','mietbeginn','z.B. 01.07.2026',true)}
+        </div>
+      </div>`;
+
+    // Objekte laden
+    psInit();
+  }
+}
+function objCell(l,v) {
+  return `<div class="objekt-cell"><div class="objekt-cell-lbl">${l}</div><div class="objekt-cell-val">${v||'—'}</div></div>`;
+}
+
+/* ─── STEP 1: Person ─────────────────────── */
+function renderPerson(grid) {
+  grid.innerHTML = `
+    <!-- KI-Scanner -->
+    <div class="span2" style="margin-bottom:8px">
+      <div class="field-label" style="margin-bottom:10px">
+        KI-Dokumentenscanner
+        <span style="font-weight:400;color:var(--g400);letter-spacing:0;text-transform:none;font-size:10px"> — optional</span>
+      </div>
+      <label class="scanner-zone" for="scanner-file" id="scanner-zone">
+        <input type="file" id="scanner-file" accept="image/*,.pdf" onchange="scanDocument(this)">
+        <span class="scanner-icon">📄</span>
+        <div class="scanner-txt">
+          <span class="scanner-gold">Datei hier ablegen oder klicken</span><br>
+          Personalausweis · Gehaltsnachweis · Lohnzettel<br>
+          KI erkennt Felder automatisch und füllt das Formular vor
+        </div>
+      </label>
+      <div class="scanner-result" id="scanner-result"></div>
+    </div>
+    ${field('E-Mail', 'email', 'max@email.de', false, 'email')}
+    ${field('Name, Vorname', 'name_vorname', 'Mustermann, Max')}
+    ${field('Adresse & Telefon', 'adresse_telefon', 'Musterstr. 1 · 0171-000000')}
+    ${field('Geburtsdatum', 'geburtsdatum', '15.03.1985', true)}
+    ${field('Geburtsort', 'geburtsort', 'Dresden', true)}
+    ${field('Familienstand', 'familienstand', 'ledig', true)}
+    ${field('Beruf', 'beruf', 'Softwareentwickler', true)}
+    <div class="span2">
+      ${toggle('Aufenthaltserlaubnis', 'aufenthaltserlaubnis', [['ja','JA'],['nein','NEIN'],['befristet','BEFRISTET']])}
+    </div>`;
+}
+
+/* ─── STEP 2: Einkommen ──────────────────── */
+function renderEinkommen(grid) {
+  grid.innerHTML = `
+    ${field('Monatl. Nettoeinkommen (€)', 'nettoeinkommen', '3.200', true, 'number')}
+    ${field('Nebenverdienste (€)', 'nebenverdienste', '0', true, 'number')}
+    ${field('Arbeitgeber', 'arbeitgeber', 'Muster GmbH')}
+    ${field('Beschäftigungsdauer', 'beschaeftigung_dauer', '3 Jahre', true)}
+    ${field('Vorheriger Vermieter', 'vorheriger_vermieter', 'Hans Meier, Leipzig', true)}
+    ${field('Grund des Umzugs', 'umzugsgrund', 'Neue Arbeitsstelle')}`;
+}
+
+/* ─── STEP 3: Finanzen ───────────────────── */
+function renderFinanzen(grid) {
+  let html = `
+    <div class="span2">${toggle('Haustiere geplant?', 'haustiere', [['ja','JA'],['nein','NEIN']])}</div>
+    ${D.haustiere==='ja' ? field('Welche Tiere?','haustiere_welche','Katze') : '<div></div>'}
+    <div class="span2">${toggle('Musikinstrument?', 'musikinstrument', [['ja','JA'],['nein','NEIN']])}</div>
+    ${D.musikinstrument==='ja' ? field('Welches?','musikinstrument_welches','Klavier') : '<div></div>'}
+    <div class="span2" style="height:1px;background:var(--g200);margin:4px 0"></div>`;
+
+  [['ratenkredite','ratenkredite_hoehe','Ratenzahlungskredite?'],
+   ['leasing','leasing_hoehe','Leasing / Kfz?'],
+   ['buergschaft','buergschaft_hoehe','Bürgschaften?'],
+   ['unterhaltszahlungen','unterhalt_hoehe','Unterhaltszahlungen?']
+  ].forEach(([k,hk,lbl]) => {
+    html += `<div class="span2">${toggle(lbl, k, [['ja','JA'],['nein','NEIN']])}</div>`;
+    if (D[k]==='ja') html += field('Monatliche Höhe (€)', hk, '0', true, 'number') + '<div></div>';
+  });
+
+  html += `
+    <div class="span2">${toggle('Einkommen gepfändet?', 'pfaendung', [['ja','JA'],['nein','NEIN']])}</div>
+    <div class="span2">${toggle('Insolvenzverfahren?', 'insolvenz', [['ja','JA'],['nein','NEIN']])}</div>`;
+  grid.innerHTML = html;
+}
+
+/* ─── STEP 4: Abschluss ──────────────────── */
+function renderAbschluss(grid) {
+  grid.innerHTML = `
+    <div class="span2">
+      ${checkbox('keine_eidestattliche', 'Ich habe weder eine eidesstattliche Versicherung abgegeben, noch erging hierzu ein Haftbefehl.')}
+      ${checkbox('kein_konkurs', 'Über mein Vermögen wurde in den letzten 5 Jahren kein Konkurs- oder Vergleichsverfahren eröffnet.')}
+      ${checkbox('zahlfaehig', 'Ich bin wirtschaftlich in der Lage, Miete und Kaution fortlaufend zu begleichen.')}
+      ${checkbox('bonitaet', 'Ich bin mit einer Bonitätsprüfung durch das Maklerunternehmen einverstanden.')}
+    </div>
+    ${field('Ort, Datum', 'datum', new Date().toLocaleDateString('de-DE'), true)}
+    <div id="submit-error" style="display:none;grid-column:span 2;padding:12px 16px;background:#FEF2F2;border-left:3px solid #EF4444;font-size:13px;color:#B91C1C"></div>`;
+}
+
+/* ─── NAV ROW ────────────────────────────── */
+function renderNavRow() {
+  const isLast = step === STEPS.length - 1;
+  const nextDisabled = '';
+  const backDisabled = step===0 ? 'disabled' : '';
+  const div = document.createElement('div');
+  div.className = 'nav-row';
+  div.innerHTML = `
+    <button class="nav-back" ${backDisabled} onclick="prevStep()">← ZURÜCK</button>
+    <span class="nav-progress">${step+1} / ${STEPS.length}</span>
+    ${isLast
+      ? `<button class="nav-finish" id="finish-btn" onclick="finish()">PDF ERSTELLEN →</button>`
+      : `<button class="nav-next" ${nextDisabled} onclick="nextStep()">WEITER →</button>`}`;
+  return div;
+}
+
+/* ─── FIELD HELPERS ──────────────────────── */
+function field(label, key, placeholder, half=false, type='text') {
+  const val = escAttr(D[key]||'');
+  return `<div class="${half?'':'span2'}">
+    <div class="field">
+      <label class="field-label">${label}</label>
+      <input class="field-input" type="${type}" value="${val}"
+        placeholder="${placeholder}"
+        oninput="D['${key}']=this.value"
+        onchange="D['${key}']=this.value">
+    </div>
+  </div>`;
+}
+
+function toggle(label, key, opts) {
+  const btns = opts.map(([v,l]) =>
+    `<button class="toggle-btn ${D[key]===v?'active':''}" onclick="D['${key}']='${v}';render()">${l}</button>`
+  ).join('');
+  return `<div>
+    <span class="toggle-label">${label}</span>
+    <div class="toggle-group">${btns}</div>
+  </div>`;
+}
+
+function checkbox(key, label) {
+  const checked = D[key] ? 'checked' : '';
+  return `<div class="cb-item" onclick="D['${key}']=!D['${key}'];this.querySelector('.cb-box').classList.toggle('checked')">
+    <div class="cb-box ${checked}">
+      ${D[key] ? `<svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" fill="none"/></svg>` : ''}
+    </div>
+    <span class="cb-text">${label}</span>
+  </div>`;
+}
+
+function escAttr(s) { return String(s).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+/* ─── STEP NAVIGATION ────────────────────── */
+function nextStep() { if(step < STEPS.length-1){ step++; render(); window.scrollTo(0,0); }}
+function prevStep() { if(step > 0){ step--; render(); window.scrollTo(0,0); }}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROPERTY SEARCH — LIVE AUS PROPSTACK
+═══════════════════════════════════════════════════════════════ */
+let psUnits     = [];   // alle geladenen Einheiten
+let psFiltered  = [];   // aktuell gefilterte Liste
+let psFocusIdx  = -1;   // Tastatur-Navigation Index
+
+async function psInit() {
+  const dd = document.getElementById('ps-dropdown');
+  if (!dd) return;
+
+  // Prüfen ob Units-Key konfiguriert ist
+  if (CFG.PROPSTACK_UNITS_KEY === 'YOUR_UNITS_READ_API_KEY') {
+    showPsError('Kein Einheiten-API-Key hinterlegt. Bitte manuell eingeben.', true);
+    return;
+  }
+
+  dd.classList.add('open');
+  dd.innerHTML = `<div class="ps-loading"><div class="ps-spinner"></div></div>`;
+
+  try {
+    const r = await fetch(
+      `${CFG.PROPSTACK_API}/units?api_key=${CFG.PROPSTACK_UNITS_KEY}&per_page=200`,
+      { headers: { 'Accept': 'application/json' } }
+    );
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+
+    // Propstack gibt Array oder { units: [...] } zurück
+    const raw = Array.isArray(data) ? data : (data.units || data.items || []);
+
+    // Nur aktive/verfügbare Einheiten
+    // status ist Objekt {id, name, color} in Propstack v1
+    psUnits = raw
+      .filter(u => {
+        const statusName = (typeof u.status === 'object' ? u.status?.name : u.status || '').toLowerCase();
+        return !statusName.includes('verkauft') &&
+               !statusName.includes('vermietet') &&
+               !statusName.includes('reserviert') &&
+               !statusName.includes('inaktiv');
+      })
+      .map(u => ({
+        id:           u.id,
+        title:        u.title || u.name || '',
+        addr:         [u.street, u.house_number].filter(Boolean).join(' ') || u.address || '',
+        unit:         u.unit_number || u.flat_number || '',
+        city:         u.city || '',
+        zip:          u.zip_code || '',
+        type:         u.marketing_type === 'RENT' ? 'Miete' : (u.marketing_type === 'SALE' ? 'Kauf' : (u.property_type || '')),
+        area:         u.living_space || '',
+        rent:         u.base_rent || u.price || '',
+        extras:       u.service_charge || '',
+        deposit:      u.deposit || '',
+        available:    u.free_from || '',
+        rooms:        u.number_of_rooms || '',
+        contract:     'unbefristet',
+        floor:        u.floor || '',
+        raw:          u
+      }));
+
+    dd.classList.remove('open');
+    psFiltered = [...psUnits];
+    psRenderList('');
+  } catch(e) {
+    showPsError('Verbindung zum CRM fehlgeschlagen. Bitte manuell eingeben.', true);
+  }
+}
+
+function showPsError(msg, showManual=false) {
+  const dd = document.getElementById('ps-dropdown');
+  const errDiv = document.getElementById('ps-error');
+  if (dd) dd.classList.remove('open');
+  if (errDiv) {
+    errDiv.style.display = '';
+    errDiv.innerHTML = `<div class="ps-error">${msg}${showManual ? ` — <a onclick="psShowManual()">manuell eingeben</a>` : ''}</div>`;
+  }
+}
+
+function psShowManual() {
+  const mf = document.getElementById('ps-manual-fields');
+  if (mf) mf.style.display = '';
+  const errDiv = document.getElementById('ps-error');
+  if (errDiv) errDiv.style.display = 'none';
+}
+
+function psSearch(q) {
+  const clear = document.getElementById('ps-clear');
+  if (clear) clear.style.display = q ? 'block' : 'none';
+  psRenderList(q);
+  const dd = document.getElementById('ps-dropdown');
+  if (dd) dd.classList.add('open');
+  psFocusIdx = -1;
+}
+
+function psOpen() {
+  const dd = document.getElementById('ps-dropdown');
+  if (dd && psUnits.length > 0) {
+    psRenderList(document.getElementById('ps-input')?.value || '');
+    dd.classList.add('open');
+  }
+}
+
+function psClear() {
+  const inp = document.getElementById('ps-input');
+  if (inp) { inp.value = ''; inp.focus(); }
+  const clear = document.getElementById('ps-clear');
+  if (clear) clear.style.display = 'none';
+  psRenderList('');
+}
+
+function clearUnit() {
+  unitLoaded = false;
+  D.strasse = ''; D.plz_ort = ''; D.wohnungs_nr = '';
+  D.wohnflaeche = ''; D.miete = ''; D.nebenkosten = '';
+  D.kaution = ''; D.mietbeginn = ''; D.propstack_unit_id = '';
+  render();
+}
+
+function psRenderList(q) {
+  const dd = document.getElementById('ps-dropdown');
+  if (!dd) return;
+
+  const query = q.toLowerCase().trim();
+  psFiltered = query
+    ? psUnits.filter(u =>
+        (u.title + ' ' + u.addr + ' ' + u.unit + ' ' + u.city + ' ' + u.zip + ' ' + u.type)
+          .toLowerCase().includes(query)
+      )
+    : psUnits;
+
+  if (psFiltered.length === 0) {
+    dd.innerHTML = `
+      <div class="ps-no-results">Keine Treffer für „${q}"</div>
+      <div class="ps-manual-link" onclick="psShowManual();document.getElementById('ps-dropdown').classList.remove('open')">
+        Manuell eingeben
+      </div>`;
+    return;
+  }
+
+  const typeIcon = t => {
+    t = (t||'').toLowerCase();
+    if (t.includes('haus') || t.includes('villa')) return '🏡';
+    if (t.includes('wohnung') || t.includes('etw') || t.includes('apartment')) return '🏢';
+    if (t.includes('gewerbe') || t.includes('büro')) return '🏗️';
+    return '🔑';
+  };
+
+  dd.innerHTML = psFiltered.slice(0, 20).map((u, i) => `
+    <div class="ps-item" data-idx="${i}" onclick="psSelect(${i})">
+      <span class="ps-item-icon">${typeIcon(u.type)}</span>
+      <div class="ps-item-body">
+        <div class="ps-item-addr">
+          ${u.title || (u.addr + (u.unit ? ', ' + u.unit : ''))}
+          ${u.city ? `<span style="color:var(--g400);font-weight:400"> · ${u.zip} ${u.city}</span>` : ''}
+        </div>
+        <div class="ps-item-meta">
+          ${u.rooms ? u.rooms + ' Zimmer' : ''}
+          ${u.area ? (u.rooms ? ' · ' : '') + Number(u.area).toLocaleString('de-DE') + ' m²' : ''}
+          ${u.rent ? ' · ' + Number(u.rent).toLocaleString('de-DE') + ' €' : ''}
+          ${u.type ? `<span class="ps-item-badge">${u.type}</span>` : ''}
+        </div>
+      </div>
+    </div>`).join('') +
+    `<div class="ps-manual-link" onclick="psShowManual();document.getElementById('ps-dropdown').classList.remove('open')">
+      Objekt nicht in der Liste? Manuell eingeben
+    </div>`;
+}
+
+function psSelect(idx) {
+  const u = psFiltered[idx];
+  if (!u) return;
+
+  D.propstack_unit_id = String(u.id);
+  D.strasse      = u.addr;
+  D.plz_ort      = [u.zip, u.city].filter(Boolean).join(' ');
+  D.wohnungs_nr  = u.unit;
+  D.wohnflaeche  = String(u.area || '');
+  D.miete        = String(u.rent || '');
+  D.nebenkosten  = String(u.extras || '');
+  D.kaution      = String(u.deposit || '');
+  D.mietbeginn   = u.available || '';
+  D.vertragsdauer= u.contract;
+  D.geschoss     = u.floor;
+
+  unitLoaded = true;
+  document.getElementById('ps-dropdown')?.classList.remove('open');
+  renderObjektInner();
+}
+
+function psKeyNav(e) {
+  const dd = document.getElementById('ps-dropdown');
+  if (!dd?.classList.contains('open')) return;
+  const items = dd.querySelectorAll('.ps-item');
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    psFocusIdx = Math.min(psFocusIdx + 1, items.length - 1);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    psFocusIdx = Math.max(psFocusIdx - 1, 0);
+  } else if (e.key === 'Enter' && psFocusIdx >= 0) {
+    e.preventDefault();
+    psSelect(psFocusIdx);
+    return;
+  } else if (e.key === 'Escape') {
+    dd.classList.remove('open');
+    return;
+  }
+  items.forEach((el, i) => el.classList.toggle('focused', i === psFocusIdx));
+  items[psFocusIdx]?.scrollIntoView({ block: 'nearest' });
+}
+
+// Dropdown schließen bei Klick außerhalb
+document.addEventListener('click', e => {
+  if (!e.target.closest('#ps-wrap') && !e.target.closest('#ps-dropdown')) {
+    document.getElementById('ps-dropdown')?.classList.remove('open');
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   PROPSTACK — UNIT LADEN (via URL-Parameter)
+═══════════════════════════════════════════════════════════════ */
+async function loadUnit() {
+  const id = D.propstack_unit_id.trim();
+  if (!id) return;
+  const btn = document.getElementById('unit-load-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'LÄDT …'; }
+  showStatus('Lade Objekt aus Propstack …');
+
+  try {
+    const r = await fetch(`${CFG.PROPSTACK_API}/units/${id}`, {
+      headers: { 'X-API-KEY': CFG.PROPSTACK_KEY }
+    });
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    const u = j?.unit || j;
+    /* Map Propstack fields → our form data */
+    D.strasse          = [u.street, u.house_number].filter(Boolean).join(' ') || u.address || '';
+    D.plz_ort          = (u.zip_code || '') + (u.city ? ' '+u.city : '');
+    D.wohnungs_nr      = u.unit_number || u.flat_number || '';
+    D.wohnflaeche      = String(u.living_space || '');
+    D.geschoss         = u.floor || '';
+    D.miete            = String(u.base_rent || u.price || '');
+    D.nebenkosten      = String(u.service_charge || '');
+    D.kaution          = String(u.deposit || '');
+    D.vertragsdauer    = 'unbefristet';
+    D.mietbeginn       = u.free_from || '';
+    unitLoaded = true;
+    showStatus('Objekt geladen ✓', 'ok');
+  } catch(e) {
+    /* Demo-Fallback wenn CORS oder API nicht erreichbar */
+    showStatus('API nicht erreichbar — Demo-Daten geladen', 'err');
+    D.strasse = 'Hauptstraße 12'; D.plz_ort = '08056 Zwickau';
+    D.wohnungs_nr = '2a'; D.wohnflaeche = '74'; D.geschoss = '1. OG';
+    D.miete = '620'; D.nebenkosten = '120'; D.kaution = '1.860';
+    D.vertragsdauer = 'unbefristet'; D.mietbeginn = '01.07.2026';
+    unitLoaded = true;
+  }
+  render();
+}
+
+function skipUnitLoad() {
+  unitLoaded = true;
+  render();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   KI-SCANNER — ANTHROPIC VISION
+═══════════════════════════════════════════════════════════════ */
+async function scanDocument(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const zone   = document.getElementById('scanner-zone');
+  const result = document.getElementById('scanner-result');
+  showStatus('KI analysiert Dokument …');
+  zone.querySelector('.scanner-txt').innerHTML =
+    `<span class="scanner-gold">Analysiere: ${file.name}</span><br>Bitte warten …`;
+
+  try {
+    const b64 = await fileToBase64(file);
+    const mime = file.type || 'image/jpeg';
+
+    const payload = {
+      model: 'claude-opus-4-6',
+      max_tokens: 512,
+      messages: [{
+        role: 'user',
+        content: [
+          { type:'image', source:{ type:'base64', media_type:mime, data:b64 }},
+          { type:'text', text:
+`Analysiere dieses Dokument (Personalausweis, Gehaltsnachweis oder ähnliches) und extrahiere alle Daten für eine Mieter-Selbstauskunft.
+Antworte NUR mit einem JSON-Objekt, ohne Erklärungen:
+{
+  "name_vorname": "Nachname, Vorname",
+  "geburtsdatum": "TT.MM.JJJJ",
+  "geburtsort": "",
+  "adresse_telefon": "Straße Nr, PLZ Ort",
+  "beruf": "",
+  "arbeitgeber": "",
+  "nettoeinkommen": "",
+  "email": ""
+}
+Felder die nicht erkennbar sind als leeren String lassen.` }
+        ]
+      }]
+    };
+
+    const r = await fetch(`${CFG.ANTHROPIC_API}/messages`, {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': CFG.ANTHROPIC_KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!r.ok) throw new Error('API '+r.status);
+    const j = await r.json();
+    const txt = j.content?.[0]?.text || '{}';
+    const clean = txt.replace(/```json?\n?/g,'').replace(/```/g,'').trim();
+    const extracted = JSON.parse(clean);
+
+    let filled = [];
+    Object.entries(extracted).forEach(([k,v]) => {
+      if (v && D.hasOwnProperty(k)) { D[k]=v; filled.push(k); }
+    });
+
+    result.style.display = '';
+    result.innerHTML = filled.length
+      ? `✓ ${filled.length} Felder erkannt und vorausgefüllt: ${filled.map(f=>`<strong>${f}</strong>`).join(', ')}`
+      : '⚠ Keine Felder erkannt — bitte manuell ausfüllen.';
+    showStatus('Dokument analysiert ✓', 'ok');
+    render();
+  } catch(e) {
+    result.style.display='';
+    result.innerHTML='⚠ KI-Analyse nicht verfügbar — bitte manuell ausfüllen. ('+ e.message +')';
+    zone.querySelector('.scanner-txt').innerHTML =
+      `<span class="scanner-gold">Datei hier ablegen oder klicken</span><br>Personalausweis · Gehaltsnachweis · Lohnzettel`;
+    showStatus('Scanner-Fehler: '+e.message, 'err');
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((res,rej) => {
+    const r = new FileReader();
+    r.onload = e => res(e.target.result.split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FINISH — PROPSTACK CONTACT ERSTELLEN + PDF
+═══════════════════════════════════════════════════════════════ */
+async function finish() {
+  const btn = document.getElementById('finish-btn');
+  if (btn) { btn.disabled=true; btn.textContent='ERSTELLE …'; }
+  const errDiv = document.getElementById('submit-error');
+  if (errDiv) errDiv.style.display='none';
+
+  const today = new Date().toLocaleDateString('de-DE');
+  if (!D.datum) D.datum = today;
+
+  showStatus('Speichere im CRM …');
+
+  /* Propstack Contact erstellen */
+  let crmMsg = '';
+  try {
+    const nameParts = (D.name_vorname||'').split(',').map(s=>s.trim());
+    const lastName  = nameParts[0]||'';
+    const firstName = nameParts[1]||'';
+    const email     = D.email || '';
+
+    const r = await fetch(`${CFG.PROPSTACK_API}/contacts`, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'X-API-KEY': CFG.PROPSTACK_KEY },
+      body: JSON.stringify({ contact:{
+        first_name: firstName, last_name: lastName,
+        email, phone: (D.adresse_telefon||'').split('·')[1]?.trim() || '',
+        tags:['Selbstauskunft','Mietinteressent']
+      }})
+    });
+
+    if (r.ok) {
+      const j = await r.json();
+      propstackContactId = j?.id || j?.contact?.id;
+
+      /* Note mit vollständigen Selbstauskunft-Daten */
+      if (propstackContactId) {
+        const noteContent = buildNoteContent();
+        await fetch(`${CFG.PROPSTACK_API}/contacts/${propstackContactId}/notes`, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'X-API-KEY': CFG.PROPSTACK_KEY },
+          body: JSON.stringify({ note:{ content: noteContent }})
+        });
+        crmMsg = `✓ Im Propstack CRM gespeichert (Kontakt-ID: ${propstackContactId}). <a href="https://app.propstack.de/contacts/${propstackContactId}" target="_blank" rel="noopener">Im CRM öffnen →</a>`;
+      }
+    } else {
+      throw new Error('Propstack '+r.status);
+    }
+  } catch(e) {
+    /* Fallback: Formspree */
+    try {
+      await fetch(`https://formspree.io/f/${CFG.FORMSPREE_ID}`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ _subject:'Selbstauskunft — '+D.name_vorname, ...D })
+      });
+      crmMsg = '✓ Per E-Mail übermittelt (Propstack API nicht erreichbar).';
+    } catch(_) { crmMsg = '⚠ Übertragung fehlgeschlagen — PDF lokal gespeichert.'; }
+  }
+
+  showStatus('Fertig!', 'ok');
+  showDone(crmMsg);
+}
+
+function buildNoteContent() {
+  return `SELBSTAUSKUNFT — eingereicht am ${D.datum || new Date().toLocaleDateString('de-DE')}
+${'─'.repeat(50)}
+MIETOBJEKT: ${D.strasse}, ${D.wohnungs_nr} · ${D.plz_ort}
+Miete: ${D.miete} € | NK: ${D.nebenkosten} € | Kaution: ${D.kaution} € | ab ${D.mietbeginn}
+${'─'.repeat(50)}
+INTERESSENT: ${D.name_vorname}
+E-Mail: ${D.email} | Kontakt: ${D.adresse_telefon}
+Geb: ${D.geburtsdatum}, ${D.geburtsort} | ${D.familienstand} | ${D.beruf}
+Aufenthaltserlaubnis: ${D.aufenthaltserlaubnis}
+${'─'.repeat(50)}
+EINKOMMEN: ${D.nettoeinkommen} € netto | Nebenverdienst: ${D.nebenverdienste||'0'} €
+Arbeitgeber: ${D.arbeitgeber} (seit ${D.beschaeftigung_dauer})
+Vorvermieter: ${D.vorheriger_vermieter} | Umzugsgrund: ${D.umzugsgrund}
+${'─'.repeat(50)}
+FINANZEN:
+Haustiere: ${D.haustiere}${D.haustiere==='ja'?' ('+D.haustiere_welche+')':''}
+Ratenkredite: ${D.ratenkredite}${D.ratenkredite==='ja'?' ('+D.ratenkredite_hoehe+' €/Mo)':''}
+Leasing: ${D.leasing}${D.leasing==='ja'?' ('+D.leasing_hoehe+' €/Mo)':''}
+Bürgschaft: ${D.buergschaft}${D.buergschaft==='ja'?' ('+D.buergschaft_hoehe+' €/Mo)':''}
+Unterhalt: ${D.unterhaltszahlungen}${D.unterhaltszahlungen==='ja'?' ('+D.unterhalt_hoehe+' €/Mo)':''}
+Pfändung: ${D.pfaendung} | Insolvenz: ${D.insolvenz}
+${'─'.repeat(50)}
+ERKLÄRUNGEN:
+☑ Keine eidestattliche Versicherung: ${D.keine_eidestattliche?'JA':'NEIN'}
+☑ Kein Konkursverfahren: ${D.kein_konkurs?'JA':'NEIN'}
+☑ Zahlungsfähig: ${D.zahlfaehig?'JA':'NEIN'}
+☑ Bonitätsprüfung einverstanden: ${D.bonitaet?'JA':'NEIN'}`;
+}
+
+function showDone(crmMsg) {
+  document.getElementById('form-area').style.display='none';
+  document.getElementById('steps-nav').style.display='none';
+  const done = document.getElementById('done-screen');
+  done.style.display='block';
+
+  document.getElementById('done-grid').innerHTML = [
+    ['MIETINTERESSENT', D.name_vorname],
+    ['E-MAIL', D.email],
+    ['OBJEKT', D.strasse + (D.wohnungs_nr?', '+D.wohnungs_nr:'')],
+    ['MIETE / MONAT', D.miete ? D.miete+' €' : '—'],
+    ['KAUTION', D.kaution ? D.kaution+' €' : '—'],
+    ['MIETBEGINN', D.mietbeginn || '—'],
+  ].map(([l,v]) => `<div class="done-cell">
+    <div class="done-cell-lbl">${l}</div>
+    <div class="done-cell-val">${v||'—'}</div>
+  </div>`).join('');
+
+  if (crmMsg) {
+    const badge = document.getElementById('crm-badge');
+    badge.style.display=''; badge.innerHTML=crmMsg;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PDF GENERATION — jsPDF
+═══════════════════════════════════════════════════════════════ */
+async function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'mm', format:'a4' });
+  const W = 210, H = 297;
+  const BLK = '#0A0A0A', GOLD = '#C9A96E', LGOLD = '#F0E0BE',
+        GR  = '#999999', LGR  = '#EEEEEE', WHT = '#FFFFFF';
+
+  function header(doc, pg, total) {
+    doc.setFillColor(BLK); doc.rect(0, 0, W, 18, 'F');
+    doc.setFillColor(GOLD); doc.rect(0, 0, 2, 18, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(8);
+    doc.setTextColor(WHT); doc.text('MIETER-SELBSTAUSKUNFT', 8, 11);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7);
+    doc.setTextColor(GR); doc.text(`Seite ${pg} / ${total}`, W-8, 11, {align:'right'});
+    doc.setDrawColor(LGR); doc.setLineWidth(.3);
+    doc.line(8, H-10, W-8, H-10);
+    doc.setFontSize(6); doc.setTextColor(GR);
+    doc.text('Vertraulich — Nur zur Vorlage beim Vermieter', 8, H-6);
+    doc.text('SCHIWIG Immobilien · Lukas Schiwig', W-8, H-6, {align:'right'});
+  }
+
+  function sectionTitle(doc, text, y) {
+    doc.setFillColor(GOLD); doc.rect(8, y-1, 2, 6, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(7);
+    doc.setTextColor(BLK); doc.text(text.toUpperCase(), 13, y+3);
+    doc.setDrawColor(LGR); doc.setLineWidth(.3);
+    doc.line(8, y+5, W-8, y+5);
+    return y + 12;
+  }
+
+  function fieldRow(doc, pairs, y, colCount) {
+    const colW = (W - 16) / colCount;
+    pairs.forEach(([lbl,val], i) => {
+      const x = 8 + i * colW;
+      doc.setFont('helvetica','normal'); doc.setFontSize(6);
+      doc.setTextColor(GR); doc.text(lbl.toUpperCase(), x, y+3);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+      doc.setTextColor(BLK);
+      doc.text(String(val||'—').substring(0,40), x, y+9);
+    });
+    return y + 13;
+  }
+
+  function checkRow(doc, items, y) {
+    const colW = (W - 16) / items.length;
+    items.forEach(([lbl, checked], i) => {
+      const x = 8 + i * colW;
+      doc.setDrawColor(BLK); doc.setLineWidth(.6);
+      doc.rect(x, y, 3, 3, 'S');
+      if (checked) { doc.setFillColor(GOLD); doc.rect(x+.4,y+.4,2.2,2.2,'F'); }
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+      doc.setTextColor('#333333'); doc.text(lbl, x+5, y+2.5);
+    });
+    return y + 9;
+  }
+
+  /* ── PAGE 1 ── */
+  header(doc, 1, 2);
+  doc.setFont('helvetica','bold'); doc.setFontSize(20);
+  doc.setTextColor(BLK); doc.text('SELBSTAUSKUNFT', 8, 36);
+  doc.setFont('helvetica','normal'); doc.setFontSize(10);
+  doc.setTextColor(GR); doc.text('Mietinteressent', 8, 44);
+  doc.setDrawColor(GOLD); doc.setLineWidth(.8);
+  doc.line(8, 48, W-8, 48);
+
+  let y = 58;
+  y = sectionTitle(doc,'Mietobjekt', y);
+  y = fieldRow(doc,[['Straße / Hausnr.',D.strasse],['PLZ / Ort',D.plz_ort]], y, 2);
+  y = fieldRow(doc,[['Wohnungs-Nr.',D.wohnungs_nr],['Wohnfläche',(D.wohnflaeche?D.wohnflaeche+' m²':'')],['Geschoss',D.geschoss]], y, 3);
+  y = fieldRow(doc,[['Miete (€)',D.miete],['Nebenkosten (€)',D.nebenkosten],['Mietbeginn',D.mietbeginn]], y, 3);
+  y = fieldRow(doc,[['Kaution (€)',D.kaution],['Vertragsdauer',D.vertragsdauer]], y, 2);
+  y += 4;
+
+  y = sectionTitle(doc,'Mietinteressent', y);
+  y = fieldRow(doc,[['Name, Vorname',D.name_vorname],['E-Mail',D.email]], y, 2);
+  y = fieldRow(doc,[['Adresse & Telefon',D.adresse_telefon]], y, 1);
+  y += 4;
+
+  y = sectionTitle(doc,'Persönliche Angaben', y);
+  y = fieldRow(doc,[['Geburtsdatum',D.geburtsdatum],['Geburtsort',D.geburtsort],['Familienstand',D.familienstand]], y, 3);
+  y = fieldRow(doc,[['Aufenthaltserlaubnis',D.aufenthaltserlaubnis],['Beruf',D.beruf]], y, 2);
+  y += 4;
+
+  y = sectionTitle(doc,'Einkommensverhältnisse', y);
+  y = fieldRow(doc,[['Nettoeinkommen / Monat (€)',D.nettoeinkommen],['Nebenverdienste (€)',D.nebenverdienste||'0']], y, 2);
+  y = fieldRow(doc,[['Arbeitgeber',D.arbeitgeber]], y, 1);
+  y = fieldRow(doc,[['Beschäftigungsdauer',D.beschaeftigung_dauer],['Vorheriger Vermieter',D.vorheriger_vermieter]], y, 2);
+  y = fieldRow(doc,[['Grund des Umzugs',D.umzugsgrund]], y, 1);
+
+  /* ── PAGE 2 ── */
+  doc.addPage();
+  header(doc, 2, 2);
+  doc.setFont('helvetica','bold'); doc.setFontSize(20);
+  doc.setTextColor(BLK); doc.text('WIRTSCHAFTLICHE', 8, 36);
+  doc.setFont('helvetica','normal'); doc.setFontSize(20);
+  doc.text('VERHÄLTNISSE', 8, 47);
+  doc.setDrawColor(GOLD); doc.setLineWidth(.8);
+  doc.line(8, 51, W-8, 51);
+
+  y = 62;
+  y = sectionTitle(doc,'Lebensweise', y);
+  y = checkRow(doc,[
+    [`Haustiere: ${D.haustiere}${D.haustiere==='ja'&&D.haustiere_welche?' ('+D.haustiere_welche+')':''}`, D.haustiere==='ja'],
+    [`Musikinstrument: ${D.musikinstrument}${D.musikinstrument==='ja'&&D.musikinstrument_welches?' ('+D.musikinstrument_welches+')':''}`, D.musikinstrument==='ja'],
+  ], y);
+  y += 4;
+
+  y = sectionTitle(doc,'Finanzielle Verpflichtungen', y);
+  y = checkRow(doc,[
+    [`Ratenkredite${D.ratenkredite==='ja'?' ('+D.ratenkredite_hoehe+' €)':''}`, D.ratenkredite==='ja'],
+    [`Leasing/Kfz${D.leasing==='ja'?' ('+D.leasing_hoehe+' €)':''}`, D.leasing==='ja'],
+  ], y);
+  y = checkRow(doc,[
+    [`Bürgschaft${D.buergschaft==='ja'?' ('+D.buergschaft_hoehe+' €)':''}`, D.buergschaft==='ja'],
+    [`Unterhalt${D.unterhaltszahlungen==='ja'?' ('+D.unterhalt_hoehe+' €)':''}`, D.unterhaltszahlungen==='ja'],
+  ], y);
+  y = checkRow(doc,[
+    ['Einkommen gepfändet', D.pfaendung==='ja'],
+    ['Insolvenzverfahren', D.insolvenz==='ja'],
+  ], y);
+  y += 8;
+
+  y = sectionTitle(doc,'Erklärungen des Mietinteressenten', y);
+  const erkl = [
+    ['Keine eidesstattliche Versicherung abgegeben, kein Haftbefehl ergangen.', D.keine_eidestattliche],
+    ['Kein Konkurs-/Vergleichsverfahren in den letzten 5 Jahren eröffnet.', D.kein_konkurs],
+    ['Wirtschaftlich in der Lage, Miete und Kaution zu begleichen.', D.zahlfaehig],
+    ['Einverständnis mit Bonitätsprüfung.', D.bonitaet],
+  ];
+  erkl.forEach(([lbl, checked]) => {
+    doc.setDrawColor(BLK); doc.setLineWidth(.6);
+    doc.rect(8, y, 3, 3, 'S');
+    if (checked) { doc.setFillColor(GOLD); doc.rect(8.4,y+.4,2.2,2.2,'F'); }
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    doc.setTextColor('#333333');
+    doc.text(lbl, 14, y+2.5);
+    y += 8;
+  });
+  y += 10;
+
+  /* Unterschrift */
+  doc.setDrawColor('#DDDDDD'); doc.setLineWidth(.4);
+  doc.line(8, y, 80, y);
+  doc.line(95, y, W-8, y);
+  doc.setFont('helvetica','normal'); doc.setFontSize(6.5);
+  doc.setTextColor(GR);
+  doc.text('ORT, DATUM', 8, y+4);
+  doc.text('UNTERSCHRIFT MIETINTERESSENT', 95, y+4);
+  if (D.datum) {
+    doc.setFontSize(9); doc.setTextColor(BLK);
+    doc.text(D.datum, 8, y-2);
+  }
+
+  const name = (D.name_vorname||'Mietinteressent').replace(/[^a-zA-Z0-9äöüÄÖÜß_-]/g,'_');
+  doc.save(`Selbstauskunft_${name}.pdf`);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════════════════════ */
+function resetForm() {
+  D = {...INIT};
+  step = 0;
+  unitLoaded = false;
+  propstackContactId = null;
+  document.getElementById('done-screen').style.display='none';
+  document.getElementById('form-area').style.display='';
+  document.getElementById('steps-nav').style.display='';
+  render();
+  window.scrollTo(0,0);
+}
+
+/* ─── INIT ───────────────────────────────── */
+// Lukas schickt Links im Format: selbstauskunft.html?unit=12345
+// → Objektdaten werden automatisch aus Propstack geladen
+// → Kunde sieht nie die ID, nur die vorgeladenen Daten
+(async function init() {
+  const params = new URLSearchParams(window.location.search);
+  const unitId = params.get('unit');
+  if (unitId) {
+    D.propstack_unit_id = unitId;
+    render(); // zeige Formular sofort
+    await loadUnit(); // lade Daten im Hintergrund
+  } else {
+    unitLoaded = false; // manuelle Eingabe
+    render();
+  }
+})();
+</script>
+</body>
+</html>
