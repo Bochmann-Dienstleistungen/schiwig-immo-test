@@ -1,60 +1,66 @@
 /**
  * Schiwig Immobilien — Cloudflare Worker
- * Anthropic API Proxy (hält den Key serverseitig)
+ * Zentraler API-Proxy: Anthropic + Propstack
+ * Alle Keys liegen serverseitig — kein Key im Browser.
  *
- * Setup:
- *   1. npm install -g wrangler
- *   2. wrangler login
- *   3. wrangler secret put ANTHROPIC_KEY   ← gibt deinen sk-ant-... Key ein
- *   4. wrangler deploy
+ * Endpoints:
+ *   POST /scan                          → Anthropic Vision API
+ *   GET  /propstack/units               → Propstack Units lesen
+ *   POST /propstack/contacts            → Propstack Kontakt anlegen
+ *   POST /propstack/contacts/:id/notes  → Propstack Notiz hinzufügen
  *
- * Endpoint: POST https://schiwig-scanner.<dein-subdomain>.workers.dev/scan
+ * Secrets (via: wrangler secret put <NAME>):
+ *   ANTHROPIC_KEY
+ *   PROPSTACK_KEY        (Kontakte schreiben)
+ *   PROPSTACK_UNITS_KEY  (Einheiten lesen)
  */
 
 const ALLOWED_ORIGINS = [
   'https://bochmann-dienstleistungen.github.io',
   'http://localhost',
   'http://127.0.0.1',
+  'file://',
 ];
 
 function corsHeaders(origin) {
-  const allowed = ALLOWED_ORIGINS.some(o => origin?.startsWith(o)) ? origin : ALLOWED_ORIGINS[0];
+  const ok = ALLOWED_ORIGINS.some(o => (origin || '').startsWith(o));
   return {
-    'Access-Control-Allow-Origin':  allowed,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Origin':  ok ? origin : ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age':       '86400',
   };
 }
 
+function json(data, status = 200, origin = '') {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
+  });
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
-    const { pathname } = new URL(request.url);
+    const url    = new URL(request.url);
+    const path   = url.pathname;
 
-    // Preflight
+    // ── Preflight ──────────────────────────────────────────────
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
     }
 
-    // POST /scan → Anthropic Vision proxy
-    if (pathname === '/scan' && request.method === 'POST') {
-      if (!env.ANTHROPIC_KEY) {
-        return new Response(JSON.stringify({ error: 'ANTHROPIC_KEY not configured' }), {
-          status: 500,
-          headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) }
-        });
-      }
+    // ── POST /scan → Anthropic Vision ──────────────────────────
+    if (path === '/scan' && request.method === 'POST') {
+      if (!env.ANTHROPIC_KEY) return json({ error: 'ANTHROPIC_KEY not set' }, 500, origin);
 
       let body;
-      try { body = await request.json(); }
-      catch { return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers: corsHeaders(origin) }); }
+      try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
 
-      // Enforce model + reasonable limits
-      body.model = body.model || 'claude-opus-4-6';
+      body.model      = body.model || 'claude-opus-4-6';
       body.max_tokens = Math.min(body.max_tokens || 1024, 2048);
 
-      const upstream = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
           'Content-Type':      'application/json',
@@ -63,12 +69,34 @@ export default {
         },
         body: JSON.stringify(body),
       });
+      return json(await res.json(), res.status, origin);
+    }
 
-      const data = await upstream.json();
-      return new Response(JSON.stringify(data), {
-        status: upstream.status,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) }
-      });
+    // ── Propstack proxy ────────────────────────────────────────
+    // Routes: /propstack/*  →  https://api.propstack.de/v1/*
+    if (path.startsWith('/propstack/')) {
+      const psPath = path.replace('/propstack', '');
+      const psUrl  = 'https://api.propstack.de/v1' + psPath + url.search;
+
+      // GET requests use the read-only units key, POST use the contacts key
+      const apiKey = request.method === 'GET'
+        ? env.PROPSTACK_UNITS_KEY
+        : env.PROPSTACK_KEY;
+
+      if (!apiKey) return json({ error: 'Propstack key not configured' }, 500, origin);
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-API-KEY':    apiKey,
+      };
+
+      let body;
+      if (request.method === 'POST') {
+        try { body = JSON.stringify(await request.json()); } catch { body = '{}'; }
+      }
+
+      const res = await fetch(psUrl, { method: request.method, headers, body });
+      return json(await res.json(), res.status, origin);
     }
 
     return new Response('Not found', { status: 404, headers: corsHeaders(origin) });

@@ -427,10 +427,8 @@ body { background:var(--off); font-family:var(--sans); color:var(--black); min-h
    KONFIGURATION — API-Keys hier eintragen
 ═══════════════════════════════════════════════════════════════ */
 const CFG = {
-  PROPSTACK_KEY:       '8SeAjrykEgpdi0L6lp_yl8I9HWdfFS4tKK64aIhn', // Kontakte anlegen
-  PROPSTACK_UNITS_KEY: 'R5QxJ4bs6iKB5rKetStWKgu17DMV0jTOrEXfJkmL',
-  SCANNER_API:         'https://schiwig-scanner.freiraum-dienstleistungen.workers.dev/scan',
-  PROPSTACK_API:       'https://api.propstack.de/v1',
+  WORKER:              'https://schiwig-scanner.freiraum-dienstleistungen.workers.dev',
+  PROPSTACK_API:       'https://schiwig-scanner.freiraum-dienstleistungen.workers.dev/propstack',
   FORMSPREE_ID:        'mlgpooqw'
 };
 
@@ -744,18 +742,13 @@ async function psInit() {
   const dd = document.getElementById('ps-dropdown');
   if (!dd) return;
 
-  // Prüfen ob Units-Key konfiguriert ist
-  if (CFG.PROPSTACK_UNITS_KEY === 'YOUR_UNITS_READ_API_KEY') {
-    showPsError('Kein Einheiten-API-Key hinterlegt. Bitte manuell eingeben.', true);
-    return;
-  }
 
   dd.classList.add('open');
   dd.innerHTML = `<div class="ps-loading"><div class="ps-spinner"></div></div>`;
 
   try {
     const r = await fetch(
-      `${CFG.PROPSTACK_API}/units?api_key=${CFG.PROPSTACK_UNITS_KEY}&per_page=200`,
+      `${CFG.PROPSTACK_API}/units?per_page=200`,
       { headers: { 'Accept': 'application/json' } }
     );
     if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -962,9 +955,7 @@ async function loadUnit() {
   showStatus('Lade Objekt aus Propstack …');
 
   try {
-    const r = await fetch(`${CFG.PROPSTACK_API}/units/${id}`, {
-      headers: { 'X-API-KEY': CFG.PROPSTACK_KEY }
-    });
+    const r = await fetch(`${CFG.PROPSTACK_API}/units/${id}`);
     if (!r.ok) throw new Error(r.status);
     const j = await r.json();
     const u = j?.unit || j;
@@ -1039,7 +1030,7 @@ Felder die nicht erkennbar sind als leeren String lassen.` }
       }]
     };
 
-    const r = await fetch(CFG.SCANNER_API, {
+    const r = await fetch(CFG.WORKER + '/scan', {
       method:'POST',
       headers:{
         'Content-Type':'application/json'
@@ -1106,7 +1097,7 @@ async function finish() {
 
     const r = await fetch(`${CFG.PROPSTACK_API}/contacts`, {
       method:'POST',
-      headers:{ 'Content-Type':'application/json', 'X-API-KEY': CFG.PROPSTACK_KEY },
+      headers:{ 'Content-Type':'application/json' },
       body: JSON.stringify({ contact:{
         first_name: firstName, last_name: lastName,
         email, phone: (D.adresse_telefon||'').split('·')[1]?.trim() || '',
@@ -1123,7 +1114,7 @@ async function finish() {
         const noteContent = buildNoteContent();
         await fetch(`${CFG.PROPSTACK_API}/contacts/${propstackContactId}/notes`, {
           method:'POST',
-          headers:{ 'Content-Type':'application/json', 'X-API-KEY': CFG.PROPSTACK_KEY },
+          headers:{ 'Content-Type':'application/json' },
           body: JSON.stringify({ note:{ content: noteContent }})
         });
         crmMsg = `✓ Im Propstack CRM gespeichert (Kontakt-ID: ${propstackContactId}). <a href="https://app.propstack.de/contacts/${propstackContactId}" target="_blank" rel="noopener">Im CRM öffnen →</a>`;

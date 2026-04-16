@@ -2599,10 +2599,9 @@ function calcWert() {
 })();
 
 // ═══════════════════════════════════════════
-// PROPSTACK INTEGRATION
+// PROPSTACK INTEGRATION (via Worker — kein Key im Browser)
 // ═══════════════════════════════════════════
-const PS_KEY = '8SeAjrykEgpdi0L6lp_yl8I9HWdfFS4tKK64aIhn';
-const PS_API = 'https://api.propstack.de/v1';
+const PS_API = 'https://schiwig-scanner.freiraum-dienstleistungen.workers.dev/propstack';
 
 async function submitKontakt(e) {
   e.preventDefault();
@@ -2620,7 +2619,7 @@ async function submitKontakt(e) {
   try {
     const r = await fetch(`${PS_API}/contacts`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-API-KEY': PS_KEY },
+      headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({ contact: {
         first_name: firstName,
         last_name:  lastName,
@@ -2635,7 +2634,7 @@ async function submitKontakt(e) {
       if (cid && fd.get('message')) {
         await fetch(`${PS_API}/contacts/${cid}/notes`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-API-KEY': PS_KEY },
+          headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({ note: { content: `Website-Anfrage:\n${fd.get('message')}` }})
         });
       }
@@ -2786,7 +2785,7 @@ async function submitBooking(e) {
     const parts = name.split(' ');
     const r = await fetch(`${PS_API}/contacts`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-API-KEY': PS_KEY },
+      headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({ contact: {
         first_name: parts.slice(0,-1).join(' ') || parts[0],
         last_name:  parts.length > 1 ? parts[parts.length-1] : '',
@@ -2801,7 +2800,7 @@ async function submitBooking(e) {
       if (cid) {
         await fetch(`${PS_API}/contacts/${cid}/notes`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-API-KEY': PS_KEY },
+          headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({ note: { content: noteText }})
         });
       }
