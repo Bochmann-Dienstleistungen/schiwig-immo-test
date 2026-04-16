@@ -429,9 +429,8 @@ body { background:var(--off); font-family:var(--sans); color:var(--black); min-h
 const CFG = {
   PROPSTACK_KEY:       '8SeAjrykEgpdi0L6lp_yl8I9HWdfFS4tKK64aIhn', // Kontakte anlegen
   PROPSTACK_UNITS_KEY: 'R5QxJ4bs6iKB5rKetStWKgu17DMV0jTOrEXfJkmL',
-  ANTHROPIC_KEY:       'YOUR_ANTHROPIC_API_KEY',
+  SCANNER_API:         'https://schiwig-scanner.bochmann-dienstleistungen.workers.dev/scan',
   PROPSTACK_API:       'https://api.propstack.de/v1',
-  ANTHROPIC_API:       'https://api.anthropic.com/v1',
   FORMSPREE_ID:        'mlgpooqw'
 };
 
@@ -1040,13 +1039,10 @@ Felder die nicht erkennbar sind als leeren String lassen.` }
       }]
     };
 
-    const r = await fetch(`${CFG.ANTHROPIC_API}/messages`, {
+    const r = await fetch(CFG.SCANNER_API, {
       method:'POST',
       headers:{
-        'Content-Type':'application/json',
-        'x-api-key': CFG.ANTHROPIC_KEY,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
+        'Content-Type':'application/json'
       },
       body: JSON.stringify(payload)
     });

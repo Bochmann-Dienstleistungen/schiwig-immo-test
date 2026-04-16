@@ -1174,27 +1174,202 @@ footer {
 .footer-bottom-links a:hover { color: var(--color-accent); }
 
 /* ═══════════════════════════════════════════
-   WHATSAPP FLOAT
+   SMART FAB
 ═══════════════════════════════════════════ */
-.wa-float {
+.fab-wrap {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 7000;
-  width: 52px; height: 52px;
-  background: #25D366;
-  border-radius: 50%;
+  bottom: 2rem; right: 2rem;
+  z-index: 9000;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px rgba(37,211,102,0.35);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: 10px;
 }
-.wa-float:hover {
-  transform: scale(1.1) translateY(-2px);
-  box-shadow: 0 8px 30px rgba(37,211,102,0.45);
+.fab-main {
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(26,63,143,0.45);
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), background 0.2s;
+  border: none;
+  flex-shrink: 0;
 }
-.wa-float svg { width: 26px; height: 26px; fill: #fff; }
+.fab-main:hover { background: var(--color-accent-light); }
+.fab-main svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; transition: transform 0.35s cubic-bezier(.34,1.56,.64,1); }
+.fab-wrap.open .fab-main svg { transform: rotate(45deg); }
+.fab-options {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+  pointer-events: none;
+}
+.fab-wrap.open .fab-options { pointer-events: all; }
+.fab-opt {
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; transform: translateY(8px) scale(0.92);
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(.34,1.56,.64,1);
+  cursor: pointer;
+  pointer-events: none;
+}
+.fab-wrap.open .fab-opt { opacity: 1; transform: none; pointer-events: all; }
+.fab-wrap.open .fab-opt:nth-child(1) { transition-delay: 0.06s; }
+.fab-wrap.open .fab-opt:nth-child(2) { transition-delay: 0.11s; }
+.fab-wrap.open .fab-opt:nth-child(3) { transition-delay: 0.16s; }
+.fab-wrap.open .fab-opt:nth-child(4) { transition-delay: 0.21s; }
+.fab-opt-lbl {
+  background: #fff; color: var(--color-dark);
+  padding: 5px 14px; border-radius: 20px;
+  font-size: 0.8rem; font-weight: 500; white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.11);
+}
+.fab-opt-ico {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #fff; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.11);
+  font-size: 1.2rem;
+  transition: transform 0.2s, background 0.2s;
+}
+.fab-opt:hover .fab-opt-ico { transform: scale(1.1); background: var(--color-accent); }
+.fab-opt-wa .fab-opt-ico { background: #25D366; }
+.fab-opt-wa:hover .fab-opt-ico { background: #20b857; }
+.fab-opt-wa .fab-opt-ico svg { width: 22px; height: 22px; fill: #fff; }
+
+/* ═══════════════════════════════════════════
+   BOOKING MODAL
+═══════════════════════════════════════════ */
+.bk-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(6,14,34,0.72);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.bk-overlay.open { opacity: 1; pointer-events: all; }
+.bk-modal {
+  background: #fff; border-radius: 20px;
+  width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+  padding: 2.5rem 2.5rem 2rem;
+  position: relative;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+}
+.bk-overlay.open .bk-modal { transform: none; }
+.bk-close {
+  position: absolute; top: 1.2rem; right: 1.4rem;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--color-surface); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: var(--color-text-muted);
+  transition: background 0.2s;
+}
+.bk-close:hover { background: #e8ecf5; }
+.bk-prog { display: flex; gap: 6px; margin-bottom: 2rem; }
+.bk-prog-dot {
+  height: 3px; flex: 1; border-radius: 2px;
+  background: #e8ecf5; transition: background 0.3s;
+}
+.bk-prog-dot.done { background: var(--color-accent); }
+.bk-step { display: none; }
+.bk-step.active { display: block; }
+.bk-step-label {
+  font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--color-accent); font-weight: 600; margin-bottom: 0.5rem;
+}
+.bk-step h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.9rem; font-weight: 300; color: var(--color-dark);
+  margin-bottom: 1.5rem;
+}
+.bk-anliegen-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.bk-anliegen-card {
+  border: 1.5px solid #e8ecf5; border-radius: 12px;
+  padding: 1rem 1.1rem; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.bk-anliegen-card:hover { border-color: var(--color-accent); background: #f4f7fd; }
+.bk-anliegen-card.selected { border-color: var(--color-accent); background: #f0f4fc; }
+.bk-anliegen-icon { font-size: 1.5rem; margin-bottom: 6px; }
+.bk-anliegen-title { font-weight: 600; font-size: 0.9rem; color: var(--color-dark); }
+.bk-anliegen-sub { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 2px; }
+.bk-dates-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.bk-date-btn {
+  border: 1.5px solid #e8ecf5; border-radius: 10px;
+  padding: 10px 6px; cursor: pointer; text-align: center;
+  transition: border-color 0.2s, background 0.2s; background: #fff;
+}
+.bk-date-btn:hover { border-color: var(--color-accent); background: #f4f7fd; }
+.bk-date-btn.selected { border-color: var(--color-accent); background: #f0f4fc; }
+.bk-date-day { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted); }
+.bk-date-num { font-size: 1.2rem; font-weight: 600; color: var(--color-dark); }
+.bk-date-mo { font-size: 0.7rem; color: var(--color-text-muted); }
+.bk-times-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.bk-time-btn {
+  border: 1.5px solid #e8ecf5; border-radius: 10px;
+  padding: 12px 4px; cursor: pointer; text-align: center;
+  font-size: 0.85rem; font-weight: 500; color: var(--color-dark);
+  transition: border-color 0.2s, background 0.2s; background: #fff;
+}
+.bk-time-btn:hover { border-color: var(--color-accent); background: #f4f7fd; }
+.bk-time-btn.selected { border-color: var(--color-accent); background: #f0f4fc; }
+.bk-form { display: flex; flex-direction: column; gap: 12px; margin-top: 0.5rem; }
+.bk-form input, .bk-form textarea {
+  border: 1.5px solid #e8ecf5; border-radius: 10px;
+  padding: 12px 14px; font-size: 0.9rem; font-family: inherit;
+  color: var(--color-dark); outline: none;
+  transition: border-color 0.2s;
+}
+.bk-form input:focus, .bk-form textarea:focus { border-color: var(--color-accent); }
+.bk-form textarea { resize: none; height: 80px; }
+.bk-nav { display: flex; gap: 10px; margin-top: 1.5rem; }
+.bk-btn-back {
+  padding: 12px 20px; border-radius: 10px; border: 1.5px solid #e8ecf5;
+  background: #fff; cursor: pointer; font-family: inherit;
+  font-size: 0.85rem; color: var(--color-text-muted);
+  transition: border-color 0.2s;
+}
+.bk-btn-back:hover { border-color: var(--color-accent); }
+.bk-btn-next {
+  flex: 1; padding: 13px 20px; border-radius: 10px; border: none;
+  background: var(--color-accent); color: #fff; cursor: pointer;
+  font-family: inherit; font-size: 0.9rem; font-weight: 500;
+  transition: background 0.2s; letter-spacing: 0.02em;
+}
+.bk-btn-next:hover { background: var(--color-accent-light); }
+.bk-btn-next:disabled { background: #c8d2e8; cursor: not-allowed; }
+.bk-summary-box {
+  background: var(--color-surface); border-radius: 12px;
+  padding: 1.2rem 1.4rem; margin-bottom: 1.5rem;
+  font-size: 0.88rem; line-height: 1.8; color: var(--color-dark);
+}
+.bk-summary-box strong { font-weight: 600; }
+.bk-success { text-align: center; padding: 1rem 0; }
+.bk-success-icon { font-size: 3rem; margin-bottom: 1rem; }
+.bk-success h3 { margin-bottom: 0.8rem; }
+.bk-success p { color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.7; }
+.bk-success-wa {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 1.5rem; padding: 12px 24px; border-radius: 30px;
+  background: #25D366; color: #fff; font-size: 0.9rem; font-weight: 500;
+  text-decoration: none; transition: background 0.2s;
+}
+.bk-success-wa:hover { background: #20b857; }
+@media (max-width: 480px) {
+  .bk-modal { padding: 1.8rem 1.4rem 1.5rem; }
+  .bk-anliegen-grid { grid-template-columns: 1fr 1fr; }
+  .bk-dates-grid { grid-template-columns: repeat(3, 1fr); }
+  .bk-times-grid { grid-template-columns: repeat(3, 1fr); }
+}
 
 /* ═══════════════════════════════════════════
    COOKIE BANNER
@@ -1975,10 +2150,137 @@ footer {
   </div>
 </footer>
 
-<!-- WHATSAPP FLOAT -->
-<a href="https://wa.me/4915725792768" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp Kontakt">
-  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.817.735 5.46 2.024 7.754L0 32l8.494-2.001A15.937 15.937 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm8.02 22.3c-.34.955-1.992 1.825-2.73 1.94-.738.115-1.656.163-2.67-.168-1.013-.331-2.31-.773-3.97-1.516-3.494-1.5-5.773-5.037-5.948-5.27-.175-.233-1.428-1.902-1.428-3.625S8 11.38 8.35 11.03c.35-.35.777-.437 1.037-.437.26 0 .52 0 .747.01.24.01.563-.09.88.67.328.77 1.115 2.668 1.213 2.86.098.192.163.417.033.672-.13.255-.195.413-.39.637-.195.224-.41.5-.585.672-.195.195-.397.405-.17.795.226.39.998 1.645 2.143 2.665 1.473 1.314 2.716 1.72 3.106 1.915.39.195.617.163.845-.098.228-.26.97-1.13 1.228-1.52.258-.39.515-.325.87-.195.355.13 2.257 1.064 2.647 1.258.39.195.649.29.745.453.097.162.097.942-.244 1.897z"/></svg>
-</a>
+<!-- SMART FAB -->
+<div class="fab-wrap" id="fabWrap">
+  <button class="fab-main" id="fabMain" aria-label="Kontakt & Optionen" onclick="toggleFab()">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+  <div class="fab-options">
+    <div class="fab-opt" onclick="openBooking();closeFab()">
+      <span class="fab-opt-lbl">Termin buchen</span>
+      <div class="fab-opt-ico">📅</div>
+    </div>
+    <div class="fab-opt" onclick="location.href='selbstauskunft.html';closeFab()">
+      <span class="fab-opt-lbl">Selbstauskunft</span>
+      <div class="fab-opt-ico">📄</div>
+    </div>
+    <div class="fab-opt fab-opt-wa" onclick="openWA();closeFab()">
+      <span class="fab-opt-lbl">WhatsApp</span>
+      <div class="fab-opt-ico">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.817.735 5.46 2.024 7.754L0 32l8.494-2.001A15.937 15.937 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm8.02 22.3c-.34.955-1.992 1.825-2.73 1.94-.738.115-1.656.163-2.67-.168-1.013-.331-2.31-.773-3.97-1.516-3.494-1.5-5.773-5.037-5.948-5.27-.175-.233-1.428-1.902-1.428-3.625S8 11.38 8.35 11.03c.35-.35.777-.437 1.037-.437.26 0 .52 0 .747.01.24.01.563-.09.88.67.328.77 1.115 2.668 1.213 2.86.098.192.163.417.033.672-.13.255-.195.413-.39.637-.195.224-.41.5-.585.672-.195.195-.397.405-.17.795.226.39.998 1.645 2.143 2.665 1.473 1.314 2.716 1.72 3.106 1.915.39.195.617.163.845-.098.228-.26.97-1.13 1.228-1.52.258-.39.515-.325.87-.195.355.13 2.257 1.064 2.647 1.258.39.195.649.29.745.453.097.162.097.942-.244 1.897z"/></svg>
+      </div>
+    </div>
+    <div class="fab-opt" onclick="location.href='tel:015735792768';closeFab()">
+      <span class="fab-opt-lbl">Anrufen</span>
+      <div class="fab-opt-ico">📞</div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="bk-overlay" id="bkOverlay" onclick="if(event.target===this)closeBooking()">
+  <div class="bk-modal">
+    <button class="bk-close" onclick="closeBooking()">✕</button>
+    <div class="bk-prog">
+      <div class="bk-prog-dot done" id="bkp1"></div>
+      <div class="bk-prog-dot" id="bkp2"></div>
+      <div class="bk-prog-dot" id="bkp3"></div>
+      <div class="bk-prog-dot" id="bkp4"></div>
+    </div>
+
+    <!-- Step 1: Anliegen -->
+    <div class="bk-step active" id="bks1">
+      <div class="bk-step-label">Schritt 1 von 4</div>
+      <h3>Was kann Lukas<br><em>für Sie tun?</em></h3>
+      <div class="bk-anliegen-grid" id="bkAnliegenGrid">
+        <div class="bk-anliegen-card" data-v="Immobilie mieten" onclick="selectAnliegen(this)">
+          <div class="bk-anliegen-icon">🔑</div>
+          <div class="bk-anliegen-title">Mieten</div>
+          <div class="bk-anliegen-sub">Ich suche eine Mietwohnung</div>
+        </div>
+        <div class="bk-anliegen-card" data-v="Immobilie kaufen" onclick="selectAnliegen(this)">
+          <div class="bk-anliegen-icon">🏠</div>
+          <div class="bk-anliegen-title">Kaufen</div>
+          <div class="bk-anliegen-sub">Ich möchte eine Immobilie kaufen</div>
+        </div>
+        <div class="bk-anliegen-card" data-v="Immobilie verkaufen" onclick="selectAnliegen(this)">
+          <div class="bk-anliegen-icon">📊</div>
+          <div class="bk-anliegen-title">Verkaufen</div>
+          <div class="bk-anliegen-sub">Ich möchte meine Immobilie verkaufen</div>
+        </div>
+        <div class="bk-anliegen-card" data-v="Allgemeine Beratung" onclick="selectAnliegen(this)">
+          <div class="bk-anliegen-icon">💬</div>
+          <div class="bk-anliegen-title">Beratung</div>
+          <div class="bk-anliegen-sub">Ich möchte mich informieren</div>
+        </div>
+      </div>
+      <div class="bk-nav">
+        <button class="bk-btn-next" id="bkNext1" disabled onclick="bkGoTo(2)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Datum -->
+    <div class="bk-step" id="bks2">
+      <div class="bk-step-label">Schritt 2 von 4</div>
+      <h3>Wann passt<br><em>es Ihnen?</em></h3>
+      <div class="bk-dates-grid" id="bkDatesGrid"></div>
+      <div class="bk-nav">
+        <button class="bk-btn-back" onclick="bkGoTo(1)">← Zurück</button>
+        <button class="bk-btn-next" id="bkNext2" disabled onclick="bkGoTo(3)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Uhrzeit -->
+    <div class="bk-step" id="bks3">
+      <div class="bk-step-label">Schritt 3 von 4</div>
+      <h3>Welche Uhrzeit<br><em>bevorzugen Sie?</em></h3>
+      <div class="bk-times-grid" id="bkTimesGrid">
+        <div class="bk-time-btn" data-v="09:00" onclick="selectTime(this)">09:00</div>
+        <div class="bk-time-btn" data-v="10:00" onclick="selectTime(this)">10:00</div>
+        <div class="bk-time-btn" data-v="11:00" onclick="selectTime(this)">11:00</div>
+        <div class="bk-time-btn" data-v="13:00" onclick="selectTime(this)">13:00</div>
+        <div class="bk-time-btn" data-v="14:00" onclick="selectTime(this)">14:00</div>
+        <div class="bk-time-btn" data-v="15:00" onclick="selectTime(this)">15:00</div>
+        <div class="bk-time-btn" data-v="16:00" onclick="selectTime(this)">16:00</div>
+        <div class="bk-time-btn" data-v="17:00" onclick="selectTime(this)">17:00</div>
+      </div>
+      <div class="bk-nav">
+        <button class="bk-btn-back" onclick="bkGoTo(2)">← Zurück</button>
+        <button class="bk-btn-next" id="bkNext3" disabled onclick="bkGoTo(4)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Kontakt -->
+    <div class="bk-step" id="bks4">
+      <div class="bk-step-label">Schritt 4 von 4</div>
+      <h3>Ihre<br><em>Kontaktdaten</em></h3>
+      <div class="bk-summary-box" id="bkSummary"></div>
+      <form class="bk-form" onsubmit="submitBooking(event)">
+        <input type="text" id="bkName" placeholder="Ihr Name *" required>
+        <input type="tel" id="bkPhone" placeholder="Telefon *" required>
+        <input type="email" id="bkEmail" placeholder="E-Mail (optional)">
+        <textarea id="bkNote" placeholder="Anmerkungen (optional)"></textarea>
+        <div class="bk-nav" style="margin-top:0">
+          <button type="button" class="bk-btn-back" onclick="bkGoTo(3)">← Zurück</button>
+          <button type="submit" class="bk-btn-next" id="bkSubmitBtn">Termin anfragen →</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Step 5: Bestätigung -->
+    <div class="bk-step" id="bks5">
+      <div class="bk-success">
+        <div class="bk-success-icon">✅</div>
+        <h3>Anfrage gesendet!</h3>
+        <p>Lukas meldet sich in Kürze zur Bestätigung.<br>Sie können ihm auch direkt auf WhatsApp schreiben:</p>
+        <a class="bk-success-wa" id="bkWaLink" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.551 4.1 1.518 5.82L0 24l6.335-1.499A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm6.015 16.725c-.255.717-1.494 1.369-2.048 1.455-.554.086-1.242.122-2.003-.126-.76-.248-1.733-.58-2.978-1.137-2.62-1.125-4.33-3.778-4.46-3.953-.131-.174-1.071-1.426-1.071-2.718s.678-1.928.919-2.192c.24-.263.523-.329.698-.329h.56c.18.008.423-.068.66.503.246.578.836 2.001.91 2.146.073.144.122.313.025.504-.098.191-.146.309-.293.478-.146.168-.307.375-.439.504-.146.146-.298.304-.128.597.17.292.749 1.234 1.607 1.999 1.105.985 2.037 1.29 2.33 1.436.292.146.463.122.634-.073.17-.195.728-.848.921-1.14.194-.292.386-.244.653-.146.267.097 1.693.799 1.985.944.292.146.487.219.559.34.072.122.072.707-.182 1.424z"/></svg>
+          Auf WhatsApp bestätigen
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- COOKIE BANNER -->
 <div class="cookie-banner" id="cookieBanner">
@@ -2365,6 +2667,152 @@ async function submitKontakt(e) {
     stat.style.color = '#c0392b';
     stat.innerHTML = 'Fehler — bitte direkt anrufen: <a href="tel:015735792768">0157 3579 2768</a>';
   }
+}
+
+// ═══════════════════════════════════════════
+// SMART FAB
+// ═══════════════════════════════════════════
+function toggleFab() {
+  document.getElementById('fabWrap').classList.toggle('open');
+}
+function closeFab() {
+  document.getElementById('fabWrap').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('fabWrap');
+  if (wrap && !wrap.contains(e.target)) wrap.classList.remove('open');
+});
+function openWA(msg) {
+  const text = msg || 'Guten Tag, ich habe eine Frage zu Ihrem Immobilienangebot.';
+  window.open('https://wa.me/4915735792768?text=' + encodeURIComponent(text), '_blank');
+}
+
+// ═══════════════════════════════════════════
+// TERMINBUCHUNG MODAL
+// ═══════════════════════════════════════════
+const BK = { anliegen: '', date: '', time: '' };
+let bkStep = 1;
+
+function openBooking() {
+  BK.anliegen = ''; BK.date = ''; BK.time = ''; bkStep = 1;
+  document.querySelectorAll('.bk-anliegen-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('bkNext1').disabled = true;
+  bkBuildDates();
+  bkShowStep(1);
+  document.getElementById('bkOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeBooking() {
+  document.getElementById('bkOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function bkShowStep(n) {
+  bkStep = n;
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById('bks' + i)?.classList.toggle('active', i === n);
+    const dot = document.getElementById('bkp' + i);
+    if (dot) dot.classList.toggle('done', i <= n);
+  }
+}
+function bkGoTo(n) { bkShowStep(n); }
+
+function selectAnliegen(el) {
+  document.querySelectorAll('.bk-anliegen-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  BK.anliegen = el.dataset.v;
+  document.getElementById('bkNext1').disabled = false;
+}
+
+function bkBuildDates() {
+  const grid = document.getElementById('bkDatesGrid');
+  const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const months = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  grid.innerHTML = '';
+  let d = new Date(); d.setHours(0,0,0,0);
+  d.setDate(d.getDate() + 1);
+  let count = 0;
+  while (count < 12) {
+    const dow = d.getDay();
+    if (dow !== 0 && dow !== 6) {
+      const iso = d.toISOString().slice(0,10);
+      const label = `<div class="bk-date-btn" data-v="${iso}" onclick="selectDate(this)">
+        <div class="bk-date-day">${days[dow]}</div>
+        <div class="bk-date-num">${d.getDate()}</div>
+        <div class="bk-date-mo">${months[d.getMonth()]}</div>
+      </div>`;
+      grid.insertAdjacentHTML('beforeend', label);
+      count++;
+    }
+    d.setDate(d.getDate() + 1);
+  }
+}
+
+function selectDate(el) {
+  document.querySelectorAll('.bk-date-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  BK.date = el.dataset.v;
+  document.getElementById('bkNext2').disabled = false;
+}
+
+function selectTime(el) {
+  document.querySelectorAll('.bk-time-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  BK.time = el.dataset.v;
+  document.getElementById('bkNext3').disabled = false;
+  // show summary on step 4
+  const dateObj = new Date(BK.date + 'T12:00:00');
+  const dateFmt = dateObj.toLocaleDateString('de-DE', { weekday:'long', day:'numeric', month:'long' });
+  document.getElementById('bkSummary').innerHTML =
+    `<strong>Anliegen:</strong> ${BK.anliegen}<br>
+     <strong>Termin:</strong> ${dateFmt}, ${BK.time} Uhr`;
+}
+
+async function submitBooking(e) {
+  e.preventDefault();
+  const btn = document.getElementById('bkSubmitBtn');
+  btn.disabled = true; btn.textContent = 'Wird gesendet …';
+
+  const name  = document.getElementById('bkName').value.trim();
+  const phone = document.getElementById('bkPhone').value.trim();
+  const email = document.getElementById('bkEmail').value.trim();
+  const note  = document.getElementById('bkNote').value.trim();
+
+  const dateObj = new Date(BK.date + 'T12:00:00');
+  const dateFmt = dateObj.toLocaleDateString('de-DE', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const noteText = `Terminanfrage Website\nAnliegen: ${BK.anliegen}\nWunschtermin: ${dateFmt} um ${BK.time} Uhr${note ? '\nAnmerkung: ' + note : ''}`;
+
+  // Propstack contact
+  try {
+    const parts = name.split(' ');
+    const r = await fetch(`${PS_API}/contacts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-KEY': PS_KEY },
+      body: JSON.stringify({ contact: {
+        first_name: parts.slice(0,-1).join(' ') || parts[0],
+        last_name:  parts.length > 1 ? parts[parts.length-1] : '',
+        email:      email || undefined,
+        phone:      phone,
+        tags:       ['Terminanfrage', BK.anliegen]
+      }})
+    });
+    if (r.ok) {
+      const j = await r.json();
+      const cid = j?.id || j?.contact?.id;
+      if (cid) {
+        await fetch(`${PS_API}/contacts/${cid}/notes`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-API-KEY': PS_KEY },
+          body: JSON.stringify({ note: { content: noteText }})
+        });
+      }
+    }
+  } catch(_) {}
+
+  // WhatsApp link für Bestätigung
+  const waText = `🗓 Neue Terminanfrage!\n\nName: ${name}\nTelefon: ${phone}${email ? '\nE-Mail: ' + email : ''}\nAnliegen: ${BK.anliegen}\nWunschtermin: ${dateFmt} um ${BK.time} Uhr${note ? '\nAnmerkung: ' + note : ''}`;
+  document.getElementById('bkWaLink').href = 'https://wa.me/4915735792768?text=' + encodeURIComponent(waText);
+
+  bkShowStep(5);
 }
 </script>
 </body>

@@ -1,0 +1,6 @@
+name = "schiwig-scanner"
+main = "index.js"
+compatibility_date = "2024-09-23"
+
+# ANTHROPIC_KEY wird als Secret gesetzt (nicht hier eintragen!):
+# wrangler secret put ANTHROPIC_KEY
